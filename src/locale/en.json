@@ -1,0 +1,56 @@
+{
+	"home": {
+		"title": "Home",
+		"language": "Select language"
+	},
+	"users": {
+		"title": "Users"
+	},
+	"locale-editor": {
+		"title": "locale editor",
+		"edit": "Edit"
+	},
+	"locales-list": {
+		"language": "Language",
+		"code": "Code",
+		"flag": "Flag",
+		"card-title": "Click on locale to edit"
+	},
+	"components": {
+		"title": "Components"
+	},
+	"notifications": {
+		"locale-editor": {
+			"saved": {
+				"title": "Locales saved",
+				"message": "Locales for {locale} have been sucesfully saved to LocalStorage."
+			}
+		},
+		"component-example-template": {
+			"copied": {
+				"message": "Code copied to clipboard"
+			}
+		}
+	},
+	"component-page-template": {
+		"text-title": "Description",
+		"props-title": "Properties",
+		"events-title": "Events",
+		"slots-title": "Slots"
+	},
+	"component-list": {
+		"not-found": {
+			"title": "No Components Found",
+			"text": "try changing or deleting search query"
+		},
+		"categories": "Categories",
+		"all": "All",
+		"name": "Name",
+		"description": "Description",
+		"card-title": "Click to view documentation"
+	},
+	"not-found": {
+		"link": "Go to homepage",
+		"header": "Page not found"
+	}
+}
