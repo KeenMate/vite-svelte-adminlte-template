@@ -17,7 +17,7 @@ As of writing this, it is still mainly used by us, so I would not accept it as "
 ## Steps to get you going
 
 ### Clone template
-`npx degit keenmate/rollup-svelte-adminlte-template`
+Run the following inside your new project's directory: `npx degit keenmate/rollup-svelte-adminlte-template`
 
 ### Install deps
 `npm i`
