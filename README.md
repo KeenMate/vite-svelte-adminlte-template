@@ -55,5 +55,5 @@ This error supervision code is in `/src/main.js`
 ### Global stores
 `/src/stores`
 
-### Assets
-Static files are stored in `/src/assets` out of where they are copied to `/public` directory (see `/rollup.config.js`)
+### Static assets
+Static files are stored in `/src/assets/static` out of where they are copied to `/public` directory as-is (see `/rollup.config.js`)
