@@ -88,6 +88,7 @@ export default {
 				{src: "node_modules/jsoneditor/dist/img/jsoneditor-icons.svg", dest: "./public/img"},
 				{src: "node_modules/jquery/dist/jquery.min.js", dest: "./public/js"},
 				{src: "node_modules/jquery-ui-dist/jquery-ui.min.css", dest: "./public/css"},
+				{src: "node_modules/@fortawesome/fontawesome-free/webfonts", dest: "./public"},
 				{src: "src/assets/static/**/*", dest: "./public"}
 			]
 		}),
