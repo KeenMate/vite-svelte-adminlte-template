@@ -33,6 +33,10 @@ Run the following inside your new project's directory: `npx degit keenmate/rollu
 ### Components
 We store intermediate components in `/src/controls` directory
 
+### Styling
+Main style file is located at: `/src/assets/css/main.scss`.
+This file contains reference to `/src/assets/css/variables.scss` where you can override AdminLTE and other CSS variables.
+
 ### Constants
 `/src/constants`
 
