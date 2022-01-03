@@ -42,17 +42,9 @@ export default {
 		format: "iife",
 		name: "app",
 		dir: "public",
-		// file: "./public/js/app.js",
 		inlineDynamicImports: true
-		// globals: {
-		// 	"jquery": "jQuery"
-		// },
 	},
-	// external: [
-	// 	"jquery"
-	// ],
 	plugins: [
-		// dotenv(),
 		replace({
 			values: {
 				"process.env.APP_URL": "window.location.href"
@@ -64,10 +56,7 @@ export default {
 				// enable run-time checks when not in production
 				dev: !production
 			},
-			preprocess: sveltePreprocess({
-				// emitCss: true
-				// postcss: true
-			}),
+			preprocess: sveltePreprocess(),
 			onwarn() {
 			}
 		}),
@@ -108,7 +97,7 @@ export default {
 
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
-		!production && livereload('public'),
+		!production && livereload("public")
 	],
 	watch: {
 		clearScreen: true

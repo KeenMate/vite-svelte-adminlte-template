@@ -1,0 +1,20 @@
+﻿@import "./variables";
+
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/admin-lte/build/scss/bootstrap-variables";
+
+@import "../../../node_modules/admin-lte/build/scss/variables";
+@import "../../../node_modules/admin-lte/build/scss/variables-alt";
+@import "../../../node_modules/admin-lte/build/scss/mixins";
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+@import "../../../node_modules/admin-lte/build/scss/parts/core";
+@import "../../../node_modules/admin-lte/build/scss/parts/components";
+@import "../../../node_modules/admin-lte/build/scss/parts/extra-components";
+@import "../../../node_modules/admin-lte/build/scss/parts/pages";
+@import "../../../node_modules/admin-lte/build/scss/parts/plugins";
+@import "../../../node_modules/admin-lte/build/scss/parts/miscellaneous";
+//@import "../../../node_modules/admin-lte/build/scss/adminlte";
+
+@import "../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+@import "../../../node_modules/toastr/build/toastr.min.css";

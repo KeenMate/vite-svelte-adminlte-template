@@ -36,22 +36,10 @@
   } from "svelte-adminlte"
 
   import MessageLog from "./controls/modals/MessageLog.svelte"
-  import {initSocket} from "./providers/socket"
-  import {each} from "svelte/internal"
+  // import {initSocket} from "./providers/socket"
   import SidebarNavTree from "./controls/SidebarNavTree.svelte"
 
-  // function applySidebarOpenState() {
-	//   if (!get(sidebarOpenState)) {
-	// 	  document.body.classList.add(
-	// 		  "sidebar-collapse",
-	// 		  "sidebar-mini-expand-feature"
-	// 	  )
-	// 	  document.body.classList.remove("sidebar-mini-expand-feature")
-	//   }
-  // }
-
   onMount(() => {
-	  // applySidebarOpenState();
 
 	  // initSocket()
 

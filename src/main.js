@@ -1,5 +1,4 @@
-import "admin-lte/build/scss/adminlte.scss"
-import "toastr/build/toastr.css"
+import "./assets/css/main.scss"
 
 import "bootstrap/dist/js/bootstrap.bundle.min"
 import "admin-lte/dist/js/adminlte"

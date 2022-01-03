@@ -6,7 +6,7 @@
 <li class="nav-item">
 	<a {href} class="nav-link">
 		{#if icon}
-			<i class="nav-icon {icon}" />
+			<i class="nav-icon {icon}"></i>
 		{/if}
 		<p>
 			<slot />
@@ -19,12 +19,6 @@
 </li>
 
 <style lang="sass">
-	// .margin
-	//   margin-left: 0.5em
-		:global
-
 	.sidebar-collapsed .icon
 		display: none
-
-
 </style>
