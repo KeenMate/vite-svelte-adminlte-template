@@ -33,14 +33,14 @@ Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-pro
 `/src/components` is where you put your project related components that are then used in user controls or pages
 
 ### User controls
-`/src/user-controls` are reusable complex pieces of UI, for example an new password validation tool with password complexity visualiser, that are than used in multiple pages or user controls
+`/src/user-controls` are reusable complex pieces of UI, for example a new password validation tool with password complexity visualiser, that are than used in multiple pages or user controls
 
 ## Configuration
 Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
 
 ### Styling
-Main style file is located at: `/src/assets/css/main.scss` to which you can append your own styles.
-This file contains reference to `/src/assets/css/variables.scss` where you can override AdminLTE and other CSS variables.
+Main style file is located at: `/src/assets/css/main.scss` to which you can append your own styles. This is the place where you can import your own styles / overrides.
+It also contains reference to `/src/assets/css/variables.scss` where you can override AdminLTE and other CSS variables.
 
 ### Constants
 `/src/constants` is where you put your project constants like API paths, default timeouts and so on
@@ -49,11 +49,11 @@ This file contains reference to `/src/assets/css/variables.scss` where you can o
 - `./urls.js` - Where application urls are defined (here we use a compile-time config to provide env-specific URLs)
 
 ## Server communication
-`/src/providers` are for REST/IO type data providers, the lowest level code with simple methods that each is atomic and does only one thing, like calling one specific endpoint, should you desire a more complicated scenario use a manager to combine multiple providers/provider methods
+`/src/providers` are for REST/IO type data providers, the lowest level code with simple methods that each is atomic and does only one thing, like calling one specific endpoint, should you desire a more complicated scenario use a manager to combine multiple providers/provider methods.
 `/src/providers/socket` are for Websocket type data providers
 
 ## Uncaught errors
-When unexpected error occurs we prevent Svelte App to become "frozen" by overlaying it with error screen from where the user must reload the page (as for the moment we do not have a better solution).
+When unexpected error occurs we prevent Svelte App to become "frozen" by overlaying it with error screen from where the user must reload the page (for the time being we do not have a better solution).
   
 This error supervision code is in `/src/main.js`
 
