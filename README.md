@@ -35,6 +35,9 @@ Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-pro
 ### User controls
 `/src/user-controls` are reusable complex pieces of UI, for example a new password validation tool with password complexity visualiser, that are than used in multiple pages or user controls
 
+### Modals
+`/src/modals` is where you put your (non)modal dialogs, we call them modals because they mostly are but it can be both
+
 ## Configuration
 Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
 
