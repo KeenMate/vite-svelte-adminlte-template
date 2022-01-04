@@ -1,5 +1,5 @@
 <script>
-  import notification, {Success, Warning, Error} from "../../providers/notification-provider"
+  import notification, {Success, Warning, Error} from "../providers/notification-provider"
   import {getConfig} from "svelte-adminlte"
   import {DateTime} from "luxon"
 

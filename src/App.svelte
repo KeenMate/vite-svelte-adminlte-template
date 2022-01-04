@@ -35,9 +35,9 @@
 	  Label
   } from "svelte-adminlte"
 
-  import MessageLog from "./controls/modals/MessageLog.svelte"
+  import MessageLog from "./modals/MessageLog.svelte"
   // import {initSocket} from "./providers/socket"
-  import SidebarNavTree from "./controls/SidebarNavTree.svelte"
+  import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
 
   onMount(() => {
 

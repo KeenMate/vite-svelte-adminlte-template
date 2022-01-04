@@ -30,17 +30,23 @@ Run the following inside your new project's directory: `npx degit keenmate/rollu
 ### Routes
 `/src/routes`
 
-### Components
-We store intermediate components in `/src/controls` directory
+### Components 
+
+#### Organization
+We use the concept of user controls (`/src/user-controls`) that exist next to `/src/components/` directory
+
+#### Configuration
+Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
 
 ### Styling
-Main style file is located at: `/src/assets/css/main.scss`.
+Main style file is located at: `/src/assets/css/main.scss` to which you can append your own styles.
 This file contains reference to `/src/assets/css/variables.scss` where you can override AdminLTE and other CSS variables.
+
 
 ### Constants
 `/src/constants`
 
-#### Honorable mentions
+#### For example
 - `./urls.js` - Where application urls are defined (here we use a compile-time config to provide env-specific URLs)
 
 ### Server communication
