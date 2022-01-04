@@ -53,6 +53,7 @@ It also contains reference to `/src/assets/css/variables.scss` where you can ove
 
 ## Server communication
 `/src/providers` are for REST/IO type data providers, the lowest level code with simple methods that each is atomic and does only one thing, like calling one specific endpoint, should you desire a more complicated scenario use a manager to combine multiple providers/provider methods.
+  
 `/src/providers/socket` are for Websocket type data providers
 
 ## Uncaught errors
