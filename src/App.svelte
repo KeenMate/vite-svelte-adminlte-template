@@ -1,13 +1,13 @@
 <script>
   import {onMount, setContext} from "svelte"
-  import {get} from "svelte/store"
+  // import {get} from "svelte/store"
   import Router from "svelte-spa-router"
   import keymage from "keymage"
 
   import "./locale/i18n"
   import {changeLang, locale, languages, GetFlagPath} from "./locale/i18n"
   // import {_} from "svelte-i18n"
-  import routes, {Routes, Urls} from "./routes"
+  import RoutePages, {Pages, PageUrls} from "./pages"
 
   // import currentUser from "./stores/current-user"
   import {
@@ -15,24 +15,20 @@
 	  isAuthenticated,
 	  userInfo,
 	  AzureProvider,
-	  ZuubrProvider,
+	  // ZuubrProvider,
 	  appMountCallback,
 	  logout
   } from "./stores/authentication"
 
   import {
 	  TopNavigation,
-	  PageHeader,
 	  Sidebar,
 	  SidebarNavItem,
 	  TopNavItem,
-	  Loader,
-	  UserDropdownMenu,
 	  Dropdown,
 	  DropdownItem,
 	  DropdownButton,
-	  DropdownMenu,
-	  Label
+	  DropdownMenu
   } from "svelte-adminlte"
 
   import MessageLog from "./modals/MessageLog.svelte"
@@ -75,7 +71,7 @@
 				<DropdownButton>Pages</DropdownButton>
 
 				<DropdownMenu>
-					<DropdownItem href="#{Urls.Route1}">Route 1</DropdownItem>
+					<DropdownItem href="#{PageUrls.Route1}">Route 1</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
 		</svelte:fragment>
@@ -127,22 +123,22 @@
 	</TopNavigation>
 
 	<Sidebar>
-		{#each Routes as route}
-			{#if !route.hide}
-				{#if route.nesting}
-					<SidebarNavTree icon={route.icon} href="#{route.route}">
-						{route.title}
+		{#each Pages as page}
+			{#if !page.hide}
+				{#if page.nesting}
+					<SidebarNavTree icon={page.icon} href="#{page.url}">
+						{page.title}
 						<svelte:fragment slot="children">
-							{#each route.subroutes as sub}
-								<SidebarNavItem icon={sub.icon} href="#{sub.route}">
+							{#each page.subroutes as sub}
+								<SidebarNavItem icon={sub.icon} href="#{sub.url}">
 									<p>{sub.title}</p>
 								</SidebarNavItem>
 							{/each}
 						</svelte:fragment>
 					</SidebarNavTree>
 				{:else}
-					<SidebarNavItem icon={route.icon} href="#{route.route}">
-						<p>{route.title}</p>
+					<SidebarNavItem icon={page.icon} href="#{page.url}">
+						<p>{page.title}</p>
 					</SidebarNavItem>
 				{/if}
 			{/if}
@@ -151,7 +147,7 @@
 
 	<div class="content-wrapper">
 		<div class="content">
-			<Router {routes} />
+			<Router {RoutePages} />
 		</div>
 	</div>
 
