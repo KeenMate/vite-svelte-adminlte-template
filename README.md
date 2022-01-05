@@ -35,6 +35,9 @@ Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-pro
 ### User controls
 `/src/user-controls` are reusable complex pieces of UI, for example a new password validation tool with password complexity visualiser, that are than used in multiple pages or user controls
 
+### Modals
+`/src/modals` is where you put your (non)modal dialogs, we call them modals because they mostly are but it can be both
+
 ## Configuration
 Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
 
@@ -50,6 +53,7 @@ It also contains reference to `/src/assets/css/variables.scss` where you can ove
 
 ## Server communication
 `/src/providers` are for REST/IO type data providers, the lowest level code with simple methods that each is atomic and does only one thing, like calling one specific endpoint, should you desire a more complicated scenario use a manager to combine multiple providers/provider methods.
+  
 `/src/providers/socket` are for Websocket type data providers
 
 ## Uncaught errors
