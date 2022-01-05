@@ -47,7 +47,8 @@ export default {
 	plugins: [
 		replace({
 			values: {
-				"process.env.APP_URL": "window.location.href"
+				"process.env.APP_URL": "window.location.href",
+				"process.env.BASE_HTML_TITLE": JSON.stringify(process.env.BASE_HTML_TITLE),
 			}
 		}),
 		json(),
@@ -77,7 +78,7 @@ export default {
 		}),
 
 		html({
-			title: "Svelte App",
+			title: process.env.BASE_HTML_TITLE,
 			template
 		}),
 
