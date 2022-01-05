@@ -38,8 +38,12 @@ Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-pro
 ### Modals
 `/src/modals` is where you put your (non)modal dialogs, we call them modals because they mostly are but it can be both
 
-## Configuration
+### Configuration
 Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
+
+#### HTML Title
+The title consists of page title (`/src/pages/index.js`, each page has `title` field) and application title (`BASE_HTML_TITLE` in `/.env.dev.json`).
+These 2 values are combined in `/src/helpers/router-html-title.js` which is called inside `/src/App.svelte` from `Router`'s `routeLoaded` handler
 
 ### Styling
 Main style file is located at: `/src/assets/css/main.scss` to which you can append your own styles. This is the place where you can import your own styles / overrides.
