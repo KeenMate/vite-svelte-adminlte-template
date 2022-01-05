@@ -7,7 +7,7 @@
   import "./locale/i18n"
   import {changeLang, locale, languages, GetFlagPath} from "./locale/i18n"
   // import {_} from "svelte-i18n"
-  import RoutePages, {Pages, PageUrls} from "./pages"
+  import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
 
   // import currentUser from "./stores/current-user"
   import {
@@ -36,7 +36,6 @@
   import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
 
   onMount(() => {
-
 	  // initSocket()
 
 	  keymage("ctrl-0", () => {
@@ -60,6 +59,10 @@
 	  }
   }
 
+  function routeLoaded({detail: route}) {
+	  onRouteLoaded(route)
+  }
+
   onMount(appMountCallback)
 </script>
 
@@ -71,7 +74,7 @@
 				<DropdownButton>Pages</DropdownButton>
 
 				<DropdownMenu>
-					<DropdownItem href="#{PageUrls.Route1}">Route 1</DropdownItem>
+					<DropdownItem href="#{PageUrls.Page1}">Page 1</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
 		</svelte:fragment>
@@ -147,7 +150,7 @@
 
 	<div class="content-wrapper">
 		<div class="content">
-			<Router {RoutePages} />
+			<Router routes={RoutePages} on:routeLoaded={routeLoaded} />
 		</div>
 	</div>
 

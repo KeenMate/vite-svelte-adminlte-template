@@ -5,3 +5,5 @@ export const TypingDebounceDelay = 300
 // and do not hide loader, if the response arrives after `waitForLoader` and before `leaveLoaderFor`
 export const waitForLoader = 45
 export const leaveLoaderFor = 234
+
+export const BaseHtmlTitle = process.env.BASE_HTML_TITLE

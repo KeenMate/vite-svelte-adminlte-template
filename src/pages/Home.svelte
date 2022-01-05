@@ -4,11 +4,12 @@
   import {getConfig, setConfig} from "svelte-adminlte"
   import {_} from "svelte-i18n"
   import notification from "../providers/notification-provider"
-
 </script>
+
 <PageHeader>
 	{$_("home.title")}
 </PageHeader>
+
 <div class="row">
 	<div class="col-3">
 		<Card outline color="danger">

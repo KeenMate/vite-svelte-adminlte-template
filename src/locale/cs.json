@@ -3,6 +3,9 @@
 		"title": "Domov",
 		"language": "Vyberte jazyk"
 	},
+	"page1": {
+		"title": "Stránka 1"
+	},
 	"users": {
 		"title": "Uživatelé"
 	},

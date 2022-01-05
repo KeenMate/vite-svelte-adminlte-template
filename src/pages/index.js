@@ -1,6 +1,8 @@
-import Route1 from "./Route1.svelte"
+import Home from "./Home.svelte"
+import Page1 from "./Page1.svelte"
 import NotFound from "./NotFound.svelte"
 import Error from "./Error.svelte"
+import {setHtmlTitle} from "../helpers/router-html-title"
 
 export const Pages = [
 	{
@@ -11,10 +13,18 @@ export const Pages = [
 		hide: true
 	},
 	{
-		name: "Route1",
-		title: "Route 1",
+		name: "Home",
+		title: "Home",
 		url: "/",
 		breadcrumb: ["Route 1"],
+		icon: "fas fa-home",
+		hide: false
+	},
+	{
+		name: "Page1",
+		title: "Page 1",
+		url: "/page1",
+		breadcrumb: ["Page 1"],
 		icon: "fas fa-file",
 		hide: false
 	}
@@ -42,8 +52,18 @@ export function getPage(name) {
 	return Pages.find((o) => o.name === name)
 }
 
+export function onRouteLoaded(route) {
+	const page = Pages.find(x => x.url === route.route)
+
+	if (!page)
+		return
+
+	setHtmlTitle(page.title)
+}
+
 export default {
-	[PageUrls.Route1]: Route1,
+	[PageUrls.Home]: Home,
+	[PageUrls.Page1]: Page1,
 	[PageUrls.Error]: Error,
 	// The catch-all route must always be last
 	"*": NotFound

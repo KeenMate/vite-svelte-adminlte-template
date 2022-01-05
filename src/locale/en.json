@@ -3,6 +3,9 @@
 		"title": "Home",
 		"language": "Select language"
 	},
+	"page1": {
+		"title": "Page1"
+	},
 	"users": {
 		"title": "Users"
 	},
