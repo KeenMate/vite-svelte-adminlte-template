@@ -10,10 +10,10 @@ export {locale, locales, langs}
 export const languages = langs
 
 let locales = {"cs": cs, "en": en}
-inicialize()
+initialize()
 
 
-function inicialize() {
+function initialize() {
 	langs.forEach((lang) => {
 		let lc = localStorage.getItem(lang.code + "-locale")
 		if (lc != null) {
@@ -32,10 +32,11 @@ function inicialize() {
 
 }
 
-export function GetFlagPath(country_code) {
-	let lang = languages.find((x) => x.code === country_code.substring(0, 2))
-	if (lang != undefined) return "img/flags/" + lang.img + ".png"
-	return ""
+export function getFlagPath(countryCode) {
+	let lang = languages.find((x) => x.code === countryCode.substring(0, 2))
+	return lang
+		? "img/flags/" + lang.img + ".png"
+		: ""
 }
 
 export function saveLanguageFile(json, lang) {
@@ -61,12 +62,11 @@ export function deleteSaveLocals() {
 }
 
 export function changeLang(lang) {
-	if (languages.find((x) => x.code === lang.substring(0, 2)) != undefined) {
+	if (languages.find((x) => x.code === lang.substring(0, 2))) {
 		console.log("changing lang to:", lang)
 		locale.set(lang)
 		localStorage.setItem("language", lang)
 	} else {
 		console.log("ERROR: language " + lang, " does not exist")
 	}
-	return
 }

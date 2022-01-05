@@ -5,7 +5,7 @@
   import keymage from "keymage"
 
   import "./locale/i18n"
-  import {changeLang, locale, languages, GetFlagPath} from "./locale/i18n"
+  import {locale} from "./locale/i18n"
   // import {_} from "svelte-i18n"
   import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
 
@@ -34,6 +34,7 @@
   import MessageLog from "./modals/MessageLog.svelte"
   // import {initSocket} from "./providers/socket"
   import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
+  import LocaleDropdown from "./components/locale/LocaleDropdown.svelte"
 
   onMount(() => {
 	  // initSocket()
@@ -51,13 +52,6 @@
   setContext("loader", {
 	  setLoading: (val) => (loading = val)
   })
-
-  function changeLanguage(e, lang) {
-	  if (lang) {
-		  changeLang(lang)
-		  location.reload()
-	  }
-  }
 
   function routeLoaded({detail: route}) {
 	  onRouteLoaded(route)
@@ -80,27 +74,8 @@
 		</svelte:fragment>
 
 		<svelte:fragment slot="right">
-			<Dropdown>
-				<DropdownButton>
-					<img
-						src={GetFlagPath(localeLanguage)}
-						alt={localeLanguage}
-					/>
-				</DropdownButton>
-				<div id="language-dropdown">
-					<DropdownMenu right>
-						{#each languages as l}
-							<div
-								class="lang-item"
-								on:click={e => changeLanguage(e, l.code)}
-							>
-								<img src={GetFlagPath(l.code)} alt={l.img} />
-								{l.title || l.code}
-							</div>
-						{/each}
-					</DropdownMenu>
-				</div>
-			</Dropdown>
+			<LocaleDropdown />	
+		
 			{#if $isAuthenticated}
 				<Dropdown slot="right">
 					<DropdownButton>{$userInfo.name}</DropdownButton>
