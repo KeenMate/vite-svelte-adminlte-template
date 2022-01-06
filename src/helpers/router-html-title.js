@@ -3,5 +3,5 @@
 export function setHtmlTitle(newTitle, absolute = false) {
 	document.title = absolute
 		? newTitle
-		: `${newTitle} • ${BaseHtmlTitle}`
+		: (newTitle && `${newTitle} • ${BaseHtmlTitle}` || BaseHtmlTitle)
 }

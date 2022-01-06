@@ -1,8 +1,8 @@
 <script>
 
-  export let code = 500
-  export let message = ""
-  export let email = ""
+	export let code = 500
+	export let message = ""
+	export let email = ""
 </script>
 
 <div id="error-page">

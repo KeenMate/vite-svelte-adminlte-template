@@ -1,8 +1,10 @@
+import {get} from "svelte/store"
+import {setHtmlTitle} from "../helpers/router-html-title"
+import {customPageTitleUsed, pageTitle} from "../stores/page-title"
 import Home from "./Home.svelte"
 import Page1 from "./Page1.svelte"
 import NotFound from "./NotFound.svelte"
 import Error from "./Error.svelte"
-import {setHtmlTitle} from "../helpers/router-html-title"
 
 export const Pages = [
 	{
@@ -55,13 +57,13 @@ export function getPage(name) {
 export async function onRouteLoaded(route) {
 	const page = Pages.find(x => x.url === route.route)
 
-	if (!page)
+	if (!page || get(customPageTitleUsed))
 		return
 
-	const title = typeof page.title === "function"
+	pageTitle.set(typeof page.title === "function"
 		? await page.title()
 		: page.title
-	setHtmlTitle(title)
+	)
 }
 
 export default {

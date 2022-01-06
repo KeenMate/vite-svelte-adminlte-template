@@ -1,14 +1,20 @@
 <script>
-  import {onMount} from "svelte"
-  import {_} from "svelte-i18n"
-  import {PageHeader} from "svelte-adminlte"
-  import {setCustomPageTitle} from "../stores/page-title"
+	import {onDestroy, onMount} from "svelte"
+	import {_} from "svelte-i18n"
+	import {PageHeader} from "svelte-adminlte"
+	import {setCustomPageTitle, customPageTitleUsed} from "../stores/page-title"
 
-  onMount(() => {
+	onMount(() => {
+		customPageTitleUsed.set(true)
+		setCustomPageTitle("Loading...")
 		setTimeout(() => {
 			setCustomPageTitle("Custom Page 1")
 		}, 1000)
-  })
+	})
+
+	onDestroy(() => {
+		customPageTitleUsed.set(false)
+	})
 </script>
 
 <PageHeader>

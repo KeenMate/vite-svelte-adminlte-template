@@ -1,7 +1,7 @@
 <script>
-    export let href = "#"
-    export let icon
-  </script>
+		export let href = "#"
+		export let icon
+	</script>
 
 <li class="nav-item">
 	<a {href} class="nav-link">

@@ -1,77 +1,77 @@
 <script>
-  import {onDestroy, onMount, setContext} from "svelte"
-  import {get} from "svelte/store"
-  import Router from "svelte-spa-router"
-  import keymage from "keymage"
+	import {onDestroy, onMount, setContext} from "svelte"
+	import {get} from "svelte/store"
+	import Router from "svelte-spa-router"
+	import keymage from "keymage"
 
-  import {
-	  TopNavigation,
-	  Sidebar,
-	  SidebarNavItem,
-	  TopNavItem,
-	  Dropdown,
-	  DropdownItem,
-	  DropdownButton,
-	  DropdownMenu
-  } from "svelte-adminlte"
+	import {
+		TopNavigation,
+		Sidebar,
+		SidebarNavItem,
+		TopNavItem,
+		Dropdown,
+		DropdownItem,
+		DropdownButton,
+		DropdownMenu
+	} from "svelte-adminlte"
 
-  import "./locale/i18n"
-  import {locale} from "./locale/i18n"
-  import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
+	import "./locale/i18n"
+	import {locale} from "./locale/i18n"
+	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
 
-  import {
-	  login,
-	  isAuthenticated,
-	  userInfo,
-	  AzureProvider,
-	  // ZuubrProvider,
-	  appMountCallback,
-	  logout
-  } from "./stores/authentication"
-  import {listenPageTitleChanged, pageTitleSet} from "./stores/page-title"
+	import {
+		login,
+		isAuthenticated,
+		userInfo,
+		AzureProvider,
+		// ZuubrProvider,
+		appMountCallback,
+		logout
+	} from "./stores/authentication"
+	import {listenPageTitleChanged, customPageTitleUsed} from "./stores/page-title"
 
-  import MessageLog from "./modals/MessageLog.svelte"
-  // import {initSocket} from "./providers/socket"
-  import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
-  import LocaleDropdown from "./components/locale/LocaleDropdown.svelte"
+	import MessageLog from "./modals/MessageLog.svelte"
+	// import {initSocket} from "./providers/socket"
+	import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
+	import LocaleDropdown from "./components/locale/LocaleDropdown.svelte"
 
-  let loading = false
-  let showLog
-  let localeLanguage = ""
-  let pageTitleSubscription
-  let localeSubscription
+	let loading = false
+	let showLog
+	let localeLanguage = ""
+	let pageTitleSubscription
+	let localeSubscription
 
-  onMount(() => {
-	  appMountCallback()
+	$: console.log("custom page title used", $customPageTitleUsed)
 
-	  keymage("ctrl-0", () => {
-		  console.log("opening logs")
-		  showLog()
-	  })
+	onMount(() => {
+		appMountCallback()
 
-	  localeSubscription = locale.subscribe((x) => (localeLanguage = x))
-	  pageTitleSubscription = listenPageTitleChanged()
-  })
+		keymage("ctrl-0", () => {
+			console.log("opening logs")
+			showLog()
+		})
 
-  onDestroy(() => {
+		localeSubscription = locale.subscribe((x) => (localeLanguage = x))
+		pageTitleSubscription = listenPageTitleChanged()
+	})
+
+	onDestroy(() => {
 		if (localeSubscription)
 			localeSubscription()
 		if (pageTitleSubscription)
 			pageTitleSubscription()
-  })
+	})
 
-  setContext("loader", {
-	  setLoading: (val) => (loading = val)
-  })
+	setContext("loader", {
+		setLoading: (val) => (loading = val)
+	})
 
-  function routeLoaded({detail: route}) {
-	  if (get(pageTitleSet)) {
-		  pageTitleSet.set(false)
-		  return
-	  }
+	function routeLoaded({detail: route}) {
+		if (get(customPageTitleUsed))
+			return
 
-	  return onRouteLoaded(route)
-  }
+		return onRouteLoaded(route)
+	}
 </script>
 
 <div class="wrapper">

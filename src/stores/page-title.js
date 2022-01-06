@@ -2,11 +2,11 @@
 import {setHtmlTitle} from "../helpers/router-html-title"
 
 export const pageTitle = writable()
-export let pageTitleSet = writable(false)
+export let customPageTitleUsed = writable(false)
 
 export function setCustomPageTitle(title) {
 	pageTitle.set(title)
-	pageTitleSet.set(true)
+	customPageTitleUsed.set(true)
 }
 
 export function listenPageTitleChanged() {

@@ -1,5 +1,5 @@
 <script>
-    import {_} from "svelte-i18n"
+		import {_} from "svelte-i18n"
 </script>
 
 <h1>{$_("not-found.header")}</h1>
