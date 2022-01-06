@@ -1,10 +1,14 @@
 <script>
-  import {userInfo} from "../stores/authentication"
-  import {LteButton, Card, PageHeader, FlexContainer} from "svelte-adminlte"
-  import {getConfig, setConfig} from "svelte-adminlte"
+  import {onMount} from "svelte"
   import {_} from "svelte-i18n"
-  import notification from "../providers/notification-provider"
+  import {PageHeader} from "svelte-adminlte"
+  import {setCustomPageTitle} from "../stores/page-title"
 
+  onMount(() => {
+		setTimeout(() => {
+			setCustomPageTitle("Custom Page 1")
+		}, 1000)
+  })
 </script>
 
 <PageHeader>

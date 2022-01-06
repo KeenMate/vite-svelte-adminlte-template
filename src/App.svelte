@@ -1,24 +1,8 @@
 <script>
-  import {onMount, setContext} from "svelte"
-  // import {get} from "svelte/store"
+  import {onDestroy, onMount, setContext} from "svelte"
+  import {get} from "svelte/store"
   import Router from "svelte-spa-router"
   import keymage from "keymage"
-
-  import "./locale/i18n"
-  import {locale} from "./locale/i18n"
-  // import {_} from "svelte-i18n"
-  import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
-
-  // import currentUser from "./stores/current-user"
-  import {
-	  login,
-	  isAuthenticated,
-	  userInfo,
-	  AzureProvider,
-	  // ZuubrProvider,
-	  appMountCallback,
-	  logout
-  } from "./stores/authentication"
 
   import {
 	  TopNavigation,
@@ -31,33 +15,63 @@
 	  DropdownMenu
   } from "svelte-adminlte"
 
+  import "./locale/i18n"
+  import {locale} from "./locale/i18n"
+  import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
+
+  import {
+	  login,
+	  isAuthenticated,
+	  userInfo,
+	  AzureProvider,
+	  // ZuubrProvider,
+	  appMountCallback,
+	  logout
+  } from "./stores/authentication"
+  import {listenPageTitleChanged, pageTitleSet} from "./stores/page-title"
+
   import MessageLog from "./modals/MessageLog.svelte"
   // import {initSocket} from "./providers/socket"
   import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
   import LocaleDropdown from "./components/locale/LocaleDropdown.svelte"
 
+  let loading = false
+  let showLog
+  let localeLanguage = ""
+  let pageTitleSubscription
+  let localeSubscription
+
   onMount(() => {
-	  // initSocket()
+	  appMountCallback()
 
 	  keymage("ctrl-0", () => {
 		  console.log("opening logs")
 		  showLog()
 	  })
+
+	  localeSubscription = locale.subscribe((x) => (localeLanguage = x))
+	  pageTitleSubscription = listenPageTitleChanged()
   })
 
-  let loading = false
-  let showLog
-  let localeLanguage = ""
-  const subscription = locale.subscribe((x) => (localeLanguage = x))
+  onDestroy(() => {
+		if (localeSubscription)
+			localeSubscription()
+		if (pageTitleSubscription)
+			pageTitleSubscription()
+  })
+
   setContext("loader", {
 	  setLoading: (val) => (loading = val)
   })
 
   function routeLoaded({detail: route}) {
-	  onRouteLoaded(route)
-  }
+	  if (get(pageTitleSet)) {
+		  pageTitleSet.set(false)
+		  return
+	  }
 
-  onMount(appMountCallback)
+	  return onRouteLoaded(route)
+  }
 </script>
 
 <div class="wrapper">
@@ -74,8 +88,8 @@
 		</svelte:fragment>
 
 		<svelte:fragment slot="right">
-			<LocaleDropdown />	
-		
+			<LocaleDropdown />
+
 			{#if $isAuthenticated}
 				<Dropdown slot="right">
 					<DropdownButton>{$userInfo.name}</DropdownButton>

@@ -52,13 +52,16 @@ export function getPage(name) {
 	return Pages.find((o) => o.name === name)
 }
 
-export function onRouteLoaded(route) {
+export async function onRouteLoaded(route) {
 	const page = Pages.find(x => x.url === route.route)
 
 	if (!page)
 		return
 
-	setHtmlTitle(page.title)
+	const title = typeof page.title === "function"
+		? await page.title()
+		: page.title
+	setHtmlTitle(title)
 }
 
 export default {
