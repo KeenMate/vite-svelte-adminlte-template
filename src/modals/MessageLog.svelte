@@ -1,25 +1,25 @@
 <script>
-  import notification, {Success, Warning, Error} from "../providers/notification-provider"
-  import {getConfig} from "svelte-adminlte"
-  import {DateTime} from "luxon"
+	import notification, {Success, Warning, Error} from "../providers/notification-provider"
+	import {getConfig} from "svelte-adminlte"
+	import {DateTime} from "luxon"
 
-  import {Modal, Card, TableCondensed} from "svelte-adminlte"
+	import {Modal, Card, TableCondensed} from "svelte-adminlte"
 
-  export let show
-  export let hide
+	export let show
+	export let hide
 
-  let messages = notification.messages
-  let {DateTimeFormat} = getConfig()
+	let messages = notification.messages
+	let {DateTimeFormat} = getConfig()
 
-  function color(messageType) {
-	  if (messageType === Success) {
-		  return "text-success"
-	  } else if (messageType === Warning) {
-		  return "text-warning"
-	  } else if (messageType === Error) {
-		  return "text-danger"
-	  }
-  }
+	function color(messageType) {
+		if (messageType === Success) {
+			return "text-success"
+		} else if (messageType === Warning) {
+			return "text-warning"
+		} else if (messageType === Error) {
+			return "text-danger"
+		}
+	}
 </script>
 
 <Modal xlarge bind:show bind:hide>

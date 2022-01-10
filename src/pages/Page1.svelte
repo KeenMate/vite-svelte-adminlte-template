@@ -1,10 +1,20 @@
 <script>
-  import {userInfo} from "../stores/authentication"
-  import {LteButton, Card, PageHeader, FlexContainer} from "svelte-adminlte"
-  import {getConfig, setConfig} from "svelte-adminlte"
-  import {_} from "svelte-i18n"
-  import notification from "../providers/notification-provider"
+	import {onDestroy, onMount} from "svelte"
+	import {_} from "svelte-i18n"
+	import {PageHeader} from "svelte-adminlte"
+	import {setCustomPageTitle, customPageTitleUsed} from "../stores/page-title"
 
+	onMount(() => {
+		customPageTitleUsed.set(true)
+		setCustomPageTitle("Loading...")
+		setTimeout(() => {
+			setCustomPageTitle("Custom Page 1")
+		}, 1000)
+	})
+
+	onDestroy(() => {
+		customPageTitleUsed.set(false)
+	})
 </script>
 
 <PageHeader>

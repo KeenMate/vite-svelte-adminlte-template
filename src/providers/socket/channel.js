@@ -30,7 +30,7 @@ export class Channel {
 		const channelConnection = socket.channel(topic, params)
 
 		// channelConnection.onError(() => {
-		//   console.error("Channel error: ", arguments)
+		//	 console.error("Channel error: ", arguments)
 		// })
 
 		channelConnection.join()
