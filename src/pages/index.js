@@ -33,7 +33,15 @@ export const Pages = [
 ]
 
 export const PageUrls = Pages.reduce((acc, x) => {
-	acc[x.name] = x.url
+	if (x.nesting)
+		acc[x.name] = x.subroutes
+			.reduce((subAcc, subX) => {
+				subAcc[subX.name] = subX.url
+				return subAcc
+			}, {})
+	else
+		acc[x.name] = x.url
+
 	return acc
 }, {})
 
@@ -46,8 +54,41 @@ export function fillParams(pageUrl, params) {
 		)
 }
 
-export function pageUrlToRegex(pageUrl) {
-	return "^" + pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") + "$"
+export function pageUrlToRegex(pageUrl, exactMatch = false) {
+	return "^" + pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") + (exactMatch && "$" || "")
+}
+
+export function getPagesForUrl(pageUrl) {
+	const pageRegex = new RegExp(pageUrlToRegex(pageUrl))
+
+	const result = []
+
+	Pages.forEach(route => {
+		if (route.nesting) {
+			route.subroutes.forEach(sub => {
+				if (pageRegex.test(sub.url))
+					result.push(sub)
+			})
+		} else if (pageRegex.test(route.url))
+			result.push(route)
+	})
+
+	return result
+}
+
+export function pageIsActive(location, page) {
+	const currentMatchedPages = getPagesForUrl(location)
+
+	const pageUrlExactRegex = new RegExp(pageUrlToRegex(location, true))
+	console.log("Checking page active: ", currentMatchedPages, page)
+
+	const exactMatchPage = currentMatchedPages.find(x => pageUrlExactRegex.test(x.url))
+
+	return exactMatchPage
+		? exactMatchPage.name === page.name
+		: currentMatchedPages
+			.map(x => x.name)
+			.includes(page.name)
 }
 
 export function getPage(name) {
