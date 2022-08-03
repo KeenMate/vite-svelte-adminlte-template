@@ -21,3 +21,62 @@
 
 // custom styles
 @import "./adminlte-fixes";
+@import "./svelte-select-overrides";
+@import "./data-table";
+@import "./overrides";
+@import "./theme/main";
+@import "./uppy-overrides";
+@import "./squared-corners";
+@import "./svelte-multiselect-overrides";
+@import "./condensed-override";
+
+.table {
+	&.center-align-cells {
+		tr td {
+			vertical-align: middle;
+		}
+	}
+	
+	th.numbering {
+		width: 1rem;
+	}
+	
+	td.no-data {
+		padding-top: 1rem;
+	}
+}
+
+.no-first-border tr th {
+	border-top: none;
+}
+
+.card-header,
+.top-panel {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .25rem;
+
+	.filters {
+		display: flex;
+		flex: 1;
+		row-gap: 7.5px;
+		min-width: 15rem;
+
+		.clear-button-parent {
+			margin-left: 7.5px;
+		}
+
+		.one-line {
+			width: 100%;
+			height: 1em;
+		}
+	}
+}
+
+.top-panel {
+	margin-bottom: .5rem;
+}
+
+.auto-scroll {
+	white-space: nowrap;
+}

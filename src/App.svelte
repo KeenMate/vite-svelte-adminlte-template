@@ -3,7 +3,6 @@
 	import {get} from "svelte/store"
 	import Router from "svelte-spa-router"
 	import keymage from "keymage"
-
 	import {
 		TopNavigation,
 		Sidebar,
@@ -14,11 +13,9 @@
 		DropdownButton,
 		DropdownMenu
 	} from "svelte-adminlte"
-
 	import "./locale/i18n"
 	import {locale} from "./locale/i18n"
 	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
-
 	import {
 		login,
 		isAuthenticated,
@@ -29,7 +26,6 @@
 		logout
 	} from "./stores/authentication"
 	import {listenPageTitleChanged, customPageTitleUsed} from "./stores/page-title"
-
 	import MessageLog from "./modals/MessageLog.svelte"
 	// import {initSocket} from "./providers/socket"
 	import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"

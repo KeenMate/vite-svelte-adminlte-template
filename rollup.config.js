@@ -3,13 +3,12 @@ import commonjs from "@rollup/plugin-commonjs"
 import resolve from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
 import html from "@rollup/plugin-html"
-import esbuild from "rollup-plugin-esbuild"
 import postcss from "rollup-plugin-postcss"
 import copy from "rollup-plugin-copy"
 import livereload from "rollup-plugin-livereload"
 import sveltePreprocess from "svelte-preprocess"
-// import dotenv from "rollup-plugin-dotenv"
 import json from "@rollup/plugin-json"
+import {babel} from "@rollup/plugin-babel"
 import template from "./html-template"
 
 const production = process.env.NODE_ENV === "prod"
@@ -72,9 +71,25 @@ export default {
 
 		commonjs(),
 
-		esbuild({
-			minify: production,
-			target: "es2015"
+		// esbuild({
+		// 	minify: production,
+		// 	target: "es2015"
+		// }),
+
+		babel({
+			extensions: [".js", ".mjs", ".html", ".svelte"],
+			// runtimeHelpers: true,
+			babelHelpers: "bundled",
+			exclude: ["node_modules/@babel/**"],
+			presets: [
+				[
+					"@babel/preset-env",
+					{
+						useBuiltIns: false,
+						targets: "> 0.25%, not dead",
+					},
+				],
+			],
 		}),
 
 		html({
@@ -88,8 +103,10 @@ export default {
 			targets: [
 				{src: "node_modules/jsoneditor/dist/img/jsoneditor-icons.svg", dest: "./public/img"},
 				{src: "node_modules/jquery/dist/jquery.min.js", dest: "./public/js"},
+				{src: "node_modules/jquery-ui-dist/jquery-ui.min.js", dest: "./public/js"},
 				{src: "node_modules/jquery-ui-dist/jquery-ui.min.css", dest: "./public/css"},
 				{src: "node_modules/@fortawesome/fontawesome-free/webfonts", dest: "./public"},
+				{src: "src/locale/*.json", dest: "public/locales"},
 				{src: "src/assets/static/**/*", dest: "./public"}
 			]
 		}),

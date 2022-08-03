@@ -1,64 +1,36 @@
-import {init, getLocaleFromNavigator, locale, addMessages, json, register} from "svelte-i18n"
-
-import en from "./en.json"
-import cs from "./cs.json"
+import {get} from "svelte/store"
+import {init, locale, addMessages} from "svelte-i18n"
 import langs from "./langs.json"
-import {registerLocaleLoader} from "svelte-i18n/types/runtime/includes/loaderQueue"
+import {LocaleI18nMessagesUrl} from "../constants/urls"
 
+export {locale, langs}
+export const languages = JSON.parse(document.getElementById("langs")?.value || "null") || langs
 
-export {locale, locales, langs}
-export const languages = langs
-
-let locales = {"cs": cs, "en": en}
+// export let locales = {"cs": cs, "en": en, "de": de}
 initialize()
 
-
 function initialize() {
-	langs.forEach((lang) => {
-		let lc = localStorage.getItem(lang.code + "-locale")
-		if (lc != null) {
-			console.log("loading from ls" + lang.code)
-			addMessages(lang.code, JSON.parse(lc))
-			locales[lang.code] = JSON.parse(lc)
-		} else {
-			addMessages(lang.code, locales[lang.code])
-		}
-	})
+	const metaCurrentLocale = document.getElementById("current-locale")
 
 	init({
-		fallbackLocale: "cs",
-		initialLocale: localStorage.getItem("language") || getLocaleFromNavigator()
+		fallbackLocale: "en",
+		initialLocale: metaCurrentLocale?.value
+			|| localStorage.getItem("language")
+			|| getSupportedUserLanguage()
 	})
 
+	loadLocale(get(locale))
+}
+
+function getSupportedUserLanguage() {
+	const langCodes = languages.map(l => l.code)
+	return window.navigator
+		.languages
+		.find(l => langCodes.includes(l))
 }
 
 export function getFlagPath(countryCode) {
-	let lang = languages.find((x) => x.code === countryCode.substring(0, 2))
-	return lang
-		? "img/flags/" + lang.img + ".png"
-		: ""
-}
-
-export function saveLanguageFile(json, lang) {
-	addMessages(lang, json)
-	localStorage.setItem(lang + "-locale", JSON.stringify(json))
-
-}
-
-export function deleteSaveLocals() {
-
-	let keys, i
-	keys = Object.keys(localStorage)
-	i = keys.length
-
-	while (i--) {
-		if (keys[i].substring(3) === "locale") {
-			localStorage.removeItem(keys[i])
-		}
-	}
-
-	console.log("deleting saved locals")
-	location.reload()
+	return "images/flags/" + countryCode.substring(0, 2) + ".png"
 }
 
 export function changeLang(lang) {
@@ -69,4 +41,13 @@ export function changeLang(lang) {
 	} else {
 		console.log("ERROR: language " + lang, " does not exist")
 	}
+}
+
+function loadLocale(locale_) {
+	fetch(LocaleI18nMessagesUrl(locale_))
+		.then(response => response.json())
+		.then(messages => {
+			console.log("Locale loaded", locale_, messages)
+			addMessages(locale_, messages)
+		})
 }

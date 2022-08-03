@@ -1,4 +1,4 @@
-export const TypingDebounceDelay = 300
+export const TypingDebounceDelay = 400
 
 // these constants are used for rendering loading notifications
 // do not show loader if response arrives before `waitForLoader` time

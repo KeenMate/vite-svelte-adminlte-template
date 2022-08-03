@@ -7,7 +7,7 @@
 	export let loading = false
 
 	let oldData
-	
+
 	$: lazyTask = task
 		&& lazyLoader(task, showLoader, hideLoader)
 		|| emptyPromise
@@ -25,11 +25,7 @@
 {#await lazyTask}
 	{#if loading}
 		<slot name="loader">
-			<div class="loader-parent">
-				<div>
-					<Loader />
-				</div>
-			</div>
+			<Loader />
 		</slot>
 	{:else}
 		<slot data={oldData} />
@@ -39,7 +35,3 @@
 {:catch error}
 	<slot name="catch" {error} />
 {/await}
-
-<style lang="sass">
-	@import "../../assets/css/loader-parent"
-</style>

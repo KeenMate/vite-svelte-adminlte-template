@@ -1,14 +1,14 @@
 import {parse, stringify} from "qs"
 
-export function stringifyFilters(filters, newFilters, partial = false, mapper = (x => x)) {
-	let theFilters = partial
+export function stringifyFilters(filters, partial, mapper = (x => x)) {
+	let effectiveFilters = partial
 		? {
 			...filters,
-			...newFilters
+			...partial
 		}
-		: newFilters
+		: filters
 
-	const mappedFilters = mapper(theFilters)
+	const mappedFilters = mapper(effectiveFilters)
 
 	Object.keys(mappedFilters)
 		.forEach(key => {
