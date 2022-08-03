@@ -27,6 +27,44 @@ Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-pro
 
 `npm i`
 
+There are optional dependencies that are not included in `package.json`'s dependencies. These include form validation, wysiwyg editors etc.
+
+#### Dependencies for explicit install
+
+##### Form
+
+- `@uppy/core`
+- `@uppy/dashboard`
+- `@uppy/svelte`
+- `@uppy/xhr-upload`
+- `litepicker`
+
+##### Editors
+
+- `jsoneditor`
+- `ckeditor5-svelte`
+- `@ckeditor/ckeditor5-build-decoupled-document`
+
+##### Validation
+
+- `felte`
+- `@felte/reporter-svelte`
+- `@felte/validator-superstruct`
+- `@felte/validator-zod`
+- `zod`
+
+##### Authentication
+
+- `@dopry/svelte-oidc`
+- `oidc-client`
+
+##### Utilities
+
+- `lodash`
+- `@shopify/draggable`
+- `luxon`
+- `sortablejs`
+
 ### Test the template
 
 `npm run dev`
