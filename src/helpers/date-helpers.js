@@ -1,12 +1,16 @@
 import {DateTime, Duration} from "luxon"
-import {DisplayDateTimeFormat, DisplayDurationFormat} from "../constants/date"
+import {DisplayDateFormat, DisplayDateTimeFormat, DisplayDurationFormat} from "../constants/date"
 
 export function formatDateTime(datetime) {
+	return formatDate(datetime, DisplayDateTimeFormat)
+}
+
+export function formatDate(datetime, format = DisplayDateFormat) {
 	if (!datetime)
 		return ""
 	datetime = typeof datetime === "string" ? DateTime.fromISO(datetime) : datetime
 
-	return datetime.toFormat(DisplayDateTimeFormat)
+	return datetime.toFormat(format)
 }
 
 export function formatDuration(duration) {
