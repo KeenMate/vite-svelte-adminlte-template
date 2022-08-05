@@ -107,7 +107,7 @@ export default {
 				{src: "node_modules/jquery-ui-dist/jquery-ui.min.css", dest: "./public/css"},
 				{src: "node_modules/@fortawesome/fontawesome-free/webfonts", dest: "./public"},
 				{src: "src/locale/*.json", dest: "public/locales"},
-				{src: "src/assets/static/**/*", dest: "./public"}
+				{src: "src/assets/static/*", dest: "./public"}
 			]
 		}),
 
