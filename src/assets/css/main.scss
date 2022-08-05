@@ -30,26 +30,6 @@
 @import "./svelte-multiselect-overrides";
 @import "./condensed-override";
 
-.table {
-	&.center-align-cells {
-		tr td {
-			vertical-align: middle;
-		}
-	}
-	
-	th.numbering {
-		width: 1rem;
-	}
-	
-	td.no-data {
-		padding-top: 1rem;
-	}
-}
-
-.no-first-border tr th {
-	border-top: none;
-}
-
 .card-header,
 .top-panel {
 	display: flex;
