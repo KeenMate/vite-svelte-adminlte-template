@@ -1,7 +1,6 @@
 <script>
-	import {getConfig, TableRowFullWidth} from "svelte-adminlte"
+	import {getConfig, TableRowFullWidth, Modal, TableCondensed} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
-	import {Modal, TableCondensed} from "svelte-adminlte"
 	import notification, {Success, Warning, Error} from "../providers/notification-provider"
 
 	export let show

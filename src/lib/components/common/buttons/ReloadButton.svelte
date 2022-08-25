@@ -1,5 +1,5 @@
 ﻿<script>
-	import {LteButton} from "svelte-adminlte"
+	import {LteButton} from "@keenmate/svelte-adminlte"
 	import { _ } from "svelte-i18n";
 </script>
 

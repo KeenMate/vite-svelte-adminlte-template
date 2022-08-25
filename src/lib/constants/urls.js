@@ -1,6 +1,4 @@
-// export const ApiUrl = process.env.SERVER_URL
-
-export const AppUrl = process.env.APP_URL
+export const AppUrl = import.meta.env.BASE_URL
 
 export const SocketPath = "/socket"
 

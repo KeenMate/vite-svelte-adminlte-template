@@ -1,7 +1,7 @@
 ﻿<script>
 	import {onMount} from "svelte"
 	import {changeLang, languages, getFlagPath, locale} from "../../locale/i18n"
-	import {Dropdown, DropdownMenu, DropdownButton} from "svelte-adminlte"
+	import {Dropdown, DropdownMenu, DropdownButton} from "@keenmate/svelte-adminlte"
 
 	let localeLanguage = ""
 

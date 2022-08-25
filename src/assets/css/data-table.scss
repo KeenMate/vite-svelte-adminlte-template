@@ -1,0 +1,40 @@
+.data-table {
+	width: 100%;
+
+	th {
+		&.actions {
+			width: 1px;
+			padding-right: 1rem;
+		}
+	}
+	
+	td {		
+		.has-ellipsis {
+			display: inline-block;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+	}
+}
+
+.table {
+	&.center-align-cells {
+		tr td {
+			vertical-align: middle;
+		}
+	}
+
+	th.numbering {
+		width: 1rem;
+	}
+
+	td.no-data {
+		padding-top: 1rem;
+	}
+}
+
+.no-first-border tr th {
+	border-top: none;
+}
+

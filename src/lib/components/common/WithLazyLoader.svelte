@@ -1,7 +1,7 @@
 <script>
 	import lazyLoader from "../../helpers/lazy-loader"
 	import {emptyPromise} from "../../helpers/promise-helpers"
-	import {Loader} from "svelte-adminlte"
+	import {Loader} from "@keenmate/svelte-adminlte"
 
 	export let task
 	export let loading = false

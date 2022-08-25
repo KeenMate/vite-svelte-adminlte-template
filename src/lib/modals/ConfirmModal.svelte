@@ -1,6 +1,6 @@
 <script>
 	import {createEventDispatcher, tick} from "svelte"
-	import {LteButton, Modal, ModalCloseButton} from "svelte-adminlte"
+	import {LteButton, Modal, ModalCloseButton} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 
 	const dispatch = createEventDispatcher()

@@ -1,5 +1,5 @@
 <script>
-	import {LteButton} from "svelte-adminlte"
+	import {LteButton} from "@keenmate/svelte-adminlte"
 
 	export let action
 	export let enabledWhenLoading = false

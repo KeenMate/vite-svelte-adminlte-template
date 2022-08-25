@@ -3,16 +3,14 @@
 	import {get} from "svelte/store"
 	import Router from "svelte-spa-router"
 	import keymage from "keymage"
-	import {
-		TopNavigation,
-		Sidebar,
-		SidebarNavItem,
-		TopNavItem,
-		Dropdown,
-		DropdownItem,
-		DropdownButton,
-		DropdownMenu
-	} from "svelte-adminlte"
+	import {TopNavigation} from "@keenmate/svelte-adminlte"
+	import {Sidebar} from "@keenmate/svelte-adminlte"
+	import {SidebarNavItem} from "@keenmate/svelte-adminlte"
+	import {TopNavItem} from "@keenmate/svelte-adminlte"
+	import {Dropdown} from "@keenmate/svelte-adminlte"
+	import {DropdownItem} from "@keenmate/svelte-adminlte"
+	import {DropdownButton} from "@keenmate/svelte-adminlte"
+	import {DropdownMenu} from "@keenmate/svelte-adminlte"
 	import "./lib/locale/i18n"
 	import {locale} from "./lib/locale/i18n"
 	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./lib/pages"

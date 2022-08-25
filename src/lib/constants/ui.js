@@ -6,4 +6,4 @@ export const TypingDebounceDelay = 400
 export const waitForLoader = 45
 export const leaveLoaderFor = 234
 
-export const BaseHtmlTitle = process.env.BASE_HTML_TITLE
+export const BaseHtmlTitle = import.meta.env.VITE_BASE_HTML_TITLE

@@ -1,5 +1,5 @@
 <script>
-	import {Sidebar, SidebarNavItem} from "svelte-adminlte"
+	import {Sidebar, SidebarNavItem} from "@keenmate/svelte-adminlte"
 	import {location} from "svelte-spa-router"
 	import {_} from "svelte-i18n"
 	import {pageIsActive, Pages} from "../../../pages"

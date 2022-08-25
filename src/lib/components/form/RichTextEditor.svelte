@@ -1,5 +1,5 @@
 <script>
-	// import {CkEditor} from "svelte-adminlte"
+	// import {CkEditor} from "@keenmate/svelte-adminlte"
 	import FroalaEditor from "./editors/FroalaEditor.svelte"
 	// import QuillEditor from "./editors/QuillEditor.svelte"
 

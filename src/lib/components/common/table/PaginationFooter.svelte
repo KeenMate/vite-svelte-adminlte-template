@@ -4,7 +4,7 @@
 	import {
 		Label,
 		Pagination
-	} from "svelte-adminlte"
+	} from "@keenmate/svelte-adminlte"
 	import {parse} from "qs"
 	import SvelteSelect from "svelte-select"
 	import {_} from "svelte-i18n"

@@ -5,7 +5,7 @@ const InactivityEventsThrottle = 1000
 window.inactivityTimer = null
 
 export default function (inactivityTimeout) {
-	if (process.env.NODE_ENV === "development")
+	if (import.meta.env.DEV)
 		return
 
 	const resetTimerThrottled = throttle(() => resetTimer(inactivityTimeout), InactivityEventsThrottle)

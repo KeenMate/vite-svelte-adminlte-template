@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store"
 import {Socket} from "phoenix"
-import {Toastr} from "svelte-adminlte"
+import {Toastr} from "@keenmate/svelte-adminlte"
 
 import {SocketPath} from "../../constants/urls"
 
