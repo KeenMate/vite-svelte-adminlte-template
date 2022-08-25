@@ -13,9 +13,9 @@
 		DropdownButton,
 		DropdownMenu
 	} from "svelte-adminlte"
-	import "./locale/i18n"
-	import {locale} from "./locale/i18n"
-	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./pages"
+	import "./lib/locale/i18n"
+	import {locale} from "./lib/locale/i18n"
+	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./lib/pages"
 	import {
 		login,
 		isAuthenticated,
@@ -24,12 +24,12 @@
 		// ZuubrProvider,
 		appMountCallback,
 		logout
-	} from "./stores/authentication"
-	import {listenPageTitleChanged, customPageTitleUsed} from "./stores/page-title"
-	import MessageLog from "./modals/MessageLog.svelte"
-	// import {initSocket} from "./providers/socket"
-	import SidebarNavTree from "./user-controls/SidebarNavTree.svelte"
-	import LocaleDropdown from "./components/locale/LocaleDropdown.svelte"
+	} from "./lib/stores/authentication"
+	import {listenPageTitleChanged, customPageTitleUsed} from "./lib/stores/page-title"
+	import MessageLog from "./lib/modals/MessageLog.svelte"
+	// import {initSocket} from "./lib/providers/socket"
+	import SidebarNavTree from "./lib/user-controls/SidebarNavTree.svelte"
+	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
 
 	let loading = false
 	let showLog
@@ -142,14 +142,18 @@
 	<MessageLog bind:show={showLog} />
 </div>
 
-<style lang="sass">
-		:global
-			#language-dropdown
-				.dropdown-menu
-					min-width: 0
+<style lang="scss">
+	:global {
+		#language-dropdown {
+			.dropdown-menu {
+				min-width: 0;
+			}
+		}
+	}
 
-	.lang-item
-		cursor: pointer
-		white-space: nowrap
-		padding: 0 1rem
+	.lang-item {
+		cursor: pointer;
+		white-space: nowrap;
+		padding: 0 1rem;
+	}
 </style>
