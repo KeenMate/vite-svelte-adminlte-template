@@ -45,6 +45,19 @@ export const PageUrls = Pages.reduce((acc, x) => {
 	return acc
 }, {})
 
+export function pageUrl(url, params, qsObject, keepQuerystring = false) {
+	const baseUrl = "#" + fillParams(url, params)
+	let querystringStr = stringifyFilters({
+		...(keepQuerystring && parse(get(querystring)) || {}),
+		...(qsObject || {})
+	})
+
+	if (querystringStr.length)
+		querystringStr = "?" + querystringStr
+
+	return baseUrl + querystringStr
+}
+
 export function fillParams(pageUrl, params) {
 	return Object
 		.keys(params)
