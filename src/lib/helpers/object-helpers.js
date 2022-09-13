@@ -1,10 +1,31 @@
-﻿export function anyKeyTruthy(t) {
-	return Object.keys(t).some(k => t[k])
+﻿Object.prototype.anyKeyTruthy = function () {
+	return Object.keys(this)
+		.some(x => this[x])
 }
 
-export function removeTemplateTimestamps(obj) {
-	delete obj.createdBy
-	delete obj.created
-	delete obj.modifiedBy
-	delete obj.modified
+/**
+ * Removes created/modified keys from current object in-place
+ * @returns {Object} this
+ */
+Object.prototype.removeTemplateTimestamps = function () {
+	delete this.createdBy
+	delete this.created
+	delete this.modifiedBy
+	delete this.modified
+
+	return this
+}
+
+/**
+ * Used to extract only specific keys into dedicated object
+ * @param keys {string[]} Keys to extract
+ * @returns {Object} Object with specified keys if any
+ */
+Object.prototype.take = function (keys) {
+	if (!keys?.length)
+		return {}
+
+	return Object.keys(this)
+		.filter(x => keys.includes(x))
+		.reduce((acc, x) => (acc[x] = this[x], acc), {})
 }
