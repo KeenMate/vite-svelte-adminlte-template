@@ -28,6 +28,7 @@
 @import "./squared-corners";
 @import "./svelte-multiselect-overrides";
 @import "./condensed-override";
+@import "./flexing";
 
 .card-header,
 .top-panel {
@@ -58,4 +59,37 @@
 
 .auto-scroll {
 	white-space: nowrap;
+}
+
+.show-pointer {
+	cursor: pointer;
+}
+
+.highlight-on-hover:hover {
+	color: var(--primary);
+}
+
+.row {
+	.vr {
+		width: 1px;
+		align-self: stretch;
+		border: .5px solid lightgray;
+		margin: -0.1rem;
+
+		&::before {
+			content: "";
+		}
+	}
+}
+
+.full-height {
+	height: 100%;
+}
+
+.scroll-auto {
+	overflow: auto;
+}
+
+.min-full-height {
+	min-height: 100%;
 }

@@ -2,7 +2,7 @@
 	return new Promise((resolve, reject) => {
 		channel.push(type, payload)
 			.receive("ok", ctx => {
-				console.log(`Got success response from ${channel.topic} for "${type}" message`, ctx)
+				console.debug(`Got success response from ${channel.topic} for "${type}" message`, ctx)
 				resolve(ctx)
 			})
 			.receive("error", ctx => {

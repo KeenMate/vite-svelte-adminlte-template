@@ -1,6 +1,6 @@
-﻿export default function parsePagination(parsedQuerystring) {
-	const page = parsedQuerystring.page && Number(parsedQuerystring.page) || 1
-	const pageSize = parsedQuerystring.pageSize && Number(parsedQuerystring.pageSize) || 30
+export default function parsePagination(query) {
+	const page = query.page && Number(query.page) || 1
+	const pageSize = query.pageSize && Number(query.pageSize) || 30
 
 	return {
 		page,

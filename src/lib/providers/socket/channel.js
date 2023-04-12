@@ -2,81 +2,153 @@ import {writable, get} from "svelte/store"
 import socket from "./index"
 
 export class Channel {
+	handlers = []
+
+	joining = false
+	channelSubscribers = writable(0)
 
 	constructor(topic, params = {}) {
+		this.topic = topic
 		this.channel = writable(null)
 
-		this.unsubscribeSocket = socket.subscribe((socket) => this.init(socket, topic, params))
+		this.unsubscribeSocket = socket.subscribe((socket) => this.socketChanged(socket, topic, params))
+		this.unsubscribeChannelSubscribers = this.channelSubscribers.subscribe(subscribers => this.subscribersChanged(subscribers))
+	}
+
+	subscribersChanged(subscribers) {
+		if (!subscribers) {
+			this.leave()
+			return
+		}
+
+		this.#joinChannel()
 	}
 
 	/**
 	 * Called internally
-	 * @param socket
+	 * @param socket {Socket}
 	 * @param topic
 	 * @param params
 	 */
-	init(socket, topic, params) {
-		// TODO await socket somehow
-		if (!socket) {
-			console.log("no socket")
-			return
-		}
+	async socketChanged(socket, topic, params) {
+		if (!socket) return
 
-		let channel = get(this.channel)
-		if (channel) {
-			channel.leave()
-		}
+		await this.leave()
 
-		const channelConnection = socket.channel(topic, params)
+		let channel = socket.channel(topic, params)
 
-		// channelConnection.onError(() => {
-		//	 console.error("Channel error: ", arguments)
-		// })
-
-		channelConnection.join()
-			.receive("ok", () => {
-				this.channel.set(channelConnection)
-			})
-			.receive("error", error => {
-				console.error("Could not join channel", error)
-			})
+		this.channel.set(channel)
 	}
 
-	get() {
-		return new Promise(resolve => {
-			let channel = get(this.channel)
-			if (channel) {
-				resolve(channel)
-				return
-			}
+	join() {
+		this.touchChannelSubscribers(1)
+	}
 
-			let unsubscribe = this.channel.subscribe(chan => {
-				if (chan) {
-					resolve(chan)
-					unsubscribe()
-				}
+	leave() {
+		this.touchChannelSubscribers(-1)
+	}
+
+	#joinChannel() {
+		if (this.joining || this.joined)
+			return
+
+		this.joining = true
+		this.waitForChannel()
+			.then(channel => {
+				channel
+					.join()
+					.receive("ok", () => {
+						console.debug("Channel joined", this.topic)
+						this.joining = false
+						this.joined = true
+					})
+					.receive("error", error => {
+						console.error(`Could not join channel: ${this.topic}`, error)
+						this.joining = false
+						this.joined = true
+					})
 			})
-		})
 	}
 
 	async subscribeHandler(event, handler) {
-		let channel = await this.get()
+		let channel = await this.waitForChannel()
 
-		console.log("Subscribing handler for event", event)
-		return channel.on(event, response => {
-			console.log("Calling subscription handler for event", event)
+		const handlerWrapper = function (response) {
 			handler(response)
-		})
+		}
+		this.handlers.push([event, handlerWrapper])
+
+		return channel.on(event, handlerWrapper)
 	}
 
 	async unsubscribeHandler(event, reference) {
-		let channel = await this.get()
+		let channel = await this.waitForChannel()
 
 		channel.off(event, reference)
 	}
 
-	removeListeners() {
-		if (this.unsubscribeSocket)
-			this.unsubscribeSocket()
+	async get() {
+		const channel = await this.waitForChannel()
+		await this.waitForChannelJoined()
+
+		return channel
+	}
+
+	async waitForChannelJoined() {
+		if (this.joined)
+			return
+		return new Promise(resolve => {
+			var checkJoinedInt = setInterval(() => {
+				if (!this.joined)
+					return
+				clearInterval(checkJoinedInt)
+				resolve()
+			}, 25)
+		})
+	}
+
+	async waitForChannel() {
+		let channel = get(this.channel)
+		if (channel)
+			return channel
+		return new Promise(resolve => {
+			var checkChannelInt = setInterval(() => {
+				channel = get(this.channel)
+				if (!channel)
+					return
+				clearInterval(checkChannelInt)
+				resolve(channel)
+			}, 25)
+		})
+	}
+
+	touchChannelSubscribers(step) {
+		this.channelSubscribers.update(x => {
+			const res = x + step
+			return res < 0
+				? 0
+				: res
+		})
+
+	}
+
+	destroy() {
+		if (this.unsubscribeChannelSubscribers)
+			this.unsubscribeChannelSubscribers()
+
+		return this.waitForChannel()
+			.then(channel => {
+				this.handlers.forEach(([event, handler]) => {
+					channel.off(event, handler)
+				})
+
+				this.handlers = []
+
+				return this.leave()
+			})
+			.then(() => {
+				if (this.unsubscribeSocket)
+					this.unsubscribeSocket()
+			})
 	}
 }

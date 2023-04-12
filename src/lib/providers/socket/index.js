@@ -1,46 +1,76 @@
 import {get, writable} from "svelte/store"
-import {Socket} from "phoenix"
 import {Toastr} from "@keenmate/svelte-adminlte"
+import {Socket} from "phoenix"
+import throttle from "lodash/throttle"
 
-import {SocketPath} from "../../constants/urls"
+import {SocketUrl} from "$lib/constants/urls"
+import {ErrorToastrTimeout, WarningToastrTimeout} from "$lib/constants/toastr"
 
 const socket = writable(null)
 
-export const socketConnected = writable(false)
+export const SocketConnected = writable(false)
+export const SocketReconnectRetriesFailed = writable(false)
 
-export function initSocket() {
+export function initSocket(token) {
 	const existing = get(socket)
 	if (existing) {
 		existing.disconnect()
 	}
 
-	console.log("Connecting to:", SocketPath)
+	const socketInstance = new Socket(SocketUrl, {
+		reconnectAfterMs(tries) {
+			const durations = [100, 1000, 10000]
 
-	const socketInstance = new Socket(SocketPath)
+			if (tries > durations.length) {
+				SocketReconnectRetriesFailed.set(true)
+
+				return Infinity
+			} else
+
+				return durations[(tries - 1) % durations.length] || 5000
+		},
+		params: {
+			token
+		}
+	})
 
 	socketInstance.onClose(() => {
-		Toastr.warning("Connection closed")
-		socketConnected.set(false)
+		socketToastDisconnectedThrottled("warning", "Connection closed", null, {timeOut: WarningToastrTimeout})
+		SocketConnected.set(false)
+
+		if (get(SocketReconnectRetriesFailed)) {
+			socketInstance.disconnect()
+		}
 	})
 	socketInstance.onOpen(() => {
-		Toastr.success("Connection established")
-		socketConnected.set(true)
+		// Toastr.success("Connection established")
+		SocketConnected.set(true)
+		SocketReconnectRetriesFailed.set(false)
+		socket.set(socketInstance)
 	})
 	socketInstance.onError(error => {
-		console.error("Error occured in socket connection", ...arguments)
+		if (!get(SocketConnected))
+			return
+
+		console.error("Error occured in socket connection", error)
 		if (error === "expired") {
-			Toastr.warning("Session expired")
-			redirectToLogin()
+			Toastr.warning("Session expired", null, {timeOut: WarningToastrTimeout})
+			// redirectToLogin()
 		} else
-			Toastr.error("Error occured while communicating with server")
+			socketToastThrottled("error", "Error occured while communicating with server", null, {timeOut: ErrorToastrTimeout})
 	})
 
-	console.log("Connecting to socket")
 	socketInstance.connect()
-
-	socket.set(socketInstance)
 
 	return socketInstance
 }
+
+const socketToastDisconnectedThrottled = throttle(function (type, ...rest) {
+	Toastr[type].apply(Toastr, rest)
+}, 60000)
+
+const socketToastThrottled = throttle(function (type, ...rest) {
+	Toastr[type].apply(Toastr, rest)
+}, 10000)
 
 export default socket

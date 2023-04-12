@@ -1,4 +1,4 @@
-import {getConfig, setConfig} from "svelte-adminlte/src/config.js"
+import {getConfig, setConfig} from "@keenmate/svelte-adminlte"
 
 const custom = {
 	ContactEmail: "example@keenmate.com"

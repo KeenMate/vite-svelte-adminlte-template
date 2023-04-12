@@ -9,6 +9,7 @@
 
 	export let task
 	export let loading = false
+	export let parentLoading = false
 
 	let oldData
 
@@ -34,7 +35,7 @@
 </script>
 
 {#await lazyTask}
-	{#if loading}
+	{#if loading && !parentLoading}
 		<slot name="loader">
 			<Loader />
 		</slot>

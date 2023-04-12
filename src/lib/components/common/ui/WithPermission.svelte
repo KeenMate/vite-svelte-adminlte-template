@@ -1,6 +1,6 @@
 <script>
-	import {checkPermissions} from "../../../helpers/permissions-helpers"
-	import currentUser from "../../../stores/current-user"
+	import {checkPermissions} from "$lib/helpers/permissions-helpers.js"
+	import {currentUser} from "$lib/stores/authentication.js"
 
 	export let permission
 	export let comparison = "any"

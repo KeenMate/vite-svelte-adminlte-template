@@ -1,7 +1,7 @@
 import "./assets/css/main.scss"
-import "bootstrap/dist/js/bootstrap.min"
+
+import "bootstrap/dist/js/bootstrap.bundle.min"
 import "admin-lte/dist/js/adminlte"
-import "./lib/helpers/object-helpers.js"
 
 import App from "./App.svelte"
 

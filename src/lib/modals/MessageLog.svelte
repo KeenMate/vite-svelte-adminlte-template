@@ -3,8 +3,8 @@
 	import {_} from "svelte-i18n"
 	import notification, {Success, Warning, Error} from "../providers/notification-provider"
 
-	export let show
-	export let hide
+	export let show = null
+	export let hide = null
 
 	let messages = notification.messages
 	let {DateTimeFormat} = getConfig()

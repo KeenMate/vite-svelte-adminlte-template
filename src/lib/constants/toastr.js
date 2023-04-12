@@ -1,2 +1,2 @@
-﻿export const ErrorToastrTimeout = 60000
-export const WarningToastrTimeout = 15000
+﻿export const ErrorToastrTimeout = 20000
+export const WarningToastrTimeout = 10000

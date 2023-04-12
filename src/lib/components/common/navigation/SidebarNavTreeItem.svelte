@@ -1,10 +1,11 @@
 <script>
-		export let href = "#"
+		export let href = "javascript:void(0)"
 		export let icon
+		export let active = false
 	</script>
 
-<li class="nav-item">
-	<a {href} class="nav-link">
+<li class="nav-item" class:menu-open={active}>
+	<a {href} class="nav-link" class:active>
 		{#if icon}
 			<i class="nav-icon {icon}"></i>
 		{/if}

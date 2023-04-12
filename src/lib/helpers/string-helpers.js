@@ -61,6 +61,10 @@ export function htmlToText(html) {
 	return div.innerText
 }
 
+export function wordlist(str) {
+	return str.split(" ")
+}
+
 function getRandomCharCode() {
 	return 65 + Math.round(Math.random() * 25)
 }

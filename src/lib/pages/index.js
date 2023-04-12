@@ -1,32 +1,34 @@
 import {get} from "svelte/store"
-import {setHtmlTitle} from "../helpers/router-html-title"
 import {customPageTitleUsed, pageTitle} from "../stores/page-title"
-import Home from "./Home.svelte"
-import Page1 from "./Page1.svelte"
+import {wrap} from "svelte-spa-router/wrap"
+import LoadingPage from "./LoadingPage.svelte"
 import NotFound from "./NotFound.svelte"
-import Error from "./Error.svelte"
+
+function translate(code) {
+	return i18n => i18n(code)
+}
 
 export const Pages = [
 	{
-		name: "Error",
-		title: "Error",
+		name: "error",
+		title: translate("routes.error.title"),
 		url: "/error",
-		breadcrumb: ["Error"],
+		breadcrumb: [translate("routes.error.title")],
 		hide: true
 	},
 	{
-		name: "Home",
-		title: "Home",
+		name: "home",
+		title: translate("routes.home.title"),
 		url: "/",
-		breadcrumb: ["Route 1"],
+		breadcrumb: [translate("routes.home.title")],
 		icon: "fas fa-home",
 		hide: false
 	},
 	{
-		name: "Page1",
-		title: "Page 1",
+		name: "page1",
+		title: translate("routes.page1.title"),
 		url: "/page1",
-		breadcrumb: ["Page 1"],
+		breadcrumb: [translate("routes.page1.title")],
 		icon: "fas fa-file",
 		hide: false
 	}
@@ -45,85 +47,23 @@ export const PageUrls = Pages.reduce((acc, x) => {
 	return acc
 }, {})
 
-export function pageUrl(url, params, qsObject, keepQuerystring = false) {
-	const baseUrl = "#" + fillParams(url, params)
-	let querystringStr = stringifyFilters({
-		...(keepQuerystring && parse(get(querystring)) || {}),
-		...(qsObject || {})
-	})
+const routerPages = {
+	"/loading": LoadingPage,
 
-	if (querystringStr.length)
-		querystringStr = "?" + querystringStr
-
-	return baseUrl + querystringStr
-}
-
-export function fillParams(pageUrl, params) {
-	return Object
-		.keys(params)
-		.reduce(
-			(acc, key) => acc.replace(`:${key}`, params[key]),
-			pageUrl
-		)
-}
-
-export function pageUrlToRegex(pageUrl, exactMatch = false) {
-	return "^" + pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") + (exactMatch && "$" || "")
-}
-
-export function getPagesForUrl(pageUrl) {
-	const pageRegex = new RegExp(pageUrlToRegex(pageUrl))
-
-	const result = []
-
-	Pages.forEach(route => {
-		if (route.nesting) {
-			route.subroutes.forEach(sub => {
-				if (pageRegex.test(sub.url))
-					result.push(sub)
-			})
-		} else if (pageRegex.test(route.url))
-			result.push(route)
-	})
-
-	return result
-}
-
-export function pageIsActive(location, page) {
-	const currentMatchedPages = getPagesForUrl(location)
-
-	const pageUrlExactRegex = new RegExp(pageUrlToRegex(location, true))
-	console.log("Checking page active: ", currentMatchedPages, page)
-
-	const exactMatchPage = currentMatchedPages.find(x => pageUrlExactRegex.test(x.url))
-
-	return exactMatchPage
-		? exactMatchPage.name === page.name
-		: currentMatchedPages
-			.map(x => x.name)
-			.includes(page.name)
-}
-
-export function getPage(name) {
-	return Pages.find((o) => o.name === name)
-}
-
-export async function onRouteLoaded(route) {
-	const page = Pages.find(x => x.url === route.route)
-
-	if (!page || get(customPageTitleUsed))
-		return
-
-	pageTitle.set(typeof page.title === "function"
-		? await page.title()
-		: page.title
-	)
-}
-
-export default {
-	[PageUrls.Home]: Home,
-	[PageUrls.Page1]: Page1,
-	[PageUrls.Error]: Error,
+	[PageUrls.home]: wrap({
+		asyncComponent: () => import("../features/home/Page.svelte"),
+		loadingComponent: LoadingPage
+	}),
+	[PageUrls.page1]: wrap({
+		asyncComponent: () => import("../features/page1/Page.svelte"),
+		loadingComponent: LoadingPage
+	}),
+	[PageUrls.error]: wrap({
+		asyncComponent: () => import("./Error.svelte"),
+		loadingComponent: LoadingPage
+	}),
 	// The catch-all route must always be last
 	"*": NotFound
 }
+
+export default routerPages

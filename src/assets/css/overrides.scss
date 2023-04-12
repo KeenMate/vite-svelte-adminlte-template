@@ -71,7 +71,8 @@ aside.main-sidebar {
 		justify-content: space-between;
 		flex-wrap: wrap;
 		gap: .25rem;
-		min-height: 3.5rem !important;
+		min-height: 2.75rem !important;
+		padding: 0.4em 0.85em !important;
 
 		&::after {
 			content: none;
@@ -88,7 +89,17 @@ aside.main-sidebar {
 		}
 
 		.card-tools {
-			margin: -.25rem -.8rem -.25rem 0
+			//margin: -0.25rem 0rem -0.25rem 0 !important;
+			margin-right: 0;
+		}
+		
+		.actions {
+			align-self: start;
+			
+			display: flex;
+			gap: .25rem;
+			justify-content: flex-end;
+			align-items: center;
 		}
 	}
 }
@@ -131,15 +142,15 @@ aside.main-sidebar {
 	border-radius: 0;
 }
 
-.nav-item {
-	.nav-link {
-		display: inline-flex;
-		align-items: center;
-		gap: .5rem;
-
-		padding: .3rem .5rem;
-	}
-}
+//.nav-item {
+//	.nav-link {
+//		display: inline-flex;
+//		align-items: center;
+//		gap: .5rem;
+//
+//		padding: .3rem .5rem;
+//	}
+//}
 
 .auto-width {
 	width: 1px;
@@ -198,7 +209,7 @@ th.auto-width {
 }
 
 .modal {
-	--modal-padding: .5rem;
+	--modal-padding: .75rem;
 
 	.modal-dialog {
 		.modal-header {
@@ -237,4 +248,40 @@ th.auto-width {
 	.page-link {
 		line-height: 1.5 !important;
 	}
+}
+
+.nav-tabs {
+	.nav-item {
+		.nav-link {
+			color: #495057;
+			padding: .25rem .5rem;
+
+			&.active {
+				color: #007bff !important;
+			}
+		}
+	}
+}
+
+.form-group.row {
+	label[class*="col-"] {
+		margin-bottom: 0 !important;
+	}
+}
+
+.row {
+	row-gap: .5rem
+}
+
+.cursor-pointer {
+	cursor: pointer
+}
+
+.cursor-help {
+	cursor: help
+}
+
+.nav-sidebar .nav-link > .right:nth-child(2),
+.nav-sidebar .nav-link > p > .right:nth-child(2) {
+	right: 0.75rem	
 }

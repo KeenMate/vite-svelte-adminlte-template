@@ -1,144 +1,206 @@
 <script>
-	import {onDestroy, onMount, setContext} from "svelte"
-	import {get} from "svelte/store"
-	import Router from "svelte-spa-router"
+	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
+	import {DefaultZoomLevel, MapCoordinatesSetter, updateMapCoordsLocalStorage} from "$lib/constants/map.js"
+	import OsmCitiesFilter from "$lib/features/addresses-map/components/filters/OsmCitiesFilter.svelte"
+	import {createUserNotificationsChannel} from "$lib/features/notifications/channel.js"
+	import {pageIsActive} from "$lib/helpers/page-helpers.js"
+	import {updateQuerystringPartial} from "$lib/helpers/router-helpers.js"
+	import BaseProvider from "$lib/providers/base-provider.js"
+	import {getUserContextAsync} from "$lib/providers/context-provider.js"
+	import {SocketReconnectRetriesFailed} from "$lib/providers/socket/index.js"
+	import {isAuthenticated, userContext} from "$lib/stores/authentication.js"
+	import {Badge, Dropdown, DropdownButton, DropdownItem, DropdownMenu, LteButton, Toastr, TopNavigation, TopNavItem} from "@keenmate/svelte-adminlte"
 	import keymage from "keymage"
-	import {TopNavigation} from "@keenmate/svelte-adminlte"
-	import {Sidebar} from "@keenmate/svelte-adminlte"
-	import {SidebarNavItem} from "@keenmate/svelte-adminlte"
-	import {TopNavItem} from "@keenmate/svelte-adminlte"
-	import {Dropdown} from "@keenmate/svelte-adminlte"
-	import {DropdownItem} from "@keenmate/svelte-adminlte"
-	import {DropdownButton} from "@keenmate/svelte-adminlte"
-	import {DropdownMenu} from "@keenmate/svelte-adminlte"
-	import "./lib/locale/i18n"
-	import {locale} from "./lib/locale/i18n"
-	import RoutePages, {onRouteLoaded, Pages, PageUrls} from "./lib/pages"
-	import {
-		login,
-		isAuthenticated,
-		userInfo,
-		AzureProvider,
-		// ZuubrProvider,
-		appMountCallback,
-		logout
-	} from "./lib/stores/authentication"
-	import {listenPageTitleChanged, customPageTitleUsed} from "./lib/stores/page-title"
-	import MessageLog from "./lib/modals/MessageLog.svelte"
-	// import {initSocket} from "./lib/providers/socket"
-	import SidebarNavTree from "./lib/user-controls/SidebarNavTree.svelte"
+	import {onDestroy, onMount, setContext} from "svelte"
+	import {_} from "svelte-i18n"
+	import Router, {location} from "svelte-spa-router"
+	import {writable} from "svelte/store"
+	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
+	import TopNavigationNotifications from "./lib/components/common/navigation/TopNavigationNotifications.svelte"
+	import Footer from "./lib/components/common/ui/Footer.svelte"
 	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
+	import {ErrorToastrTimeout} from "./lib/constants/toastr"
+	import {LogoutUrl} from "./lib/constants/urls"
+	import {onRouteLoaded} from "./lib/helpers/page-helpers"
+	import "./lib/locale/i18n"
+	import MessageLog from "./lib/modals/MessageLog.svelte"
+	import RoutePages from "./lib/pages"
+	import MeProvider from "./lib/providers/me-provider"
+	import {initSocket} from "./lib/providers/socket"
+	import {currentUser} from "./lib/stores/authentication"
+	import {listenPageTitleChanged} from "./lib/stores/page-title"
+
+	const reauthorizationNeeded = writable(false)
 
 	let loading = false
 	let showLog
-	let localeLanguage = ""
 	let pageTitleSubscription
-	let localeSubscription
+	let userNotificationsChannel
 
-	$: console.log("custom page title used", $customPageTitleUsed)
+	setContext("loader", {
+		setLoading: val => (loading = val)
+	})
+
+	// page-specific data
+	let selectedCity
+	let showConnectionClosedModal
+
+	$: $userContext.socketToken && initSocket($userContext.socketToken)
+	$: createUserChannel($currentUser)
+	$: $SocketReconnectRetriesFailed && showConnectionClosedModal && showConnectionClosedModal()
 
 	onMount(() => {
-		appMountCallback()
+		// initSocket(getAdminSocketToken())
+		loadUserContextAsync()
 
 		keymage("ctrl-0", () => {
-			console.log("opening logs")
 			showLog()
 		})
 
-		localeSubscription = locale.subscribe((x) => (localeLanguage = x))
 		pageTitleSubscription = listenPageTitleChanged()
 	})
 
 	onDestroy(() => {
-		if (localeSubscription)
-			localeSubscription()
-		if (pageTitleSubscription)
-			pageTitleSubscription()
+		if (pageTitleSubscription) pageTitleSubscription()
 	})
 
-	setContext("loader", {
-		setLoading: (val) => (loading = val)
-	})
+	function logout() {
+		MeProvider.clearSessionStorage()
+		window.location.replace(LogoutUrl)
+	}
+
+	async function loadUserContextAsync() {
+		try {
+			if (import.meta.env.DEV) {
+				const response = await getUserContextAsync()
+
+				userContext.set(response.data)
+			}
+		} catch (error) {
+			if (error.status === 401) {
+				console.debug("User context not loaded because user is unauthenticated")
+				return
+			}
+
+			console.error("Could not load user context", error)
+			Toastr.error("User context could not be loaded", null, {timeOut: ErrorToastrTimeout})
+		}
+	}
+
 
 	function routeLoaded({detail: route}) {
-		if (get(customPageTitleUsed))
-			return
+		return onRouteLoaded(route, $_)
+	}
 
-		return onRouteLoaded(route)
+	function createUserChannel(user) {
+		if (!user || !user.userId) return
+
+		// if (userChannel) userChannel.destroy()
+		//
+		userNotificationsChannel = createUserNotificationsChannel(user.userId)
+
+		// userNotificationsChannel.join()
+	}
+
+	// function handleEndSession() {
+	// 	console.log("Session ended")
+	// 	reauthorizationNeeded.set(true)
+	// }
+
+	function reauthorize() {
+		window.addEventListener("reauthenticated", handleReauthorizationSuccess, {
+			once: true
+		})
+
+		window.open("/admin/reauth-silent", "_blank", "width=400,height=475")
+	}
+
+	function handleReauthorizationSuccess({detail: token}) {
+		console.log("Reauthenticated event received")
+		initSocket(token)
+		reauthorizationNeeded.set(false)
+	}
+
+	function onLoginUser() {
+		const handle = BaseProvider.loginPopup("/popup-logged-in")
+
+		let checker = setInterval(() => {
+			if (!handle.closed)
+				return
+			console.info("Loading user details")
+			clearInterval(checker)
+
+			loadUserContextAsync()
+		}, 1000)
+	}
+
+	async function updateCoordinates(latLong) {
+		$MapCoordinatesSetter = {
+			lat: latLong.lat,
+			long: latLong.lon,
+			zoom: DefaultZoomLevel
+		}
+		updateQuerystringPartial($MapCoordinatesSetter)
+		updateMapCoordsLocalStorage($MapCoordinatesSetter)
 	}
 </script>
 
-<div class="wrapper">
+<div class="wrapper condensed">
 	<TopNavigation>
 		<svelte:fragment slot="left">
-			<TopNavItem href="#/">Home</TopNavItem>
-			<Dropdown>
-				<DropdownButton>Pages</DropdownButton>
-
-				<DropdownMenu>
-					<DropdownItem href="#{PageUrls.Page1}">Page 1</DropdownItem>
-				</DropdownMenu>
-			</Dropdown>
-		</svelte:fragment>
-
-		<svelte:fragment slot="right">
 			<LocaleDropdown />
-
+			{#if pageIsActive($location, "AddressesMapPage")}
+				<li class="nav-item d-flex align-items-center cities-filter">
+					<OsmCitiesFilter value={selectedCity} on:input={ev => updateCoordinates(ev.detail)} />
+				</li>
+			{/if}
+		</svelte:fragment>
+		<svelte:fragment slot="right">
+			{#if $SocketReconnectRetriesFailed}
+				<TopNavItem>
+					<Badge color="danger">
+						{$_("common.labels.reconnect")}
+					</Badge>
+				</TopNavItem>
+			{/if}
+			{#if $reauthorizationNeeded}
+				<LteButton small on:click={reauthorize}>Reauthorize</LteButton>
+			{/if}
+			<TopNavigationNotifications />
 			{#if $isAuthenticated}
 				<Dropdown slot="right">
-					<DropdownButton>{$userInfo.name}</DropdownButton>
-
+					<DropdownButton>{$currentUser?.displayName || ""}</DropdownButton>
 					<DropdownMenu right>
-						<DropdownItem on:click={() => logout()}>Log Out</DropdownItem>
+						<DropdownItem href="/home" target="_blank">
+							{$_("common.links.home")}
+						</DropdownItem>
+						<DropdownItem on:click={() => logout()}>
+							{$_("common.links.logOut")}
+						</DropdownItem>
 					</DropdownMenu>
 				</Dropdown>
 			{:else}
-				<Dropdown>
-					<DropdownButton>Log In</DropdownButton>
-					<DropdownMenu right>
-						<DropdownItem on:click={() => login(AzureProvider)}>
-							Azure
-						</DropdownItem>
-						<!--<DropdownItem on:click={() => login(ZuubrProvider)}>-->
-						<!--	Zuubr-->
-						<!--</DropdownItem>-->
-					</DropdownMenu>
-				</Dropdown>
+				<TopNavItem href="javascript:void(0)" on:click={onLoginUser}>
+					{$_("common.links.logIn")}
+				</TopNavItem>
 			{/if}
 		</svelte:fragment>
 	</TopNavigation>
 
-	<Sidebar>
-		{#each Pages as page}
-			{#if !page.hide}
-				{#if page.nesting}
-					<SidebarNavTree icon={page.icon} href="#{page.url}">
-						{page.title}
-						<svelte:fragment slot="children">
-							{#each page.subroutes as sub}
-								<SidebarNavItem icon={sub.icon} href="#{sub.url}">
-									<p>{sub.title}</p>
-								</SidebarNavItem>
-							{/each}
-						</svelte:fragment>
-					</SidebarNavTree>
-				{:else}
-					<SidebarNavItem icon={page.icon} href="#{page.url}">
-						<p>{page.title}</p>
-					</SidebarNavItem>
-				{/if}
-			{/if}
-		{/each}
-	</Sidebar>
+	<SidebarNavigation />
 
 	<div class="content-wrapper">
-		<div class="content">
+		<div class="content min-full-height">
 			<Router routes={RoutePages} on:routeLoaded={routeLoaded} />
 		</div>
 	</div>
 
+	<Footer />
+
 	<MessageLog bind:show={showLog} />
 </div>
+
+<ConnectionClosedModal bind:showModal={showConnectionClosedModal} />
 
 <style lang="scss">
 	:global {
@@ -153,5 +215,9 @@
 		cursor: pointer;
 		white-space: nowrap;
 		padding: 0 1rem;
+	}
+
+	.cities-filter {
+		width: 30rem;
 	}
 </style>

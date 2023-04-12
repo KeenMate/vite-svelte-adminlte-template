@@ -16,7 +16,7 @@ export function stringifyFilters(filters, partial, mapper = (x => x)) {
 				delete mappedFilters[key]
 		})
 
-	return stringify(mappedFilters)
+	return stringify(mappedFilters, {arrayFormat: "brackets"})
 }
 
 export function parseQuerystringFilters(querystring, parser = (x => x)) {

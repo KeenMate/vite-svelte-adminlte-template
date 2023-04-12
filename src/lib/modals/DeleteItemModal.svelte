@@ -1,7 +1,9 @@
 <script>
+	import ModalRejectedError from "$lib/types/modal-rejected-error.js"
 	import {createEventDispatcher} from "svelte"
-	import {LteButton, Modal, ModalCloseButton} from "@keenmate/svelte-adminlte"
-	import { _ } from "svelte-i18n";
+	import {Modal, ModalCloseButton} from "@keenmate/svelte-adminlte"
+	import {_} from "svelte-i18n"
+	import DeleteButton from "../components/common/buttons/DeleteButton.svelte"
 
 	const dispatch = createEventDispatcher()
 
@@ -29,7 +31,7 @@
 	$: jModalElement && jModalElement.on("hidden.bs.modal", doReject)
 
 	function doReject() {
-		rejectModal && rejectModal()
+		rejectModal && rejectModal(new ModalRejectedError())
 	}
 
 	function doConfirm() {
@@ -50,12 +52,8 @@
 			{$_("common.buttons.close")}
 		</ModalCloseButton>
 
-		<LteButton
-			color="danger"
-			small
-			on:click={doConfirm}
-		>
-			<i class="fas fa-trash fa-fw"></i> {$_("common.buttons.delete")}
-		</LteButton>
+		<DeleteButton small on:click={doConfirm}>
+			{$_("common.buttons.delete")}
+		</DeleteButton>
 	</svelte:fragment>
 </Modal>
