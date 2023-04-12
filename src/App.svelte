@@ -1,10 +1,6 @@
 <script>
 	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
-	import {DefaultZoomLevel, MapCoordinatesSetter, updateMapCoordsLocalStorage} from "$lib/constants/map.js"
-	import OsmCitiesFilter from "$lib/features/addresses-map/components/filters/OsmCitiesFilter.svelte"
 	import {createUserNotificationsChannel} from "$lib/features/notifications/channel.js"
-	import {pageIsActive} from "$lib/helpers/page-helpers.js"
-	import {updateQuerystringPartial} from "$lib/helpers/router-helpers.js"
 	import BaseProvider from "$lib/providers/base-provider.js"
 	import {getUserContextAsync} from "$lib/providers/context-provider.js"
 	import {SocketReconnectRetriesFailed} from "$lib/providers/socket/index.js"
@@ -13,7 +9,7 @@
 	import keymage from "keymage"
 	import {onDestroy, onMount, setContext} from "svelte"
 	import {_} from "svelte-i18n"
-	import Router, {location} from "svelte-spa-router"
+	import Router from "svelte-spa-router"
 	import {writable} from "svelte/store"
 	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
 	import TopNavigationNotifications from "./lib/components/common/navigation/TopNavigationNotifications.svelte"
@@ -42,7 +38,6 @@
 	})
 
 	// page-specific data
-	let selectedCity
 	let showConnectionClosedModal
 
 	$: $userContext.socketToken && initSocket($userContext.socketToken)
@@ -133,27 +128,12 @@
 			loadUserContextAsync()
 		}, 1000)
 	}
-
-	async function updateCoordinates(latLong) {
-		$MapCoordinatesSetter = {
-			lat: latLong.lat,
-			long: latLong.lon,
-			zoom: DefaultZoomLevel
-		}
-		updateQuerystringPartial($MapCoordinatesSetter)
-		updateMapCoordsLocalStorage($MapCoordinatesSetter)
-	}
 </script>
 
 <div class="wrapper condensed">
 	<TopNavigation>
 		<svelte:fragment slot="left">
 			<LocaleDropdown />
-			{#if pageIsActive($location, "AddressesMapPage")}
-				<li class="nav-item d-flex align-items-center cities-filter">
-					<OsmCitiesFilter value={selectedCity} on:input={ev => updateCoordinates(ev.detail)} />
-				</li>
-			{/if}
 		</svelte:fragment>
 		<svelte:fragment slot="right">
 			{#if $SocketReconnectRetriesFailed}
@@ -215,9 +195,5 @@
 		cursor: pointer;
 		white-space: nowrap;
 		padding: 0 1rem;
-	}
-
-	.cities-filter {
-		width: 30rem;
 	}
 </style>
