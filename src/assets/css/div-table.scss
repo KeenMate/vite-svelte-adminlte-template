@@ -1,0 +1,40 @@
+div.table {
+	display: table;
+	
+	&.sortable {
+		.thead {
+			user-select: none;
+		}
+	}
+	
+	.thead {
+		display: table-header-group;
+	}
+	
+	.tbody {
+		display: table-row-group;
+	}
+	
+	.tr {
+		display: table-row;
+		
+		&.no-data {
+			text-align: center;
+		}
+		
+		.th {
+			display: table-cell;
+			white-space: nowrap;
+		}
+		
+		.td {
+			display: table-cell;
+			vertical-align: middle;
+
+			&.fw {
+				width: 100%;
+				//display: table-cell;
+			}
+		}
+	}
+}
