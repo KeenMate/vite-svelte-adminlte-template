@@ -1,12 +1,11 @@
 <script>
-	import {pageIsActive} from "$lib/helpers/page-helpers.js"
+	import {pageIsActive, pageHref} from "$lib/helpers/page-helpers.js"
 	import {location} from "svelte-spa-router"
 	import {_} from "svelte-i18n"
 	import {SidebarNavItem} from "@keenmate/svelte-adminlte"
 	import {checkPermissions} from "$lib/helpers/permissions-helpers.js"
 	import {currentUser} from "$lib/stores/authentication.js"
 	import SidebarNavTreeItem from "$lib/components/common/navigation/SidebarNavTreeItem.svelte"
-	import {pageHref} from "../../../helpers/page-helpers.js"
 
 	// page
 	export let name
