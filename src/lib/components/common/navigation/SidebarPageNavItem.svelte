@@ -1,11 +1,12 @@
 <script>
-	import {pageIsActive, pageUrl} from "$lib/helpers/page-helpers.js"
+	import {pageIsActive} from "$lib/helpers/page-helpers.js"
 	import {location} from "svelte-spa-router"
 	import {_} from "svelte-i18n"
 	import {SidebarNavItem} from "@keenmate/svelte-adminlte"
 	import {checkPermissions} from "$lib/helpers/permissions-helpers.js"
 	import {currentUser} from "$lib/stores/authentication.js"
 	import SidebarNavTreeItem from "$lib/components/common/navigation/SidebarNavTreeItem.svelte"
+	import {pageHref} from "../../../helpers/page-helpers.js"
 
 	// page
 	export let name
@@ -15,18 +16,18 @@
 	export let subroutes = []
 	export let hide = false
 	export let permissions = []
-	
+
 	// common
 	export let pageUrls
 
 	let hasPermissions,
 		active,
 		href
-	
+
 	$: hasPermissions = checkPermissions($currentUser?.permissions, permissions)
 	$: active = hasPermissions && pageIsActive($location, name)
-	$: href = hasPermissions && !nesting && pageUrl(pageUrls[name])
-	
+	$: href = hasPermissions && !nesting && pageHref(pageUrls[name])
+
 	function getPageTitle(i18n) {
 		return typeof title === "function"
 			&& title(i18n)

@@ -1,4 +1,7 @@
 export function checkPermissions(userPermissions, permissions) {
+	if (!permissions?.length)
+		return true
+
 	if (!userPermissions || !userPermissions.length)
 		return !(permissions?.any?.length || permissions?.all?.length)
 
