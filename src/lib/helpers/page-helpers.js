@@ -1,25 +1,22 @@
-import {getDuplicateValues} from "$lib/helpers/array-helpers.js"
 import {stringifyFilters} from "$lib/helpers/querystring-filters.js"
 import {joinPaths} from "$lib/helpers/string-helpers.js"
 import {Pages} from "$lib/pages"
 import {customPageTitleUsed, pageTitle} from "$lib/stores/page-title.js"
-import {parse} from "qs"
-import {querystring} from "svelte-spa-router"
 import {get} from "svelte/store"
 
-export function pageUrl(url, params, qsObject, keepQuerystring = false) {
+export function pageUrl(url, params, qsObject, originalQs = null) {
 	return pageHref
 		.apply(null, arguments)
 		.replace("#", "")
 }
 
-export function pageHref(url, params, qsObject, keepQuerystring = false) {
+export function pageHref(url, params, qsObject, originalQs = null) {
 	if (!url)
 		return "javascript:void(0)"
 
 	const baseUrl = "#" + fillParams(url, params)
 	let querystringStr = stringifyFilters({
-		...(keepQuerystring && parse(get(querystring)) || {}),
+		...originalQs,
 		...(qsObject || {})
 	})
 
