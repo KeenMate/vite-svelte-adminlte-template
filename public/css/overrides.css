@@ -1,0 +1,23 @@
+.footer {
+	background-color: rgb(229, 229, 229);
+}
+
+.footer a {
+	/*border: 0.1rem solid transparent;*/
+	color: #666;
+	font-weight: 400;
+	line-height: 1.5rem;
+}
+
+.footer a:hover {
+	color: #f91320;
+}
+
+/*.footer .navbar-item {*/
+/*	padding: 0 !important;*/
+/*}*/
+
+/*.footer .navbar-item:hover {*/
+/*	background-color: unset;*/
+/*	color: #363636;*/
+/*}*/

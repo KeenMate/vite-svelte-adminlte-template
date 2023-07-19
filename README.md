@@ -1,158 +1,48 @@
-# The AdminLTE svelte template
+# Svelte + Vite
 
-This project is meant to be replacement for `sveltejs/template` when cloning new Svelte project. It is aimed to remove the repetitive tasks required to set up
-fully functional Svelte SPA administration so that you can jump to business logic straight away.
+This template should help get you started developing with Svelte in Vite.
 
-## Template features:
+## Recommended IDE Setup
 
-- Functional Admin SPA from the start
-- Ready for socket-based communication with server
-- Ready for direct authentication against OIDC (azure)
-- File structure as we think is the best and we follow it vigorously to take almost no time switching from one project to another
-- Basic helpers of all categories (hand written for specific use-cases..)
-- Ready user-friendly logs viewing on shortcut: `ctrl+0` (requires special logging though)
+[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
 
-## Disclaimer
+## Need an official Svelte framework?
 
-As of writing this, it is still mainly used by us, so we don't consider it to be "state of the art" and you should use it with caution, the _svelte-adminlte_
-components are used already in many projects, those are more solid
+Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
 
-## Steps to get you going
+## Technical considerations
 
-### Clone template
+**Why use this over SvelteKit?**
 
-Scaffold new project: `npx degit keenmate/rollup-svelte-adminlte-template my-project`
+- It brings its own routing solution which might not be preferable for some users.
+- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+  `vite dev` and `vite build` wouldn't work in a SvelteKit environment, for example.
 
-### Install deps
+This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
 
-`npm i`
+Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
 
-There are optional dependencies that are not included in `package.json`'s dependencies. These include form validation, wysiwyg editors etc.
+**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
 
-#### Dependencies for explicit install
+Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
 
-##### Form
+**Why include `.vscode/extensions.json`?**
 
-- `@uppy/core`
-- `@uppy/dashboard`
-- `@uppy/svelte`
-- `@uppy/xhr-upload`
-- `litepicker`
+Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
 
-##### Editors
+**Why enable `checkJs` in the JS template?**
 
-- `jsoneditor`
-- `ckeditor5-svelte`
-- `@ckeditor/ckeditor5-build-decoupled-document`
+It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
 
-##### Validation
+**Why is HMR not preserving my local component state?**
 
-- `felte`
-- `@felte/reporter-svelte`
-- `@felte/validator-superstruct`
-- `@felte/validator-zod`
-- `zod`
+HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
 
-##### Authentication
-
-- `@dopry/svelte-oidc`
-- `oidc-client`
-
-##### Utilities
-
-- `lodash`
-- `@shopify/draggable`
-- `luxon`
-- `sortablejs`
-
-### Test the template
-
-`npm run dev`
-
-## Project structure
-
-### Pages
-
-`/src/pages` is where you put your SPA pages, they use AdminLTE or project components and user controls
-
-### Components
-
-`/src/components` is where you put your project related components that are then used in user controls or pages
-
-### User controls
-
-`/src/user-controls` are reusable complex pieces of UI, for example a new password validation tool with password complexity visualiser, that are than used in
-multiple pages or user controls
-
-### Modals
-
-`/src/modals` is where you put your (non)modal dialogs, we call them modals because they mostly are but it can be both
-
-### Configuration
-
-Some of our components or other parts of package have option to be configured via the mechanism in `/src/config.js`
-
-#### HTML Title
-
-The title consists of page title (`/src/pages/index.js`, each page has `title` field) and application title (`BASE_HTML_TITLE` in `/.env.dev.json`). These 2
-values are combined in `/src/helpers/router-html-title.js` which is called inside `/src/App.svelte` from `Router`'s `routeLoaded` handler.
-
-You can also provide function as a value to page's title
+If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
 
 ```js
-homeRoute = {
-    name: "Home",
-    // Promise result is not required
-    title: async () => await getHomeTitle(),
-    url: "/",
-    breadcrumb: ["Home"],
-    icon: "fas fa-home",
-    hide: false
-}
+// store.js
+// An extremely simple external store
+import { writable } from 'svelte/store'
+export default writable(0)
 ```
-
-Or instead, you can also specify page title from page itself
-```js
-import {setCustomPageTitle} from "/src/stores/page-title"
-
-onMount(() => {
-    setTimeout(() => {
-        setCustomPageTitle("Custom Page 1")
-    }, 1000)
-})
-```
-
-### Styling
-
-Main style file is located at: `/src/assets/css/main.scss` to which you can append your own styles. This is the place where you can import your own styles /
-overrides. It also contains reference to `/src/assets/css/variables.scss` where you can override AdminLTE and other CSS variables.
-
-### Constants
-
-`/src/constants` is where you put your project constants like API paths, default timeouts and so on
-
-#### Urls
-
-- `./urls.js` - Where application urls are defined (here we use a compile-time config to provide env-specific URLs)
-
-## Server communication
-
-`/src/providers` are for REST/IO type data providers, the lowest level code with simple methods that each is atomic and does only one thing, like calling one
-specific endpoint, should you desire a more complicated scenario use a manager to combine multiple providers/provider methods.
-
-`/src/providers/socket` are for Websocket type data providers
-
-## Uncaught errors
-
-When unexpected error occurs we prevent Svelte App to become "frozen" by overlaying it with error screen from where the user must reload the page (for the time
-being we do not have a better solution).
-
-This error supervision code is in `/src/main.js`
-
-## Global stores
-
-`/src/stores` is where you put your global Svelte stores
-
-## Static assets
-
-`/src/assets/static` is where youu put your static content and from which they are copied to `/public` directory as-is (see `/rollup.config.js`)

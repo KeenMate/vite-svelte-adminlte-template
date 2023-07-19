@@ -1,0 +1,19 @@
+.table.sortable {
+	thead, .thead {
+		th, .th {
+			&.sorted {
+				color: var(--red);
+			}
+			
+			&:hover {
+				background-color: #eff0f1;
+			}
+			
+			& > i {
+				float: right;
+			}
+			
+			cursor: pointer;
+		}
+	}
+}

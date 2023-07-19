@@ -14,7 +14,7 @@
 
   .card-header {
     min-height: 2.5rem !important;
-    padding: 0.50em 0.85em;
+    padding: 0.25em 0.85em !important;
   }
 
   .card-body {
@@ -179,9 +179,7 @@
   .fr-box.fr-basic .fr-element {
     padding: 10px !important;
   }
-
-
-
+	
   .callout {
     margin-bottom: 0.5rem;
     padding: 0.5rem;
@@ -201,8 +199,6 @@
 		height: auto;
 	}
 
-
-
   .custom-file,
   .custom-file-input {
     height: calc(1.8125rem + 2px);
@@ -212,17 +208,14 @@
     height: calc(1.8125rem + 2px);
   }
 
-  .input-group {
-    height: calc(1.8125rem + 2px) !important;
+  .input-group,
+  label:has(> input[type=checkbox]) {
+	  height: calc(1.8125rem + 2px) !important;
   }
 
   // .selectContainer {
   //   --height: calc(2rem + 2px) !important;
   // }
-
-  .input-group {
-    height: calc(1.8125rem + 2px) !important;
-  }
 
   .input-group-prepend {
     height: 100%;
