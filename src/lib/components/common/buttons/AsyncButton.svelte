@@ -6,7 +6,10 @@
 
 	export let iconClass
 
-	let loading = false
+	let loading
+
+	$: disabled = $$restProps.disabled
+	|| enabledWhenLoading ? false : loading
 
 	async function onClick(ev) {
 		try {
@@ -18,7 +21,7 @@
 	}
 </script>
 
-<LteButton {...$$restProps} disabled={enabledWhenLoading ? false : loading} on:click={onClick}>
+<LteButton {...$$restProps} {disabled} on:click={onClick}>
 	{#if loading}
 		<i class="fas fa-circle-notch fa-spin fa-fw" style="--fa-animation-duration: 1s"></i>
 	{:else if iconClass}
