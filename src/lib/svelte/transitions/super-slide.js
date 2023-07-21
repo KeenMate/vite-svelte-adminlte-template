@@ -1,5 +1,4 @@
-import {pgsql} from "svelte-highlight/languages"
-import { cubicOut } from "svelte/easing"
+import {cubicOut} from "svelte/easing"
 
 /**
  * @param node
@@ -11,7 +10,7 @@ export default function (node, params) {
 	const duration = params.duration || 400
 	const easing = params.easing || cubicOut
 	const orientation = params.orientation || getOrientationBasedOnPage()
-	
+
 	const targetSize = params.targetSize
 	const translateAxis = getTranslateAxis(orientation)
 	const translateSign = getTranslateSign(orientation)
@@ -52,7 +51,7 @@ function getTranslateAxis(orientation) {
 
 function getOrientationBasedOnPage() {
 	const style = getComputedStyle(document.body)
-	
+
 	return style.direction === "ltr" ? "right" : "left"
 }
 
