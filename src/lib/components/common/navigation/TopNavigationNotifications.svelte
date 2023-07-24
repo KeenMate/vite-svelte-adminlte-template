@@ -8,7 +8,7 @@
 	import {ContentFileEndpoints} from "$lib/constants/urls"
 	import {fileSizeToString} from "$lib/helpers/file-size-helpers"
 	import NotificationProvider from "$lib/providers/notification-provider"
-	import {getNotificationFilesAsync, updateUserLastSeenNotificationAsync} from "$lib/providers/socket/notifications-channel"
+	import {getNotificationFilesAsync, updateUserLastSeenNotificationAsync} from "$lib/providers/socket/notification-channel.ts"
 
 	const messages = NotificationProvider.messages
 

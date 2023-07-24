@@ -1,0 +1,76 @@
+{
+  "0": {
+    "code": "",
+    "img": "",
+    "title": ""
+  },
+  "1": {
+    "code": "",
+    "img": "",
+    "title": ""
+  },
+  "common": {
+    "links": {
+      "home": "Domov",
+      "logIn": "Prihlasit se",
+      "logOut": "Odhlasit se"
+    }
+  },
+  "component-list": {
+    "all": "Vše",
+    "card-title": "Klikněte pro zobrazeni dokumentace",
+    "categories": "Kategorie",
+    "description": "Popisek",
+    "name": "Jméno",
+    "not-found": {
+      "text": "Zkuste zmenit, nebo smazat text",
+      "title": "Žádne komponenty nenelezeny"
+    }
+  },
+  "component-page-template": {
+    "events-title": "Události",
+    "props-title": "Vlastnosti",
+    "slots-title": "Sloty",
+    "text-title": "Popisek"
+  },
+  "components": {
+    "title": "Komponenty"
+  },
+  "home": {
+    "language": "Vyberte jazyk",
+    "title": "Domov"
+  },
+  "locale-editor": {
+    "edit": "Upravit",
+    "title": "Editor Localů"
+  },
+  "locales-list": {
+    "card-title": "Klickněte na localu pro upraveni",
+    "code": "Kód",
+    "flag": "Vlajka",
+    "language": "Jazyk"
+  },
+  "not-found": {
+    "header": "Stranka nenalezena",
+    "link": "Vratit se na domovskou stranku"
+  },
+  "notifications": {
+    "component-example-template": {
+      "copied": {
+        "message": "Kod zkopirovan to schranky"
+      }
+    },
+    "locale-editor": {
+      "saved": {
+        "message": "Localy pro {locale} byly uspěšně uloženy do LocalStorage.",
+        "title": "Localy ulozeny"
+      }
+    }
+  },
+  "page1": {
+    "title": "Stránka 1"
+  },
+  "users": {
+    "title": "Uživatelé"
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "0": {
+    "code": "",
+    "img": "",
+    "title": ""
+  },
+  "1": {
+    "code": "",
+    "img": "",
+    "title": ""
+  },
+  "common": {
+    "links": {
+      "home": "Home",
+      "logIn": "Log in",
+      "logOut": "Log out"
+    }
+  },
+  "component-list": {
+    "all": "All",
+    "card-title": "Click to view documentation",
+    "categories": "Categories",
+    "description": "Description",
+    "name": "Name",
+    "not-found": {
+      "text": "try changing or deleting search query",
+      "title": "No Components Found"
+    }
+  },
+  "component-page-template": {
+    "events-title": "Events",
+    "props-title": "Properties",
+    "slots-title": "Slots",
+    "text-title": "Description"
+  },
+  "components": {
+    "title": "Components"
+  },
+  "home": {
+    "language": "Select language",
+    "title": "Home"
+  },
+  "locale-editor": {
+    "edit": "Edit",
+    "title": "locale editor"
+  },
+  "locales-list": {
+    "card-title": "Click on locale to edit",
+    "code": "Code",
+    "flag": "Flag",
+    "language": "Language"
+  },
+  "not-found": {
+    "header": "Page not found",
+    "link": "Go to homepage"
+  },
+  "notifications": {
+    "component-example-template": {
+      "copied": {
+        "message": "Code copied to clipboard"
+      }
+    },
+    "locale-editor": {
+      "saved": {
+        "message": "Locales for {locale} have been sucesfully saved to LocalStorage.",
+        "title": "Locales saved"
+      }
+    }
+  },
+  "page1": {
+    "title": "Page1"
+  },
+  "users": {
+    "title": "Users"
+  }
+}

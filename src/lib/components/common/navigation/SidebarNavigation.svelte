@@ -4,13 +4,18 @@
 	import {Pages} from "../../../pages"
 	import SidebarStaticNavItem from "$lib/components/common/navigation/SidebarStaticNavItem.svelte"
 	import SidebarPageNavItem from "$lib/components/common/navigation/SidebarPageNavItem.svelte"
+	import BrandImage from "$lib/components/ui/BrandImage.svelte"
 </script>
 
 <Sidebar color="dark-dhl-yellow">
 	<svelte:fragment slot="header">
-		<a class="brand-link d-flex" data-widget="pushmenu" role="button">
-			<i class="fas fa-bars fa-fw" />
-		</a>
+		<a
+		href="#/"
+		class="brand-link d-flex justify-content-center is-dhl-yellow"
+	>
+		<BrandImage />
+		<span class="brand-text font-weight-light"></span>
+	</a>
 	</svelte:fragment>
 
 	{#each Pages as page}
@@ -24,20 +29,6 @@
 
 <style lang="scss">
 	:global {
-		//body.sidebar-collapse {
-		//	[data-widget="pushmenu"] {
-		//		justify-content: center;
-		//	}
-		//
-		//	.main-sidebar {
-		//		&:hover {
-		//			[data-widget="pushmenu"] {
-		//				justify-content: start !important;
-		//			}
-		//		}
-		//	}
-		//}
-
 		.main-sidebar {
 			[data-widget="pushmenu"] {
 				justify-content: start;

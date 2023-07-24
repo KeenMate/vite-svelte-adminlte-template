@@ -18,6 +18,7 @@ class Messages {
 }
 
 let messages = new Messages()
+// @ts-ignore
 window.NotificationManager = messages
 
 export default messages

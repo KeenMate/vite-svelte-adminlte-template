@@ -10,6 +10,7 @@ const isProduction = process.env.NODE_ENV === "production"
 console.log("IS PRODUCTION BUILD: ", isProduction)
 
 const outRootDir = isProduction ? "__build" : "public"
+// const outRootDir = "../dhl_locations_factory_backend/priv/static"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,11 +21,26 @@ export default defineConfig({
 		// copy files that are not frequently modified (for other assets create separate copy plugin)
 		copy({
 			targets: [
-				{src: "node_modules/jsoneditor/dist/img/jsoneditor-icons.svg", dest: outRootDir + "/images"},
-				{src: "node_modules/jquery/dist/jquery.min.js", dest: outRootDir + "/js"},
-				{src: "node_modules/jquery-ui-dist/jquery-ui.min.js", dest: outRootDir + "/js"},
-				{src: "node_modules/jquery-ui-dist/jquery-ui.min.css", dest: outRootDir + "/css"},
-				{src: "node_modules/@fortawesome/fontawesome-free/webfonts", dest: outRootDir}
+				{
+					src: "node_modules/jsoneditor/dist/img/jsoneditor-icons.svg",
+					dest: outRootDir + "/images"
+				},
+				{
+					src: "node_modules/jquery/dist/jquery.min.js",
+					dest: outRootDir + "/js"
+				},
+				{
+					src: "node_modules/jquery-ui-dist/jquery-ui.min.js",
+					dest: outRootDir + "/js"
+				},
+				{
+					src: "node_modules/jquery-ui-dist/jquery-ui.min.css",
+					dest: outRootDir + "/css"
+				},
+				{
+					src: "node_modules/@fortawesome/fontawesome-free/webfonts",
+					dest: outRootDir
+				}
 				// {src: "public/*", dest: outRootDir}
 			]
 		}),
@@ -43,32 +59,32 @@ export default defineConfig({
 			minify: isProduction,
 			inject: {
 				data: {
-					contextPlaceholders: isProduction && `<input id="languages" type="hidden" value="{LANGS}">
+					contextPlaceholders:
+						(isProduction &&
+							`<input id="languages" type="hidden" value="{LANGS}">
 <input id="current-user" type="hidden" value="{CURRENT_USER}">
 <input id="socket-token" type="hidden" value="{SOCKET_TOKEN}">
 <input id="session-timeout" type="hidden" value="{SESSION_TIMEOUT}">
-<input id="current-locale" type="hidden" value="{CURRENT_LOCALE}">` || ""
+<input id="current-locale" type="hidden" value="{CURRENT_LOCALE}">`) ||
+						""
 				}
 			}
 		})
 	],
 	resolve: {
 		alias: [
-			{find: "~bootstrap", replacement: "bootstrap"},
+			// {find: "~bootstrap", replacement: "bootstrap"},
+			{find: "#", replacement: path.join(__dirname, "node_modules")},
 			{find: "$lib", replacement: path.join(__dirname, "src", "lib")},
 			{find: "~assets", replacement: path.join(__dirname, "src", "assets")}
 		]
 	},
 	optimizeDeps: {
-		include: [
-			"toastr",
-			"inputmask",
-			"jquery"
-		]
+		include: ["toastr", "inputmask", "jquery"]
 	},
 
 	// publicDir: false, // !isProduction && outRootDir,
-	base: isProduction && "/admin/" || "/",
+	base: (isProduction && "/admin/") || "/",
 	// server: {
 	// 	host: !isProduction && "localhost" || "",
 	// 	port: 5173,

@@ -1,7 +1,7 @@
 import {userContext} from "$lib/stores/authentication.js"
 import {get} from "svelte/store"
 import {init, locale, addMessages} from "svelte-i18n"
-import defaultLanguages from "./default-languages.json"
+import defaultLanguages from "./langs.json"
 
 export {locale, defaultLanguages}
 
@@ -14,9 +14,10 @@ function initialize() {
 
 	init({
 		fallbackLocale: "en",
-		initialLocale: currentLocale?.value
-			|| localStorage.getItem("language")
-			|| getSupportedUserLanguage()
+		initialLocale:
+			currentLocale?.value ||
+			localStorage.getItem("language") ||
+			getSupportedUserLanguage()
 	})
 
 	loadLocale(get(locale))
@@ -24,9 +25,7 @@ function initialize() {
 
 function getSupportedUserLanguage() {
 	const langCodes = getUserContextLanguages().map(l => l.code)
-	return window.navigator
-		.languages
-		.find(l => langCodes.includes(l))
+	return window.navigator.languages.find(l => langCodes.includes(l))
 }
 
 export function getFlagPath(countryCode) {
@@ -34,7 +33,7 @@ export function getFlagPath(countryCode) {
 }
 
 export function changeLang(lang) {
-	if (getUserContextLanguages().find((x) => x.code === lang.substring(0, 2))) {
+	if (getUserContextLanguages().find(x => x.code === lang.substring(0, 2))) {
 		localStorage.setItem("language", lang)
 	} else {
 		console.log("ERROR: language " + lang, " does not exist")
@@ -42,6 +41,9 @@ export function changeLang(lang) {
 }
 
 async function loadLocale(locale_) {
+	/**
+	@type {object}
+	*/
 	const messages = await locales[`./locales/${locale_}.json`]()
 	addMessages(locale_, messages)
 }

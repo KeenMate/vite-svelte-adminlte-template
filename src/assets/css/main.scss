@@ -1,33 +1,39 @@
-﻿@import "./variables";
-@import "./bootstrap-overrides";
+@import "./variables";
+@import "./bootstrap-variables-overrides";
+
+@import "#/@validide/resizable-table-columns/dist/css/resizable-table-columns.min.css";
 
 // boostrap related
-@import "../../../node_modules/bootstrap/scss/functions";
-@import "../../../node_modules/admin-lte/build/scss/bootstrap-variables";
-@import "../../../node_modules/bootstrap/scss/bootstrap";
+@import "#/bootstrap/scss/functions";
+@import "#/admin-lte/build/scss/bootstrap-variables";
+@import "#/bootstrap/scss/bootstrap";
 
 // adminlte related
-@import "../../../node_modules/admin-lte/build/scss/variables";
-@import "../../../node_modules/admin-lte/build/scss/mixins";
-@import "../../../node_modules/admin-lte/build/scss/parts/core";
-@import "../../../node_modules/admin-lte/build/scss/parts/components";
-@import "../../../node_modules/admin-lte/build/scss/parts/extra-components";
-@import "../../../node_modules/admin-lte/build/scss/parts/pages";
-@import "../../../node_modules/admin-lte/build/scss/parts/plugins";
-@import "../../../node_modules/admin-lte/build/scss/parts/miscellaneous";
+@import "#/admin-lte/build/scss/variables";
+@import "#/admin-lte/build/scss/mixins";
+@import "#/admin-lte/build/scss/parts/core";
+@import "#/admin-lte/build/scss/parts/components";
+@import "#/admin-lte/build/scss/parts/extra-components";
+@import "#/admin-lte/build/scss/parts/pages";
+@import "#/admin-lte/build/scss/parts/plugins";
+@import "#/admin-lte/build/scss/parts/miscellaneous";
 
-@import "../../../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
-@import "../../../node_modules/toastr/build/toastr.min.css";
+@import "#/@fortawesome/fontawesome-free/css/all.min.css";
+@import "#/toastr/build/toastr.min.css";
+
+
+@import "#/tippy.js/dist/tippy.css";
 
 // custom styles
+@import "./colors";
 @import "./adminlte-fixes";
+@import "./bootstrap-overrides";
 @import "./svelte-select-overrides";
 @import "./data-table";
 @import "./overrides";
 @import "./theme/main";
 @import "./uppy-overrides";
 @import "./squared-corners";
-@import "./svelte-multiselect-overrides";
 @import "./condensed-override";
 @import "./flexing";
 @import "./div-table";

@@ -4,15 +4,16 @@
 			&.sorted {
 				color: var(--red);
 			}
-			
+
 			&:hover {
-				background-color: #eff0f1;
+				background-color: var(--highlight-background-color, #eff0f1);
+				//color: var(--highlight-color, #000);
 			}
-			
+
 			& > i {
 				float: right;
 			}
-			
+
 			cursor: pointer;
 		}
 	}

@@ -2,7 +2,10 @@
 	import {onDestroy, onMount} from "svelte"
 	import {_} from "svelte-i18n"
 	import {PageHeader} from "@keenmate/svelte-adminlte"
-	import {setCustomPageTitle, customPageTitleUsed} from "../stores/page-title"
+	import {
+		setCustomPageTitle,
+		customPageTitleUsed
+	} from "$lib/stores/page-title.js"
 
 	onMount(() => {
 		customPageTitleUsed.set(true)
@@ -21,6 +24,4 @@
 	{$_("page1.title")}
 </PageHeader>
 
-<p>
-	Page1 content
-</p>
+<p>Page1 content</p>

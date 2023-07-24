@@ -1,5 +1,5 @@
 {
-  "name": "rollup-svelte-adminlte",
+  "name": "cuni-transdb-admin",
   "private": true,
   "version": "0.0.1",
   "type": "module",
@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
-    "@keenmate/svelte-adminlte": "~0.2.14",
+    "@keenmate/js-common-helpers": "^0.2.0",
+    "@keenmate/svelte-adminlte": "^0.4.2",
     "@rollup/plugin-html": "^0.2.4",
     "@rollup/plugin-replace": "^4.0.0",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
@@ -33,7 +34,7 @@
     "qs": "^6.11.0",
     "rollup-plugin-copy": "^3.4.0",
     "rxjs": "^7.5.6",
-    "sass": "^1.54.5",
+    "sass": "^1.64.0",
     "svelte": "^3.49.0",
     "svelte-chartjs": "^3.1.0",
     "svelte-i18n": "^3.4.0",
@@ -42,7 +43,7 @@
     "svelte-spa-router": "^3.3.0",
     "tippy.js": "^6.3.7",
     "toastr": "^2.1.4",
-    "typescript": "^4.7.4",
+    "typescript": "^4.9.5",
     "vite": "^3.0.7",
     "vite-plugin-html": "^3.2.0"
   }

@@ -1,7 +1,7 @@
 <script>
 	import {CardLoadingContext} from "@keenmate/svelte-adminlte/structure/Card.svelte"
 	import {getContext} from "svelte"
-	import lazyLoader from "../../helpers/lazy-loader"
+	import lazyLoader from "@keenmate/js-common-helpers/helpers/lazy-loader"
 	import {emptyPromise} from "../../helpers/promise-helpers"
 	import {Loader} from "@keenmate/svelte-adminlte"
 
@@ -13,9 +13,8 @@
 
 	let oldData
 
-	$: lazyTask = task
-		&& lazyLoader(task, showLoader, hideLoader)
-		|| emptyPromise
+	$: lazyTask =
+		(task && lazyLoader(task, showLoader, hideLoader)) || emptyPromise
 	$: lazyTask?.then(x => {
 		oldData = x
 	})

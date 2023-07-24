@@ -3,7 +3,7 @@ import {Toastr} from "@keenmate/svelte-adminlte"
 import {Socket} from "phoenix"
 import throttle from "lodash/throttle"
 
-import {SocketUrl} from "$lib/constants/urls"
+import {SocketUrl} from "$lib/constants/urls.ts"
 import {ErrorToastrTimeout, WarningToastrTimeout} from "$lib/constants/toastr"
 
 const socket = writable(null)
@@ -16,8 +16,7 @@ export function initSocket(token) {
 	if (existing) {
 		existing.disconnect()
 	}
-
-	const socketInstance = new Socket(SocketUrl, {
+	const socketInstance = new Socket(SocketUrl(), {
 		reconnectAfterMs(tries) {
 			const durations = [100, 1000, 10000]
 
@@ -25,9 +24,7 @@ export function initSocket(token) {
 				SocketReconnectRetriesFailed.set(true)
 
 				return Infinity
-			} else
-
-				return durations[(tries - 1) % durations.length] || 5000
+			} else return durations[(tries - 1) % durations.length] || 5000
 		},
 		params: {
 			token
@@ -35,7 +32,9 @@ export function initSocket(token) {
 	})
 
 	socketInstance.onClose(() => {
-		socketToastDisconnectedThrottled("warning", "Connection closed", null, {timeOut: WarningToastrTimeout})
+		socketToastDisconnectedThrottled("warning", "Connection closed", null, {
+			timeOut: WarningToastrTimeout
+		})
 		SocketConnected.set(false)
 
 		if (get(SocketReconnectRetriesFailed)) {
@@ -49,15 +48,19 @@ export function initSocket(token) {
 		socket.set(socketInstance)
 	})
 	socketInstance.onError(error => {
-		if (!get(SocketConnected))
-			return
+		if (!get(SocketConnected)) return
 
 		console.error("Error occured in socket connection", error)
 		if (error === "expired") {
 			Toastr.warning("Session expired", null, {timeOut: WarningToastrTimeout})
 			// redirectToLogin()
 		} else
-			socketToastThrottled("error", "Error occured while communicating with server", null, {timeOut: ErrorToastrTimeout})
+			socketToastThrottled(
+				"error",
+				"Error occured while communicating with server",
+				null,
+				{timeOut: ErrorToastrTimeout}
+			)
 	})
 
 	socketInstance.connect()

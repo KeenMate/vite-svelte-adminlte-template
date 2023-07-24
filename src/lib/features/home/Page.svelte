@@ -1,11 +1,19 @@
 <script>
-	import {userInfo} from "../stores/authentication"
-	import {LteButton, Card, PageHeader, FlexContainer} from "@keenmate/svelte-adminlte"
+	import {currentUser} from "$lib/stores/authentication.js"
+	import {
+		LteButton,
+		Card,
+		PageHeader,
+		FlexContainer
+	} from "@keenmate/svelte-adminlte"
 	import {getConfig, setConfig} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
-	import notification from "../providers/notification-provider"
+	import notification from "$lib/providers/notification-provider.js"
 	import {onDestroy, onMount} from "svelte"
-	import {customPageTitleUsed, setCustomPageTitle} from "../stores/page-title"
+	import {
+		customPageTitleUsed,
+		setCustomPageTitle
+	} from "$lib/stores/page-title.js"
 
 	onMount(() => {
 		customPageTitleUsed.set(true)
@@ -29,14 +37,12 @@
 			<svelte:fragment slot="header">Actions</svelte:fragment>
 			<div class="row">
 				<div class="col-lg-12 m-1">
-					<LteButton on:click={() => setConfig({ Foo: "Henlo" })}>
+					<LteButton on:click={() => setConfig({Foo: "Henlo"})}>
 						Set config
 					</LteButton>
 				</div>
 				<div class="col-lg-12 m-1">
-					<LteButton on:click={() => null.qwe}>
-						Throw
-					</LteButton>
+					<LteButton on:click={() => null.qwe}>Throw</LteButton>
 				</div>
 				<div class="col-lg-12 m-1">
 					<LteButton
@@ -44,8 +50,7 @@
 							notification.success(
 								"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet maximus ex, et lacinia est. Nullam sed orci lectus. Vivamus id arcu mauris. Ut posuere aliquam ex vel elementum. Nam aliquet non nisi sed consectetur. Quisque varius ut magna nec iaculis. Cras volutpat augue pharetra ultricies hendrerit. Ut laoreet convallis dui. Proin dapibus iaculis turpis, in posuere nulla pulvinar id. ",
 								"Notification title"
-							)}
-					>
+							)}>
 						Notify me
 					</LteButton>
 				</div>
@@ -55,8 +60,8 @@
 	<div class="col-9">
 		<Card outline color="danger">
 			<svelte:fragment slot="header">User Info</svelte:fragment>
-			{#if $userInfo}
-				<pre> {JSON.stringify($userInfo, null, 2)}</pre>
+			{#if $currentUser}
+				<pre> {JSON.stringify($currentUser, null, 2)}</pre>
 			{:else}
 				<b>You have to be logged in to see user info</b>
 			{/if}

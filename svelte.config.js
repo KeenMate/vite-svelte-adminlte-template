@@ -1,10 +1,11 @@
+import sveltePreprocess from "svelte-preprocess"
+
 export default {
 	// svelte options
 	extensions: [".svelte"],
 	compilerOptions: {},
-	preprocess: [],
-	onwarn: (warning, handler) => {
-	},
+	preprocess: [sveltePreprocess()],
+	onwarn: (warning, handler) => {},
 	// plugin options
 	vitePlugin: {
 		exclude: [],

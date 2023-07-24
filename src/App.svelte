@@ -1,11 +1,19 @@
 <script>
 	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
-	import {createUserNotificationsChannel} from "$lib/features/notifications/channel.js"
-	import BaseProvider from "$lib/providers/base-provider.js"
-	import {getUserContextAsync} from "$lib/providers/context-provider.js"
+	import {getUserContextAsync} from "$lib/providers/context-provider.ts"
 	import {SocketReconnectRetriesFailed} from "$lib/providers/socket/index.js"
 	import {isAuthenticated, userContext} from "$lib/stores/authentication.js"
-	import {Badge, Dropdown, DropdownButton, DropdownItem, DropdownMenu, LteButton, Toastr, TopNavigation, TopNavItem} from "@keenmate/svelte-adminlte"
+	import {
+		Badge,
+		Dropdown,
+		DropdownButton,
+		DropdownItem,
+		DropdownMenu,
+		LteButton,
+		Toastr,
+		TopNavigation,
+		TopNavItem
+	} from "@keenmate/svelte-adminlte"
 	import keymage from "keymage"
 	import {onDestroy, onMount, setContext} from "svelte"
 	import {_} from "svelte-i18n"
@@ -18,20 +26,22 @@
 	import {ErrorToastrTimeout} from "./lib/constants/toastr"
 	import {LogoutUrl} from "./lib/constants/urls"
 	import {onRouteLoaded} from "./lib/helpers/page-helpers"
+
 	import "./lib/locale/i18n"
-	import MessageLog from "./lib/modals/MessageLog.svelte"
+	import MessageLog from "$lib/modals/MessageLog.svelte"
 	import RoutePages from "./lib/pages"
-	import MeProvider from "./lib/providers/me-provider"
 	import {initSocket} from "./lib/providers/socket"
 	import {currentUser} from "./lib/stores/authentication"
-	import {listenPageTitleChanged} from "./lib/stores/page-title"
+	import {listenPageTitleChanged} from "./lib/stores/page-title.js"
+	import {ReauthUrl} from "$lib/constants/urls.ts"
+	import BaseProvider from "$lib/providers/base-provider.ts"
+	import BrandImage from "$lib/components/ui/BrandImage.svelte"
 
 	const reauthorizationNeeded = writable(false)
 
 	let loading = false
 	let showLog
 	let pageTitleSubscription
-	let userNotificationsChannel
 
 	setContext("loader", {
 		setLoading: val => (loading = val)
@@ -41,8 +51,9 @@
 	let showConnectionClosedModal
 
 	$: $userContext.socketToken && initSocket($userContext.socketToken)
-	$: createUserChannel($currentUser)
-	$: $SocketReconnectRetriesFailed && showConnectionClosedModal && showConnectionClosedModal()
+	$: $SocketReconnectRetriesFailed &&
+		showConnectionClosedModal &&
+		showConnectionClosedModal()
 
 	onMount(() => {
 		// initSocket(getAdminSocketToken())
@@ -60,16 +71,17 @@
 	})
 
 	function logout() {
-		MeProvider.clearSessionStorage()
 		window.location.replace(LogoutUrl)
 	}
 
 	async function loadUserContextAsync() {
 		try {
+			// In dev mode we have separate vite devserver for admin and phoenix server, so we need to fetch user context from server
+			// In prod index.html is server by phoenix application and is injected with user context
 			if (import.meta.env.DEV) {
 				const response = await getUserContextAsync()
 
-				userContext.set(response.data)
+				userContext.set(response)
 			}
 		} catch (error) {
 			if (error.status === 401) {
@@ -78,23 +90,14 @@
 			}
 
 			console.error("Could not load user context", error)
-			Toastr.error("User context could not be loaded", null, {timeOut: ErrorToastrTimeout})
+			Toastr.error("User context could not be loaded", null, {
+				timeOut: ErrorToastrTimeout
+			})
 		}
 	}
 
-
 	function routeLoaded({detail: route}) {
 		return onRouteLoaded(route, $_)
-	}
-
-	function createUserChannel(user) {
-		if (!user || !user.userId) return
-
-		// if (userChannel) userChannel.destroy()
-		//
-		userNotificationsChannel = createUserNotificationsChannel(user.userId)
-
-		// userNotificationsChannel.join()
 	}
 
 	// function handleEndSession() {
@@ -103,11 +106,12 @@
 	// }
 
 	function reauthorize() {
+		// @ts-ignores
 		window.addEventListener("reauthenticated", handleReauthorizationSuccess, {
 			once: true
 		})
 
-		window.open("/admin/reauth-silent", "_blank", "width=400,height=475")
+		window.open(ReauthUrl, "_blank", "width=400,height=475")
 	}
 
 	function handleReauthorizationSuccess({detail: token}) {
@@ -120,8 +124,7 @@
 		const handle = BaseProvider.loginPopup("/popup-logged-in")
 
 		let checker = setInterval(() => {
-			if (!handle.closed)
-				return
+			if (!handle.closed) return
 			console.info("Loading user details")
 			clearInterval(checker)
 
@@ -132,9 +135,11 @@
 
 <div class="wrapper condensed">
 	<TopNavigation>
-		<svelte:fragment slot="left">
-			<LocaleDropdown />
-		</svelte:fragment>
+		<!-- <svelte:fragment slot="left">
+			<TopNavItem>
+				<BrandImage />
+			</TopNavItem>
+		</svelte:fragment> -->
 		<svelte:fragment slot="right">
 			{#if $SocketReconnectRetriesFailed}
 				<TopNavItem>
@@ -147,6 +152,7 @@
 				<LteButton small on:click={reauthorize}>Reauthorize</LteButton>
 			{/if}
 			<TopNavigationNotifications />
+			<LocaleDropdown />
 			{#if $isAuthenticated}
 				<Dropdown slot="right">
 					<DropdownButton>{$currentUser?.displayName || ""}</DropdownButton>
