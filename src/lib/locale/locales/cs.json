@@ -72,10 +72,10 @@
   },
   "routes": {
     "home": {
-      "title": ""
+      "title": "Domov"
     },
     "page1": {
-      "title": ""
+      "title": "Příklad"
     }
   },
   "users": {
