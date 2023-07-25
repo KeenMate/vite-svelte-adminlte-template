@@ -1,18 +1,15 @@
 import {stringifyFilters} from "$lib/helpers/querystring-filters.js"
-import {joinPaths} from "$lib/helpers/string-helpers.js"
+import {joinPaths} from "@keenmate/js-common-helpers/helpers/string"
 import {Pages} from "$lib/pages"
 import {customPageTitleUsed, pageTitle} from "$lib/stores/page-title.js"
 import {get} from "svelte/store"
 
 export function pageUrl(url, params, qsObject, originalQs = null) {
-	return pageHref
-		.apply(null, arguments)
-		.replace("#", "")
+	return pageHref.apply(null, arguments).replace("#", "")
 }
 
 export function pageHref(url, params, qsObject, originalQs = null) {
-	if (!url)
-		return "javascript:void(0)"
+	if (!url) return "javascript:void(0)"
 
 	const baseUrl = "#" + fillParams(url, params)
 	let querystringStr = stringifyFilters({
@@ -20,8 +17,7 @@ export function pageHref(url, params, qsObject, originalQs = null) {
 		...(qsObject || {})
 	})
 
-	if (querystringStr.length)
-		querystringStr = "?" + querystringStr
+	if (querystringStr.length) querystringStr = "?" + querystringStr
 
 	return baseUrl + querystringStr
 }
@@ -33,18 +29,18 @@ export function pageHref(url, params, qsObject, originalQs = null) {
  * @returns {string}
  */
 export function fillParams(pageUrl, params = {}) {
-	if (!params)
-		return removeParamsPlaceholders(pageUrl)
+	if (!params) return removeParamsPlaceholders(pageUrl)
 
 	const pageUrlKeys = getPageUrlParams(pageUrl)
 
-	return pageUrlKeys
-		.reduce((acc, key) => acc.replace(new RegExp(`:${key}\\??`), params[key] || ""), pageUrl)
+	return pageUrlKeys.reduce(
+		(acc, key) => acc.replace(new RegExp(`:${key}\\??`), params[key] || ""),
+		pageUrl
+	)
 }
 
 function getPageUrlParams(pageUrl) {
-	return Array.from(pageUrl.matchAll(/:([a-zA-Z_]+)\??/g))
-		.map(x => x[1])
+	return Array.from(pageUrl.matchAll(/:([a-zA-Z_]+)\??/g)).map(x => x[1])
 }
 
 export function removeParamsPlaceholders(pageUrl) {
@@ -57,7 +53,10 @@ export function pageUrlToRegex(pageUrl, exactMatch = false) {
 		return new RegExp(/`/)
 	}
 
-	const regex = "^" + pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") + (exactMatch && "$" || "")
+	const regex =
+		"^" +
+		pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") +
+		((exactMatch && "$") || "")
 	return new RegExp(regex)
 }
 
@@ -67,13 +66,11 @@ export function getPagesForUrl(pageUrl) {
 	const result = []
 
 	Pages.forEach(route => {
-		if (route.url !== "/" && testRoute(route.url))
-			result.push(route)
+		if (route.url !== "/" && testRoute(route.url)) result.push(route)
 
 		if (route.nesting)
 			route.subroutes.forEach(sub => {
-				if (testRoute(joinPaths(route.url, sub.url)))
-					result.push(sub)
+				if (testRoute(joinPaths(route.url, sub.url))) result.push(sub)
 			})
 	})
 
@@ -85,27 +82,25 @@ export function pageIsActive(location, pageName) {
 
 	const pageUrlExactRegex = new RegExp(pageUrlToRegex(location, true))
 
-	const exactMatchPage = currentMatchedPages.find(x => pageUrlExactRegex.test(x.url))
+	const exactMatchPage = currentMatchedPages.find(x =>
+		pageUrlExactRegex.test(x.url)
+	)
 
 	return exactMatchPage
 		? exactMatchPage.name === pageName
-		: currentMatchedPages
-			.map(x => x.name)
-			.includes(pageName)
+		: currentMatchedPages.map(x => x.name).includes(pageName)
 }
 
 export function getPage(name) {
-	return Pages.find((o) => o.name === name)
+	return Pages.find(o => o.name === name)
 }
 
 export async function onRouteLoaded(route, i18n) {
 	const page = Pages.find(x => x.url === route.route)
 
-	if (!page || get(customPageTitleUsed))
-		return
+	if (!page || get(customPageTitleUsed)) return
 
-	pageTitle.set(typeof page.title === "function"
-		? await page.title(i18n)
-		: page.title
+	pageTitle.set(
+		typeof page.title === "function" ? await page.title(i18n) : page.title
 	)
 }

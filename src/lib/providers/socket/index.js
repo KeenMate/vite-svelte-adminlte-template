@@ -42,7 +42,7 @@ export function initSocket(token) {
 		}
 	})
 	socketInstance.onOpen(() => {
-		// Toastr.success("Connection established")
+		Toastr.success("Connection established")
 		SocketConnected.set(true)
 		SocketReconnectRetriesFailed.set(false)
 		socket.set(socketInstance)

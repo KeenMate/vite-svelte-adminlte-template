@@ -1,9 +1,9 @@
 <script>
-	import {CardLoadingContext} from "@keenmate/svelte-adminlte/structure/Card.svelte"
 	import {getContext} from "svelte"
-	import lazyLoader from "@keenmate/js-common-helpers/helpers/lazy-loader"
-	import {emptyPromise} from "../../helpers/promise-helpers"
+	import  lazyLoader from "@keenmate/js-common-helpers/helpers/lazy-loader"
+	import {emptyPromise} from "@keenmate/js-common-helpers/helpers/promise"
 	import {Loader} from "@keenmate/svelte-adminlte"
+	import {CardLoadingContext} from "node_modules/@keenmate/svelte-adminlte/dist/structure/Card.svelte"
 
 	const context = getContext(CardLoadingContext)
 
@@ -13,7 +13,9 @@
 
 	let oldData
 
+	// thisi is some error with configuration
 	$: lazyTask =
+		// @ts-ignore
 		(task && lazyLoader(task, showLoader, hideLoader)) || emptyPromise
 	$: lazyTask?.then(x => {
 		oldData = x

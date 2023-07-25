@@ -1,8 +1,10 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "Node",
-		"target": "ESNext",
+		// This is to allow usage of exports field in package json
+		"moduleResolution": "bundler",
 		"module": "ESNext",
+		"target": "ESNext",
+
 		/**
 		 * svelte-preprocess cannot figure out whether you have
 		 * a value or a type, so tell TypeScript to enforce using
@@ -25,10 +27,11 @@
 		 */
 		"checkJs": true,
 		"paths": {
-			"~bootstrap/*": ["bootstrap/*"],
-			"$lib/*": ["src/*"],
-			"~assets/*": ["src/assets/*"]
-		}
+			"#/*": ["./node_modules/*"],
+			"$lib/*": ["./src/lib/*"],
+			"~assets/*": ["./src/assets/*"]
+		},
+		"allowImportingTsExtensions": true
 	},
 	/**
 	 * Use global.d.ts instead of compilerOptions.types
