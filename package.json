@@ -11,10 +11,11 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.2",
     "@keenmate/js-common-helpers": "^0.2.0",
-    "@keenmate/svelte-adminlte": "^0.4.2",
+    "@keenmate/svelte-adminlte": "^0.4.3",
     "@rollup/plugin-html": "^0.2.4",
     "@rollup/plugin-replace": "^4.0.0",
-    "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "@sveltejs/vite-plugin-svelte": "^2.4.3",
+    "@types/sass": "^1.45.0",
     "@validide/resizable-table-columns": "^2.1.0",
     "bootstrap": "^4.6.1",
     "CBuffer": "^2.2.0",
@@ -38,13 +39,13 @@
     "svelte": "^3.49.0",
     "svelte-chartjs": "^3.1.0",
     "svelte-i18n": "^3.4.0",
-    "svelte-preprocess": "^4.10.7",
+    "svelte-preprocess": "^5.0.4",
     "svelte-select": "^4.4.7",
     "svelte-spa-router": "^3.3.0",
     "tippy.js": "^6.3.7",
     "toastr": "^2.1.4",
     "typescript": "^4.9.5",
-    "vite": "^3.0.7",
+    "vite": "^4.4.3",
     "vite-plugin-html": "^3.2.0"
   }
 }

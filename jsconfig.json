@@ -1,14 +1,13 @@
 {
 	"compilerOptions": {
-		"moduleResolution": "nodenext",
+		"moduleResolution": "Node",
 		"target": "ESNext",
-		"module": "NodeNext",
+		"module": "ESNext",
 		/**
 		 * svelte-preprocess cannot figure out whether you have
 		 * a value or a type, so tell TypeScript to enforce using
 		 * `import type` instead of `import` for Types.
 		 */
-		"importsNotUsedAsValues": "error",
 		"isolatedModules": true,
 		"resolveJsonModule": true,
 		/**
@@ -26,14 +25,14 @@
 		 */
 		"checkJs": true,
 		"paths": {
-			"#/*": ["./node_modules/*"],
-			"$lib/*": ["./src/lib/*"],
-			"~assets/*": ["./src/assets/*"]
+			"~bootstrap/*": ["bootstrap/*"],
+			"$lib/*": ["src/*"],
+			"~assets/*": ["src/assets/*"]
 		}
 	},
 	/**
 	 * Use global.d.ts instead of compilerOptions.types
 	 * to avoid limiting type declarations.
 	 */
-	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte"]
+	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte", "*.js"]
 }

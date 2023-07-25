@@ -55,7 +55,7 @@ const routerPages = {
 		loadingComponent: LoadingPage
 	}),
 	[PageUrls.page1]: wrap({
-		asyncComponent: () => import("../features/page1/Page.svelte"),
+		asyncComponent: () => import("../features/example/Page.svelte"),
 		loadingComponent: LoadingPage
 	}),
 	[PageUrls.error]: wrap({

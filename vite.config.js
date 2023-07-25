@@ -10,7 +10,6 @@ const isProduction = process.env.NODE_ENV === "production"
 console.log("IS PRODUCTION BUILD: ", isProduction)
 
 const outRootDir = isProduction ? "__build" : "public"
-// const outRootDir = "../dhl_locations_factory_backend/priv/static"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +18,7 @@ export default defineConfig({
 			preprocess: sveltePreprocess()
 		}),
 		// copy files that are not frequently modified (for other assets create separate copy plugin)
+		// @ts-ignore
 		copy({
 			targets: [
 				{
@@ -44,15 +44,6 @@ export default defineConfig({
 				// {src: "public/*", dest: outRootDir}
 			]
 		}),
-		// copy({
-		// 	overwrite: true,
-		// 	force: true,
-		// 	copyOnce: false,
-		// 	// watch: "src/assets/locales/*",
-		// 	targets: [
-		// 		{src: "src/assets/locales", dest: outRootDir}
-		// 	]
-		// })
 
 		createHtmlPlugin({
 			entry: "src/main.js",
@@ -96,8 +87,4 @@ export default defineConfig({
 		outDir: outRootDir + "/admin"
 		// emptyOutDir: true
 	}
-
-	// assetsInclude: [
-	// 	"node_modules/@fortawesome/fontawesome-free/**/*.(woff2|ttf|svg)"
-	// ]
 })
