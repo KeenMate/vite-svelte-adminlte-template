@@ -25,6 +25,10 @@
 	onDestroy(() => {
 		customPageTitleUsed.set(false)
 	})
+	function onThrow() {
+		const test = null
+		test.asd
+	}
 </script>
 
 <PageHeader>
@@ -42,7 +46,7 @@
 					</LteButton>
 				</div>
 				<div class="col-lg-12 m-1">
-					<LteButton on:click={() => null.qwe}>Throw</LteButton>
+					<LteButton on:click={() => onThrow()}>Throw</LteButton>
 				</div>
 				<div class="col-lg-12 m-1">
 					<LteButton

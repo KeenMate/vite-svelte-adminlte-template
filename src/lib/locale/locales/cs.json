@@ -1,17 +1,12 @@
 {
-  "0": {
-    "code": "",
-    "img": "",
-    "title": ""
-  },
-  "1": {
-    "code": "",
-    "img": "",
-    "title": ""
-  },
   "common": {
+    "headers": {
+      "loading": "načítání",
+      "notFound": "Nenalezeno"
+    },
     "links": {
       "home": "Domov",
+      "homer": "Nenalezeno",
       "logIn": "Prihlasit se",
       "logOut": "Odhlasit se"
     }
@@ -65,6 +60,9 @@
         "message": "Localy pro {locale} byly uspěšně uloženy do LocalStorage.",
         "title": "Localy ulozeny"
       }
+    },
+    "messages": {
+      "noNewNotifications": "Žádná upozornění"
     }
   },
   "page1": {
