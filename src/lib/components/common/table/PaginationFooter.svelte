@@ -1,14 +1,11 @@
 ﻿<script>
 	import {get} from "svelte/store"
 	import {querystring} from "svelte-spa-router"
-	import {
-		Label,
-		Pagination
-	} from "@keenmate/svelte-adminlte"
+	import {Label, Pagination} from "@keenmate/svelte-adminlte"
 	import {parse} from "qs"
 	import SvelteSelect from "svelte-select"
 	import {_} from "svelte-i18n"
-	import {updateQuerystring} from "../../../helpers/router-helpers"
+	import {updateQuerystring} from "@keenmate/js-common-helpers/helpers/router"
 	import {PageSizes} from "../../../constants/pagination"
 	// import {Multiselect} from "svelte-multiselect"
 
@@ -22,10 +19,13 @@
 	}
 
 	function updateQuerystringPartial(partial) {
-		updateQuerystring({
-			...parse(get(querystring)),
-			...partial
-		}, true)
+		updateQuerystring(
+			{
+				...parse(get(querystring)),
+				...partial
+			},
+			true
+		)
 	}
 
 	function onUpdatePage({detail: page}) {
@@ -42,7 +42,8 @@
 	}
 </script>
 
-<div class="pagination-footer d-flex justify-content-end align-items-center px-1 mt-2 flex-wrap">
+<div
+	class="pagination-footer d-flex justify-content-end align-items-center px-1 mt-2 flex-wrap">
 	{#if rowsCount}
 		<div>
 			<Label class="mb-0">
@@ -78,15 +79,14 @@
 				items={PageSizes}
 				placeholder={$_("common.placeholders.pageSize")}
 				on:select={updatePageSize}
-				on:clear={() => updatePageSize({ detail: null })}
-			/>
+				on:clear={() => updatePageSize({detail: null})} />
 		</div>
 	</div>
 
 	<div class="d-flex flex-column justify-content-end">
 		<Pagination
 			page={pagination.page || 1}
-			pages={pages}
+			{pages}
 			class="pagination-sm mb-0"
 			on:updatePage={onUpdatePage} />
 	</div>

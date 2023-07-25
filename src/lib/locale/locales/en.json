@@ -70,6 +70,14 @@
   "page1": {
     "title": "Page1"
   },
+  "routes": {
+    "home": {
+      "title": "Home"
+    },
+    "page1": {
+      "title": "Example"
+    }
+  },
   "users": {
     "title": "Users"
   }

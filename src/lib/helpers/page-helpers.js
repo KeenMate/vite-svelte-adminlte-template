@@ -1,63 +1,14 @@
-import {stringifyFilters} from "$lib/helpers/querystring-filters.js"
+import {stringifyFilters} from "@keenmate/js-common-helpers/helpers/querystring-filters"
 import {joinPaths} from "@keenmate/js-common-helpers/helpers/string"
 import {Pages} from "$lib/pages"
 import {customPageTitleUsed, pageTitle} from "$lib/stores/page-title.js"
 import {get} from "svelte/store"
+import {pageUrlToRegex, pageHref} from "@keenmate/js-common-helpers/helpers/url"
+
+export {pageHref, pageUrlToRegex} from "@keenmate/js-common-helpers/helpers/url"
 
 export function pageUrl(url, params, qsObject, originalQs = null) {
 	return pageHref.apply(null, arguments).replace("#", "")
-}
-
-export function pageHref(url, params, qsObject, originalQs = null) {
-	if (!url) return "javascript:void(0)"
-
-	const baseUrl = "#" + fillParams(url, params)
-	let querystringStr = stringifyFilters({
-		...originalQs,
-		...(qsObject || {})
-	})
-
-	if (querystringStr.length) querystringStr = "?" + querystringStr
-
-	return baseUrl + querystringStr
-}
-
-/**
- * Replaces url placeholders with values from params
- * @param pageUrl {string}
- * @param params {object}
- * @returns {string}
- */
-export function fillParams(pageUrl, params = {}) {
-	if (!params) return removeParamsPlaceholders(pageUrl)
-
-	const pageUrlKeys = getPageUrlParams(pageUrl)
-
-	return pageUrlKeys.reduce(
-		(acc, key) => acc.replace(new RegExp(`:${key}\\??`), params[key] || ""),
-		pageUrl
-	)
-}
-
-function getPageUrlParams(pageUrl) {
-	return Array.from(pageUrl.matchAll(/:([a-zA-Z_]+)\??/g)).map(x => x[1])
-}
-
-export function removeParamsPlaceholders(pageUrl) {
-	return pageUrl.replace(/:\w+\??/, "")
-}
-
-export function pageUrlToRegex(pageUrl, exactMatch = false) {
-	if (!pageUrl) {
-		console.trace("No page url given")
-		return new RegExp(/`/)
-	}
-
-	const regex =
-		"^" +
-		pageUrl.replace(/\/:\w+(\??)/, "/?([\\w\\-d]+)$1") +
-		((exactMatch && "$") || "")
-	return new RegExp(regex)
 }
 
 export function getPagesForUrl(pageUrl) {

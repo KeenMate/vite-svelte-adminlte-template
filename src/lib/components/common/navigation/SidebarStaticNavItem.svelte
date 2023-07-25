@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import {pageIsActive, pageUrl} from "$lib/helpers/page-helpers.js"
 	import {location} from "svelte-spa-router"
 	import {_} from "svelte-i18n"
 	import {SidebarNavItem} from "@keenmate/svelte-adminlte"
-	import {checkPermissions} from "$lib/helpers/permissions-helpers.js"
+	import {checkPermissions} from "@keenmate/js-common-helpers/helpers/permissions"
 	import {currentUser} from "$lib/stores/authentication.js"
 
 	// page
@@ -12,7 +12,7 @@
 	export let title = null
 	export let hide = false
 	export let target = null
-	export let permissions = []
+	export let permissions: {[key: string]: string[]} = {}
 
 	// common
 	export let pageUrls

@@ -1,14 +1,22 @@
 <script>
 	import {ErrorToastrTimeout} from "$lib/constants/toastr.js"
-	import {reduceWhile} from "$lib/helpers/array-helpers.js"
+	import {reduceWhile} from "@keenmate/js-common-helpers/helpers/array"
 	import {lastSeenNotificationId} from "$lib/stores/authentication.js"
 	import {onDestroy, onMount} from "svelte"
-	import {Badge, Toastr, TopNavItem, WithLazyLoader} from "@keenmate/svelte-adminlte"
+	import {
+		Badge,
+		Toastr,
+		TopNavItem,
+		WithLazyLoader
+	} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 	import {ContentFileEndpoints} from "$lib/constants/urls"
-	import {fileSizeToString} from "$lib/helpers/file-size-helpers"
+	import {fileSizeToString} from "@keenmate/js-common-helpers/helpers/file-size"
 	import NotificationProvider from "$lib/providers/notification-provider"
-	import {getNotificationFilesAsync, updateUserLastSeenNotificationAsync} from "$lib/providers/socket/notification-channel.ts"
+	import {
+		getNotificationFilesAsync,
+		updateUserLastSeenNotificationAsync
+	} from "$lib/providers/socket/notification-channel.ts"
 
 	const messages = NotificationProvider.messages
 
@@ -21,7 +29,10 @@
 	$: stableLastSeenNotificationId = !visible
 		? $lastSeenNotificationId || -1
 		: stableLastSeenNotificationId
-	$: unseenNotificationsCount = getUnseenNotificationsCount($messages, stableLastSeenNotificationId)
+	$: unseenNotificationsCount = getUnseenNotificationsCount(
+		$messages,
+		stableLastSeenNotificationId
+	)
 
 	onMount(() => {
 		document.body.addEventListener("click", onBodyClicked)
@@ -32,14 +43,16 @@
 	})
 
 	function getUnseenNotificationsCount(msgs, notificationId) {
-		if (!notificationId)
-			return 0
+		if (!notificationId) return 0
 
-		return reduceWhile(msgs, (acc, notification) =>
+		return reduceWhile(
+			msgs,
+			(acc, notification) =>
 				notification.notificationId === notificationId
 					? {state: "term", result: acc}
 					: {state: "cont", result: acc + 1},
-			0)
+			0
+		)
 	}
 
 	function toggleDropdown() {
@@ -58,26 +71,27 @@
 	}
 
 	function onBodyClicked(ev) {
-		if (!visible)
-			return
+		if (!visible) return
 
 		const wrapperBoundary = wrapper.getBoundingClientRect()
 		const notificationsBoundary = notificationsElement.getBoundingClientRect()
 
-		const clickedInside = [wrapperBoundary, notificationsBoundary]
-			.find(x => x.x < ev.clientX && x.right > ev.clientX
-				&& x.y < ev.clientY && x.bottom > ev.clientY)
-		if (clickedInside)
-			return
+		const clickedInside = [wrapperBoundary, notificationsBoundary].find(
+			x =>
+				x.x < ev.clientX &&
+				x.right > ev.clientX &&
+				x.y < ev.clientY &&
+				x.bottom > ev.clientY
+		)
+		if (clickedInside) return
 
 		visible = false
 	}
 
 	async function toggleNotificationDetail(id) {
-		Object.keys(notificationsFilesMap)
-			.map(x => {
-				notificationsFilesMap[x].visible = false
-			})
+		Object.keys(notificationsFilesMap).map(x => {
+			notificationsFilesMap[x].visible = false
+		})
 
 		if (!notificationsFilesMap[id]) {
 			notificationsFilesMap[id] = {
@@ -94,12 +108,16 @@
 
 	async function loadNotificationFilesAsync(id) {
 		try {
-			const response = await getNotificationFilesAsync(id)
+			const data = await getNotificationFilesAsync(id)
 
-			return response.data
+			return data
 		} catch (error) {
 			console.error("Could not load notification files", error, id)
-			Toastr.error($_("notifications.messages.notificationFilesNotLoaded"), null, {timeOut: ErrorToastrTimeout})
+			Toastr.error(
+				$_("notifications.messages.notificationFilesNotLoaded"),
+				null,
+				{timeOut: ErrorToastrTimeout}
+			)
 		}
 	}
 </script>
@@ -108,15 +126,21 @@
 	<TopNavItem href="javascript:void(0)" on:click={toggleDropdown}>
 		<i
 			class="fas fa-bell fa-fw"
-			class:has-text-dhl-red={unseenNotificationsCount}
-		>
-		</i>
+			class:has-text-dhl-red={unseenNotificationsCount} />
 	</TopNavItem>
-	<div bind:this={notificationsElement} class="notifications" class:d-flex={visible}>
+	<div
+		bind:this={notificationsElement}
+		class="notifications"
+		class:d-flex={visible}>
 		<h2>Notifications</h2>
 
 		{#each $messages as notification, i (notification.notificationId)}
-			<div class="notifications-item" on:click={() => toggleNotificationDetail(notification.notificationId || notification.notificationId)}>
+			<div
+				class="notifications-item"
+				on:click={() =>
+					toggleNotificationDetail(
+						notification.notificationId || notification.notificationId
+					)}>
 				<div class="text">
 					<h4 class:text-bold={i < unseenNotificationsCount}>
 						{notification.title}
@@ -125,12 +149,21 @@
 				</div>
 
 				{#if notificationsFilesMap[notification.notificationId || notification.notificationId]?.visible}
-					<WithLazyLoader task={notificationsFilesMap[notification.notificationId || notification.notificationId].filesTask} let:data>
+					<WithLazyLoader
+						task={notificationsFilesMap[
+							notification.notificationId || notification.notificationId
+						].filesTask}
+						let:data>
 						<div class="d-flex flex-wrap gap-1">
 							{#each data || [] as file (file.fileCode)}
-								<a href={ContentFileEndpoints.downloadFile(file.fileCode)} target="_blank">
-									<Badge color="secondary" title="{fileSizeToString(file.size)} {file.contentType}">
-										<i class="fas fa-file-alt fa-fw" /> {file.filename}
+								<a
+									href={ContentFileEndpoints.downloadFile(file.fileCode)}
+									target="_blank">
+									<Badge
+										color="secondary"
+										title="{fileSizeToString(file.size)} {file.contentType}">
+										<i class="fas fa-file-alt fa-fw" />
+										{file.filename}
 									</Badge>
 								</a>
 							{/each}

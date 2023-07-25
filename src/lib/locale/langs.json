@@ -1,12 +1,12 @@
 [
-	{
-		"code": "cs",
-		"img": "cs",
-		"title": "Čestina"
-	},
-	{
-		"code": "en",
-		"img": "us",
-		"title": "English"
-	}
+  {
+    "code": "cs",
+    "img": "cs",
+    "title": "Čestina"
+  },
+  {
+    "code": "en",
+    "img": "us",
+    "title": "English"
+  }
 ]
