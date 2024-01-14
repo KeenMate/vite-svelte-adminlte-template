@@ -1,13 +1,13 @@
 <script>
-	import {getConfig, TableRowFullWidth, Modal, TableCondensed} from "@keenmate/svelte-adminlte"
+	import {TableRowFullWidth, Modal, TableCondensed, Config} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
-	import notification, {Success, Warning, Error} from "../providers/notification-provider"
+	import NotificationProvider, {Success, Warning} from "$lib/providers/notification-provider.js"
 
 	export let show = null
 	export let hide = null
 
-	let messages = notification.messages
-	let {DateTimeFormat} = getConfig()
+	let messages = NotificationProvider.messages
+	let {DateTimeFormat} = $Config
 
 	function color(level) {
 		if (level === Success) {

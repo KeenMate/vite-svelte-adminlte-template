@@ -3,10 +3,8 @@
 	import {
 		LteButton,
 		Card,
-		PageHeader,
-		FlexContainer
+		PageHeader, Config
 	} from "@keenmate/svelte-adminlte"
-	import {getConfig, setConfig} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 	import notification from "$lib/providers/notification-provider.js"
 	import {onDestroy, onMount} from "svelte"
@@ -41,7 +39,7 @@
 			<svelte:fragment slot="header">Actions</svelte:fragment>
 			<div class="row">
 				<div class="col-lg-12 m-1">
-					<LteButton on:click={() => setConfig({Foo: "Henlo"})}>
+					<LteButton on:click={() => $Config = ({...$Config, foo: "Hello"})}>
 						Set config
 					</LteButton>
 				</div>

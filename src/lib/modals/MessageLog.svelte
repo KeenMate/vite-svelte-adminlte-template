@@ -4,15 +4,13 @@
 		Warning,
 		Error
 	} from "$lib/providers/notification-provider"
-	import {getCustomConfig} from "$lib/config"
-
-	import {Modal, TableCondensed} from "@keenmate/svelte-adminlte"
+	import {Config, Modal, TableCondensed} from "@keenmate/svelte-adminlte"
 
 	export let show = null
 	export let hide = null
 
 	let messages = notification.messages
-	let {DateTimeFormat} = getCustomConfig()
+	let {DateTimeFormat} = $Config
 
 	function color(messageType) {
 		if (messageType === Success) {

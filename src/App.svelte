@@ -52,8 +52,8 @@
 
 	$: $userContext.socketToken && initSocket($userContext.socketToken)
 	$: $SocketReconnectRetriesFailed &&
-		showConnectionClosedModal &&
-		showConnectionClosedModal()
+	showConnectionClosedModal &&
+	showConnectionClosedModal()
 
 	onMount(() => {
 		// initSocket(getAdminSocketToken())
@@ -135,11 +135,17 @@
 
 <div class="wrapper condensed">
 	<TopNavigation>
-		<!-- <svelte:fragment slot="left">
+		<svelte:fragment slot="left">
 			<TopNavItem>
-				<BrandImage />
+				<!--<BrandImage />-->
+				Hello left
 			</TopNavItem>
-		</svelte:fragment> -->
+		</svelte:fragment>
+
+		<TopNavItem href="javascript:void(0)" on:click={onLoginUser}>
+			Hello middle
+		</TopNavItem>
+
 		<svelte:fragment slot="right">
 			{#if $SocketReconnectRetriesFailed}
 				<TopNavItem>
