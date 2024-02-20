@@ -1,4 +1,4 @@
-﻿export const FroalaActivationKey = process.meta..FROALA_ACTIVATION_KEY
+﻿export const FroalaActivationKey = import.meta.FROALA_ACTIVATION_KEY
 
 export const FroalaToolbarButtons = [
 	"alignCenter",
