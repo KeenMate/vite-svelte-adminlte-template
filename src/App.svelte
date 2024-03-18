@@ -21,7 +21,7 @@
 	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
 	import Footer from "./lib/components/common/ui/Footer.svelte"
 	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
-	import {ErrorToastrTimeout} from "./lib/constants/toastr"
+	import {ErrorToastrTimeout} from "./lib/constants/toastr.ts"
 	import {LogoutUrl} from "./lib/constants/urls"
 	import {onRouteLoaded} from "./lib/helpers/page-helpers"
 

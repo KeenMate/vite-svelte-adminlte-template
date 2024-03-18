@@ -2,7 +2,7 @@ import {
   Channel,
   pushSocketMessageAsync as pushAsync
 } from "@keenmate/js-common-helpers/socket/channel.js"
-import socket, {savePushAsync} from "./index.js"
+import socket, {savePushAsync} from "./index"
 export const ExampleChannel = new Channel(socket, "example:lobby")
 ExampleChannel.join()
 

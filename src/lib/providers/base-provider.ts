@@ -5,7 +5,7 @@ import {
   Authorization
 } from "@keenmate/js-common-helpers/constants/headers.js"
 import {Json} from "@keenmate/js-common-helpers/constants/content-types.js"
-import {LocalStorageAccessTokenKey} from "$lib/constants/keys.js"
+import {LocalStorageAccessTokenKey} from "$lib/constants/keys"
 import {GET} from "@keenmate/js-common-helpers/constants/methods.js"
 import {NotificationProvider, Toastr} from "@keenmate/svelte-adminlte"
 
