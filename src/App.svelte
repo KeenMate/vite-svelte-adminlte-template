@@ -2,7 +2,6 @@
 	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
 	import {getUserContextAsync} from "$lib/providers/context-provider.ts"
 	import {SocketReconnectRetriesFailed} from "$lib/providers/socket/index.js"
-	import {isAuthenticated, userContext} from "$lib/stores/authentication.js"
 	import {
 		Badge,
 		Dropdown,
@@ -20,22 +19,24 @@
 	import Router from "svelte-spa-router"
 	import {writable} from "svelte/store"
 	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
-	import TopNavigationNotifications from "./lib/components/common/navigation/TopNavigationNotifications.svelte"
 	import Footer from "./lib/components/common/ui/Footer.svelte"
 	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
 	import {ErrorToastrTimeout} from "./lib/constants/toastr"
 	import {LogoutUrl} from "./lib/constants/urls"
 	import {onRouteLoaded} from "./lib/helpers/page-helpers"
 
-	import "./lib/locale/i18n"
+	import "./lib/locale/i18n.ts"
 	import MessageLog from "$lib/modals/MessageLog.svelte"
 	import RoutePages from "./lib/pages"
-	import {initSocket} from "./lib/providers/socket"
-	import {currentUser} from "./lib/stores/authentication"
+	import {initSocket} from "./lib/providers/socket/index.ts"
+	import {
+		CurrentUser,
+		isAuthenticated,
+		userContext
+	} from "./lib/stores/authentication.ts"
 	import {listenPageTitleChanged} from "./lib/stores/page-title.js"
 	import {ReauthUrl} from "$lib/constants/urls.ts"
 	import BaseProvider from "$lib/providers/base-provider.ts"
-	import BrandImage from "$lib/components/ui/BrandImage.svelte"
 
 	const reauthorizationNeeded = writable(false)
 
@@ -52,8 +53,8 @@
 
 	$: $userContext.socketToken && initSocket($userContext.socketToken)
 	$: $SocketReconnectRetriesFailed &&
-	showConnectionClosedModal &&
-	showConnectionClosedModal()
+		showConnectionClosedModal &&
+		showConnectionClosedModal()
 
 	onMount(() => {
 		// initSocket(getAdminSocketToken())
@@ -157,11 +158,10 @@
 			{#if $reauthorizationNeeded}
 				<LteButton small on:click={reauthorize}>Reauthorize</LteButton>
 			{/if}
-			<TopNavigationNotifications />
 			<LocaleDropdown />
 			{#if $isAuthenticated}
 				<Dropdown slot="right">
-					<DropdownButton>{$currentUser?.displayName || ""}</DropdownButton>
+					<DropdownButton>{$CurrentUser?.displayName || ""}</DropdownButton>
 					<DropdownMenu right>
 						<DropdownItem href="/home" target="_blank">
 							{$_("common.links.home")}

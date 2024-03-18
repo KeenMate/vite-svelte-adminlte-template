@@ -3,10 +3,10 @@ import JwtDecode from "jwt-decode"
 import {
   ContentType,
   Authorization
-} from "@keenmate/js-common-helpers/constatns/headers"
-import {Json} from "@keenmate/js-common-helpers/constatns/content-types"
+} from "@keenmate/js-common-helpers/constants/headers.js"
+import {Json} from "@keenmate/js-common-helpers/constants/content-types.js"
 import {LocalStorageAccessTokenKey} from "$lib/constants/keys.js"
-import {GET} from "@keenmate/js-common-helpers/constants/methods"
+import {GET} from "@keenmate/js-common-helpers/constants/methods.js"
 import {NotificationProvider, Toastr} from "@keenmate/svelte-adminlte"
 
 type headers = {[key: string]: string}

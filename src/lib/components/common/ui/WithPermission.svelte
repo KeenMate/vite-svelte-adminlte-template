@@ -1,13 +1,13 @@
 <script>
 	import {checkPermissions} from "@keenmate/js-common-helpers/helpers/permissions"
-	import {currentUser} from "$lib/stores/authentication.js"
+	import {CurrentUser} from "$lib/stores/authentication.ts"
 
 	export let permission
 	export let comparison = "any"
 
 	$: sanitizedPermission =
 		(typeof permission === "string" && [permission]) || permission
-	$: isVisible = checkPermissions($currentUser?.permissions, {
+	$: isVisible = checkPermissions($CurrentUser?.permissions, {
 		[comparison]: sanitizedPermission
 	})
 </script>

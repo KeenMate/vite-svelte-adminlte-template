@@ -10,7 +10,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^6.1.2",
-		"@keenmate/js-common-helpers": "^0.2.0",
+		"@keenmate/js-common-helpers": "^1.1.0",
 		"@keenmate/svelte-adminlte": "^1.1.4",
 		"@rollup/plugin-html": "^0.2.4",
 		"@rollup/plugin-replace": "^4.0.0",

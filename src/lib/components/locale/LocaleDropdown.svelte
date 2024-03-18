@@ -2,7 +2,7 @@
 	import {defaultLanguages} from "$lib/locale/i18n.js"
 	import LanguageProvider from "$lib/providers/langauge-provider.ts"
 	import {changeLang, getFlagPath, locale} from "$lib/locale/i18n.js"
-	import {userContext} from "$lib/stores/authentication.js"
+	import {userContext} from "$lib/stores/authentication.ts"
 	import {
 		Dropdown,
 		DropdownMenu,

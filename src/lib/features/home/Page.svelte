@@ -1,10 +1,6 @@
 <script>
-	import {currentUser} from "$lib/stores/authentication.js"
-	import {
-		LteButton,
-		Card,
-		PageHeader, Config
-	} from "@keenmate/svelte-adminlte"
+	import {CurrentUser} from "$lib/stores/authentication.ts"
+	import {LteButton, Card, PageHeader, Config} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 	import notification from "$lib/providers/notification-provider.js"
 	import {onDestroy, onMount} from "svelte"
@@ -39,7 +35,7 @@
 			<svelte:fragment slot="header">Actions</svelte:fragment>
 			<div class="row">
 				<div class="col-lg-12 m-1">
-					<LteButton on:click={() => $Config = ({...$Config, foo: "Hello"})}>
+					<LteButton on:click={() => ($Config = {...$Config, foo: "Hello"})}>
 						Set config
 					</LteButton>
 				</div>
@@ -62,8 +58,8 @@
 	<div class="col-9">
 		<Card outline color="danger">
 			<svelte:fragment slot="header">User Info</svelte:fragment>
-			{#if $currentUser}
-				<pre> {JSON.stringify($currentUser, null, 2)}</pre>
+			{#if $CurrentUser}
+				<pre> {JSON.stringify($CurrentUser, null, 2)}</pre>
 			{:else}
 				<b>You have to be logged in to see user info</b>
 			{/if}

@@ -2,8 +2,7 @@ import {
   Channel,
   pushSocketMessageAsync as pushAsync
 } from "@keenmate/js-common-helpers/socket/channel"
-import socket from "./index.js"
-import type {PushResponse} from "$lib/types/channel-types.ts"
+import socket, {savePushAsync} from "./index.js"
 export const ExampleChannel = new Channel(socket, "example:lobby")
 ExampleChannel.join()
 
@@ -12,13 +11,11 @@ export type ItemType = {
   id: number
 }
 export async function getItemsAsync(id) {
-  const channel = await ExampleChannel.getAsync()
-  const response = await pushAsync<PushResponse<ItemType[]>>(
-    channel,
+  const response = await savePushAsync<ItemType[]>(
+    ExampleChannel,
     "get_items",
-    {
-      id
-    }
+    {id}
   )
-  return response.data
+
+  return response
 }
