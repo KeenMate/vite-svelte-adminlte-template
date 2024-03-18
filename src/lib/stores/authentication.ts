@@ -4,7 +4,7 @@ import {
   getLanguages,
   getSessionTimeout,
   getSocketToken
-} from "$lib/constants/index.js"
+} from "$lib/constants/context"
 import {derived, writable} from "svelte/store"
 import type {Nullable} from "@keenmate/js-common-helpers/types/helpers.js"
 

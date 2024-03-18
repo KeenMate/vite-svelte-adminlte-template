@@ -1,5 +1,5 @@
-import {Json} from "@keenmate/js-common-helpers/constants/content-types"
-import {ContentType} from "@keenmate/js-common-helpers/constants/headers"
+import {Json} from "@keenmate/js-common-helpers/constants/content-types.js"
+import {ContentType} from "@keenmate/js-common-helpers/constants/headers.js"
 
 export async function configuredFetch(
   resource: string,

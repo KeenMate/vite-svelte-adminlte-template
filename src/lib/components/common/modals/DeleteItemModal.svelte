@@ -1,13 +1,12 @@
-<script>
-	import ModalRejectedError from "$lib/types/modal-rejected-error.js"
+<script lang="ts">
+	import ModalRejectedError from "$lib/types/modal-rejected-error"
 	import {createEventDispatcher} from "svelte"
-	import {Modal, ModalCloseButton} from "@keenmate/svelte-adminlte"
+	import {Modal, ModalCloseButton, DeleteButton} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
-	import DeleteButton from "../components/common/buttons/DeleteButton.svelte"
 
 	const dispatch = createEventDispatcher()
 
-	export function showModal(dd) {
+	export function showModal(dd: any) {
 		deleteData = dd
 		show()
 
@@ -21,11 +20,11 @@
 		hide()
 	}
 
-	let jModalElement
-	let show, hide
-	let deleteData
+	let jModalElement: Modal
+	let show: () => void, hide: () => void
+	let deleteData: any
 
-	let resolveModal, rejectModal
+	let resolveModal: (data: any) => void, rejectModal: (reason: any) => void
 
 	$: jModalElement && jModalElement.off("hidden.bs.modal", doReject)
 	$: jModalElement && jModalElement.on("hidden.bs.modal", doReject)
@@ -36,6 +35,7 @@
 
 	function doConfirm() {
 		resolveModal(deleteData)
+		hide()
 		dispatch("delete", deleteData)
 	}
 </script>
@@ -45,11 +45,11 @@
 		{$_("common.labels.deleteConfirmation")}
 	</svelte:fragment>
 
-	<slot data={deleteData}></slot>
+	<slot data={deleteData} />
 
 	<svelte:fragment slot="actions">
 		<ModalCloseButton>
-			{$_("common.buttons.close")}
+			{$_("common.buttons.cancel")}
 		</ModalCloseButton>
 
 		<DeleteButton small on:click={doConfirm}>

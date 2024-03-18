@@ -18,7 +18,6 @@ export default defineConfig({
       preprocess: sveltePreprocess()
     }),
     // copy files that are not frequently modified (for other assets create separate copy plugin)
-    // @ts-ignore
     copy({
       targets: [
         {
@@ -41,9 +40,8 @@ export default defineConfig({
           src: "node_modules/@fortawesome/fontawesome-free/webfonts",
           dest: outRootDir
         }
-        // {src: "public/*", dest: outRootDir}
       ]
-    }),
+    }) as any, // this is needed because of a error in vite-plugin-copy type
 
     createHtmlPlugin({
       entry: "src/main.js",

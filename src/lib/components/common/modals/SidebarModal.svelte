@@ -1,7 +1,6 @@
 <script>
-	import {onDestroy, tick} from "svelte"
-	import SuperSlide from "$lib/svelte/transitions/super-slide.js"
-	import {createEventDispatcher} from "svelte"
+	import {createEventDispatcher, onDestroy, tick} from "svelte"
+	import SuperSlide from "$lib/svelte/transitions/super-slide"
 
 	const dispatch = createEventDispatcher()
 
@@ -21,9 +20,9 @@
 
 	let data
 
-	$: expandedOrientation = (orientation
-		? orientation
-		: (document.dir === "rtl" ? "left" : "right")) || "right"
+	$: expandedOrientation =
+		(orientation ? orientation : document.dir === "rtl" ? "left" : "right") ||
+		"right"
 	$: contentDimensions = getContentDimensions(expandedOrientation)
 
 	onDestroy(() => {
@@ -64,18 +63,16 @@
 	}
 
 	function onRootElementClick(ev) {
-		if (mainContentElement.contains(ev.target))
-			return
+		if (mainContentElement.contains(ev.target)) return
 
-		if (checkParentOfToast(ev.target))
-			return
+		if (checkParentOfToast(ev.target)) return
 
 		dispatch("close", {callback: hideModal})
 	}
-	
+
 	function checkParentOfToast(target) {
 		const toastParent = document.getElementById("toast-container")
-		
+
 		return toastParent?.contains(target)
 	}
 </script>
@@ -86,22 +83,23 @@
 	<div class="sidebar-modal">
 		<main
 			bind:this={mainContentElement}
-			class="{expandedOrientation}"
+			class={expandedOrientation}
 			style:--content-width={contentDimensions.w}
 			style:--content-height={contentDimensions.h}
-			transition:SuperSlide={{orientation: expandedOrientation, targetSize, duration: 300, ...slideOptions}}
-		>
-			<slot
-				{data}
-				{hideModal}
-			/>
+			transition:SuperSlide={{
+				orientation: expandedOrientation,
+				targetSize,
+				duration: 300,
+				...slideOptions
+			}}>
+			<slot {data} {hideModal} />
 		</main>
 	</div>
 {/if}
 
 <style lang="scss">
-	@import "node_modules/bootstrap/scss/functions";
-	@import "node_modules/admin-lte/build/scss/bootstrap-variables";
+	@import "~bootstrap/scss/functions";
+	@import "~admin-lte/build/scss/bootstrap-variables";
 
 	.sidebar-modal {
 		position: fixed;
@@ -110,7 +108,7 @@
 		width: 100vw;
 		height: 100vh;
 		z-index: 5000;
-		background-color: rgba($gray-800, .25);
+		background-color: rgba($gray-800, 0.25);
 
 		& > main {
 			width: var(--content-width);

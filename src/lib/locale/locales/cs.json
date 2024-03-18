@@ -1,82 +1,141 @@
 {
-  "common": {
-    "headers": {
-      "loading": "načítání",
-      "notFound": "Nenalezeno"
-    },
-    "links": {
-      "home": "Domov",
-      "homer": "Nenalezeno",
-      "logIn": "Prihlasit se",
-      "logOut": "Odhlasit se"
-    }
-  },
-  "component-list": {
-    "all": "Vše",
-    "card-title": "Klikněte pro zobrazeni dokumentace",
-    "categories": "Kategorie",
-    "description": "Popisek",
-    "name": "Jméno",
-    "not-found": {
-      "text": "Zkuste zmenit, nebo smazat text",
-      "title": "Žádne komponenty nenelezeny"
-    }
-  },
-  "component-page-template": {
-    "events-title": "Události",
-    "props-title": "Vlastnosti",
-    "slots-title": "Sloty",
-    "text-title": "Popisek"
-  },
-  "components": {
-    "title": "Komponenty"
-  },
+  "common.buttons.add": "Přidat",
+  "common.buttons.cancel": "Zrušit",
+  "common.buttons.close": "Zavřít",
+  "common.buttons.confirm": "Potvrdit",
+  "common.buttons.delete": "Vymazat",
+  "common.buttons.discardAllChanges": "Zrušit všechny změny",
+  "common.buttons.discardChanges": "Zrušte všechny změny",
+  "common.buttons.edit": "Upravit",
+  "common.buttons.preview": "Náhled",
+  "common.buttons.remove": "Odstranit",
+  "common.buttons.save": "Uložit",
+  "common.buttons.saveChanges": "Uložit změny",
+  "common.buttons.start": "Start",
+  "common.buttons.stop": "Stop",
+  "common.footer.allRightsReserved": "Všechna práva vyhrazena.",
+  "common.headers.connectionClosed": "Připojení uzavřeno",
+  "common.headers.loading": "Načítání...",
+  "common.headers.notFound": "Nenalezeno",
+  "common.labels.availableAADFields": "Dostupná uživatelská pole AAD",
+  "common.labels.body": "Tělo",
+  "common.labels.businessPhones": "Firemní telefony",
+  "common.labels.clearFilters": "Zrušit filtry.",
+  "common.labels.code": "Kód",
+  "common.labels.content": "Obsah",
+  "common.labels.country": "Země",
+  "common.labels.countryCode": "Kód země",
+  "common.labels.deleteConfirmation": "Potvrzení smazání",
+  "common.labels.department": "Divize",
+  "common.labels.dialingCode": "Předvolba",
+  "common.labels.disabled": "Zakázáno",
+  "common.labels.displayName": "Zobrazovaný název",
+  "common.labels.email": "E-mailem",
+  "common.labels.emailTemplate": "Šablona e-mailu",
+  "common.labels.enabled": "Povoleno",
+  "common.labels.ended": "Skončilo",
+  "common.labels.fieldName": "Název pole",
+  "common.labels.hideFilters": "Skrýt ostatní filtry",
+  "common.labels.initialized": "Inicializováno",
+  "common.labels.language": "Jazyk",
+  "common.labels.lastModified": "Naposledy upraveno {modified} uživatelem {modifiedBy}",
+  "common.labels.mailNickname": "Poštovní přezdívka",
+  "common.labels.manager": "Manažer",
+  "common.labels.noResultsFound": "Nebyly nalezeny žádné výsledky",
+  "common.labels.notFilled": "Nevyplněno",
+  "common.labels.notInitialized": "Neinicializováno",
+  "common.labels.otherFilters": "Jiné filtry",
+  "common.labels.pageSize": "Velikost stránky",
+  "common.labels.password": "Heslo",
+  "common.labels.phone": "Telefon",
+  "common.labels.phonePrefix": "Telefonní předvolba",
+  "common.labels.privateEmail": "Soukromý email",
+  "common.labels.rowsCount": "Řádky se počítají",
+  "common.labels.runtime": "Doba běhu",
+  "common.labels.sendoutType": "Typ odeslání",
+  "common.labels.showFilters": "Zobrazit filtry",
+  "common.labels.started": "Zahájeno",
+  "common.labels.status": "Postavení",
+  "common.labels.subject": "Předmět",
+  "common.labels.title": "Titul",
+  "common.labels.typeToSearch": "Chcete-li vyhledávat položky, začněte psát",
+  "common.labels.userPrincipalName": "Hlavní jméno uživatele",
+  "common.labels.username": "Uživatelské jméno",
+  "common.links.condensed": "Zhuštěný styl",
+  "common.links.dataProtection": "Ochrana dat",
+  "common.links.home": "Domov",
+  "common.links.homer": "Domů",
+  "common.links.logIn": "Přihlásit se",
+  "common.links.logOut": "Odhlásit se",
+  "common.links.mobile": "Mobilní styl",
+  "common.messages.connectionClosed": "Připojení k serveru bylo ukončeno.<br>Stisknutím <code class=\"text-white text-bold\">F5</code> obnovte stránku a zkuste to znovu.",
+  "common.messages.countriesNotLoaded": "Země se nepodařilo načíst",
+  "common.messages.dataNotLoaded": "Data se nepodařilo načíst",
+  "common.messages.forbidden": "Tuto operaci nemáte povoleno provést",
+  "common.messages.timeout": "Odpověď ze serveru nedorazila včas (Možná došlo k chybě nebo požadavek trval déle, než se očekávalo)",
+  "common.messages.unauthenticated": "Nejste ověřeni. Zkuste obnovit stránku a opakujte své akce",
+  "common.messages.unexpectedUploadError": "Při nahrávání souboru {filename} na server došlo k neočekávané chybě",
+  "common.messages.uploadedFileInvalid": "Nahraný soubor je neplatný",
+  "common.notifications.loadingErrorHeader": "Chyba při načítání dat",
+  "common.notifications.missingRequiredFields": "Chybí povinná pole",
+  "common.placeholders.code": "Zadejte kód",
+  "common.placeholders.emailSubject": "Předmět emailu",
+  "common.placeholders.enterDialingCode": "Zadejte předvolbu",
+  "common.placeholders.fieldName": "Zadejte název pole",
+  "common.placeholders.filterByCity": "Filtrujte podle města",
+  "common.placeholders.filterByCountry": "Filtrujte podle země",
+  "common.placeholders.invitationText": "Vytvořte text pozvánky",
+  "common.placeholders.pageSize": "Vyberte velikost stránky",
+  "common.placeholders.putPhoneNumber": "Vložte telefonní číslo",
+  "common.placeholders.searchAADUsers": "Vyhledejte uživatele AAD",
+  "common.placeholders.selectEmailTemplate": "Vyberte šablonu e-mailu",
+  "common.placeholders.selectLanguage": "Zvolte jazyk",
+  "common.placeholders.selectPhonePrefix": "Vyberte předvolbu telefonu",
+  "common.placeholders.title": "Zadejte název",
+  "common.tableColumns.actions": "Akce",
+  "common.tableColumns.channel": "Kanál",
+  "common.tableColumns.city": "Město",
+  "common.tableColumns.code": "Kód",
+  "common.tableColumns.country": "Země",
+  "common.tableColumns.created": "Vytvořeno",
+  "common.tableColumns.createdBy": "Vytvořil",
+  "common.tableColumns.displayName": "název",
+  "common.tableColumns.division": "Divize",
+  "common.tableColumns.elapsed": "Uplynulý",
+  "common.tableColumns.employeeNumber": "Číslo zaměstnance",
+  "common.tableColumns.ended": "Skončilo",
+  "common.tableColumns.fieldName": "Název pole",
+  "common.tableColumns.finished": "Hotovo",
+  "common.tableColumns.firstName": "Jméno",
+  "common.tableColumns.globalId": "Globální ID",
+  "common.tableColumns.initialized": "Inicializováno",
+  "common.tableColumns.language": "Jazyk",
+  "common.tableColumns.lastName": "Příjmení",
+  "common.tableColumns.message": "Zpráva",
+  "common.tableColumns.modified": "Upraveno",
+  "common.tableColumns.notInitialized": "Neinicializováno",
+  "common.tableColumns.orgUnit": "Org. jednotka",
+  "common.tableColumns.progress": "Pokrok",
+  "common.tableColumns.sendout": "Sendout",
+  "common.tableColumns.sendoutState": "Stav odeslání",
+  "common.tableColumns.sendoutText": "Odeslaný text",
+  "common.tableColumns.sendoutType": "Typ odeslání",
+  "common.tableColumns.started": "Zahájeno",
+  "common.tableColumns.status": "Postavení",
+  "common.tableColumns.targetUserId": "ID cílového uživatele",
+  "common.tableColumns.title": "Titul",
+  "common.tableColumns.tokenState": "Stav tokenu",
+  "common.tableColumns.totalTime": "Celkový čas",
+  "common.tableColumns.totalUsers": "Celkový počet uživatelů",
+  "common.tableColumns.type": "Typ",
+  "common.tableColumns.username": "Uživatelské jméno",
+  "common.tableColumns.users": "Uživatelé",
+  "common.warnings.errorOccurred": "Při načítání dat došlo k chybě",
+  "common.warnings.noData": "Žádná data",
   "home": {
-    "language": "Vyberte jazyk",
-    "title": "Domov"
+    "title": ""
   },
-  "locale-editor": {
-    "edit": "Upravit",
-    "title": "Editor Localů"
-  },
-  "locales-list": {
-    "card-title": "Klickněte na localu pro upraveni",
-    "code": "Kód",
-    "flag": "Vlajka",
-    "language": "Jazyk"
-  },
-  "not-found": {
-    "header": "Stranka nenalezena",
-    "link": "Vratit se na domovskou stranku"
-  },
-  "notifications": {
-    "component-example-template": {
-      "copied": {
-        "message": "Kod zkopirovan to schranky"
-      }
-    },
-    "locale-editor": {
-      "saved": {
-        "message": "Localy pro {locale} byly uspěšně uloženy do LocalStorage.",
-        "title": "Localy ulozeny"
-      }
-    },
-    "messages": {
-      "noNewNotifications": "Žádná upozornění"
-    }
-  },
-  "page1": {
-    "title": "Stránka 1"
-  },
-  "routes": {
-    "home": {
-      "title": "Domov"
-    },
-    "page1": {
-      "title": "Příklad"
-    }
-  },
-  "users": {
-    "title": "Uživatelé"
-  }
+  "page1.title": "Page1",
+  "routes.home.title": "Domov",
+  "routes.page1.title": "Příklad"
 }

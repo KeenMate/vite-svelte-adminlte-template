@@ -8,7 +8,7 @@
 
 	let colorMap = {}
 
-	$: dataWithRest = withRest && getDataWithRest(data) || data
+	$: dataWithRest = (withRest && getDataWithRest(data)) || data
 
 	function getDataWithRest(d) {
 		const percentSum = d.reduce((acc, x) => acc + x.percent, 0)
@@ -30,9 +30,10 @@
 	}
 
 	function bgColor(item) {
-		const color = colorMap[item.id]
-			|| item.color
-			|| StackedBarColors[Math.floor(Math.random() * StackedBarColors.length)]
+		const color =
+			colorMap[item.id] ||
+			item.color ||
+			StackedBarColors[Math.floor(Math.random() * StackedBarColors.length)]
 
 		colorMap[item.id] = color
 
@@ -45,13 +46,13 @@
 		<ul class="legend-stack">
 			{#each dataWithRest as legendItem (legendItem.id)}
 				{#if legendItem.value !== 0}
-					<li
-						class="series-legend"
-					>
-						<i style="{bgColor(legendItem)} color: #fff" class="marker-legend"></i>
+					<li class="series-legend">
+						<i
+							style="{bgColor(legendItem)} color: #fff"
+							class="marker-legend" />
 						<span class="text-legend">
-		          {legendItem.title}
-		        </span>
+							{legendItem.title}
+						</span>
 					</li>
 				{/if}
 			{/each}
@@ -61,17 +62,16 @@
 				{#if part.value}
 					<div
 						class="item-stack"
-						style={bgColor(part) + 'flex-basis:' + part.percent + '%;'}
-					>
+						style={bgColor(part) + "flex-basis:" + part.percent + "%;"}>
 						<div class="percent-stack">
-			          <span class="text-stack">
-			            <strong>{Math.round(part.percent)}%</strong>
-			          </span>
+							<span class="text-stack">
+								<strong>{Math.round(part.percent)}%</strong>
+							</span>
 						</div>
 						<div class="label-stack">
-			          <span class="text-stack">
-			            <strong>{@html part.value}</strong>
-			          </span>
+							<span class="text-stack">
+								<strong>{@html part.value}</strong>
+							</span>
 						</div>
 					</div>
 				{/if}
@@ -189,4 +189,3 @@
 		color: #333333
 
 </style>
-

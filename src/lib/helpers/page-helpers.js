@@ -1,11 +1,16 @@
-import {stringifyFilters} from "@keenmate/js-common-helpers/helpers/querystring-filters"
-import {joinPaths} from "@keenmate/js-common-helpers/helpers/string"
+import {joinPaths} from "@keenmate/js-common-helpers/helpers/string.js"
 import {Pages} from "$lib/pages"
 import {customPageTitleUsed, pageTitle} from "$lib/stores/page-title.js"
 import {get} from "svelte/store"
-import {pageUrlToRegex, pageHref} from "@keenmate/js-common-helpers/helpers/url"
+import {
+	pageUrlToRegex,
+	pageHref
+} from "@keenmate/js-common-helpers/helpers/url.js"
 
-export {pageHref, pageUrlToRegex} from "@keenmate/js-common-helpers/helpers/url"
+export {
+	pageHref,
+	pageUrlToRegex
+} from "@keenmate/js-common-helpers/helpers/url.js"
 
 export function pageUrl(url, params, qsObject, originalQs = null) {
 	return pageHref.apply(null, arguments).replace("#", "")

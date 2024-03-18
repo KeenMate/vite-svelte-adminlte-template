@@ -1,7 +1,7 @@
 <script>
 	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
 	import {getUserContextAsync} from "$lib/providers/context-provider.ts"
-	import {SocketReconnectRetriesFailed} from "$lib/providers/socket/index.js"
+	import {SocketReconnectRetriesFailed} from "$lib/providers/socket"
 	import {
 		Badge,
 		Dropdown,
@@ -136,17 +136,6 @@
 
 <div class="wrapper condensed">
 	<TopNavigation>
-		<svelte:fragment slot="left">
-			<TopNavItem>
-				<!--<BrandImage />-->
-				Hello left
-			</TopNavItem>
-		</svelte:fragment>
-
-		<TopNavItem href="javascript:void(0)" on:click={onLoginUser}>
-			Hello middle
-		</TopNavItem>
-
 		<svelte:fragment slot="right">
 			{#if $SocketReconnectRetriesFailed}
 				<TopNavItem>

@@ -1,7 +1,7 @@
 <script>
-	import {defaultLanguages} from "$lib/locale/i18n.js"
+	import {defaultLanguages} from "$lib/locale/i18n.ts"
 	import LanguageProvider from "$lib/providers/langauge-provider.ts"
-	import {changeLang, getFlagPath, locale} from "$lib/locale/i18n.js"
+	import {changeLang, getFlagPath, locale} from "$lib/locale/i18n.ts"
 	import {userContext} from "$lib/stores/authentication.ts"
 	import {
 		Dropdown,
