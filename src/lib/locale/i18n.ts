@@ -1,4 +1,4 @@
-import {userContext} from "$lib/stores/authentication.ts"
+import {userContext} from "$lib/stores/authentication.js"
 import {get} from "svelte/store"
 import {init, locale, addMessages} from "svelte-i18n"
 import defaultLanguages from "./langs.json"

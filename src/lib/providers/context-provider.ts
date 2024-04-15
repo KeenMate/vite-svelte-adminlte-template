@@ -1,4 +1,4 @@
-import {UserContextUrl} from "../constants/urls.ts"
+import {UserContextUrl} from "../constants/urls.js"
 import {configuredFetch} from "./index.js"
 
 export async function getUserContextAsync() {

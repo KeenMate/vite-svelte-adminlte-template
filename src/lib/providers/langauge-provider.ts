@@ -1,6 +1,6 @@
 import BaseProvider from "./base-provider.js"
 import {POST} from "@keenmate/js-common-helpers/constants/methods"
-import {LanguageApiUrl} from "../constants/urls.ts"
+import {LanguageApiUrl} from "../constants/urls.js"
 
 export class LanguageProvider extends BaseProvider {
   async setLanguage(languageCode) {

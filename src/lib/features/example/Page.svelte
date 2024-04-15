@@ -15,7 +15,7 @@
 		ExampleChannel,
 		ItemType,
 		getItemsAsync
-	} from "$lib/providers/socket/example-channel.ts"
+	} from "$lib/providers/socket/example-channel.js"
 	let items: ItemType[] = []
 	let id = 5
 

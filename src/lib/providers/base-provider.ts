@@ -1,4 +1,4 @@
-import {LoginUrl, AppUrl} from "$lib/constants/urls.ts"
+import {LoginUrl, AppUrl} from "$lib/constants/urls.js"
 import JwtDecode from "jwt-decode"
 import {
   ContentType,

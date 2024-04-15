@@ -1,6 +1,6 @@
 <script>
 	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
-	import {getUserContextAsync} from "$lib/providers/context-provider.ts"
+	import {getUserContextAsync} from "$lib/providers/context-provider.js"
 	import {SocketReconnectRetriesFailed} from "$lib/providers/socket"
 	import {
 		Badge,
@@ -21,22 +21,22 @@
 	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
 	import Footer from "./lib/components/common/ui/Footer.svelte"
 	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
-	import {ErrorToastrTimeout} from "./lib/constants/toastr.ts"
+	import {ErrorToastrTimeout} from "./lib/constants/toastr.js"
 	import {LogoutUrl} from "./lib/constants/urls"
-	import {onRouteLoaded} from "./lib/helpers/page-helpers"
+	import {onRouteLoaded} from "$lib/helpers/page-helpers.js"
 
-	import "./lib/locale/i18n.ts"
+	import "./lib/locale/i18n.js"
 	import MessageLog from "$lib/modals/MessageLog.svelte"
 	import RoutePages from "./lib/pages"
-	import {initSocket} from "./lib/providers/socket/index.ts"
+	import {initSocket} from "./lib/providers/socket/index.js"
 	import {
 		CurrentUser,
 		isAuthenticated,
 		userContext
-	} from "./lib/stores/authentication.ts"
+	} from "./lib/stores/authentication.js"
 	import {listenPageTitleChanged} from "./lib/stores/page-title.js"
-	import {ReauthUrl} from "$lib/constants/urls.ts"
-	import BaseProvider from "$lib/providers/base-provider.ts"
+	import {ReauthUrl} from "$lib/constants/urls.js"
+	import BaseProvider from "$lib/providers/base-provider.js"
 
 	const reauthorizationNeeded = writable(false)
 

@@ -1,9 +1,14 @@
 {
 	"compilerOptions": {
 		// This is to allow usage of exports field in package json
+//		"moduleResolution": "node",
+//		"module": "ESNext",
+//		"target": "ESNext",
+
+		// from @tsconfig/svelte/tsconfig.json
+		"module": "esnext",
 		"moduleResolution": "bundler",
-		"module": "ESNext",
-		"target": "ESNext",
+		"target": "es2017",
 
 		/**
 		 * svelte-preprocess cannot figure out whether you have

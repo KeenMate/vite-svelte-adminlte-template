@@ -1,8 +1,8 @@
 <script>
-	import {CurrentUser} from "$lib/stores/authentication.ts"
+	import {CurrentUser} from "$lib/stores/authentication.js"
 	import {LteButton, Card, PageHeader, Config} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
-	import notification from "$lib/providers/notification-provider.ts"
+	import notification from "$lib/providers/notification-provider.js"
 	import {onDestroy, onMount} from "svelte"
 	import {
 		customPageTitleUsed,

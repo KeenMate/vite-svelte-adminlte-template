@@ -1,6 +1,6 @@
 import {SvelteComponent} from "svelte"
 import type {WrappedComponent} from "svelte-spa-router"
-import {translate} from "$lib/pages"
+import {translate} from "$lib/pages/index"
 
 export type TranslationText = (i18n: (code: string) => string) => string
 export type PageUrlsDict = any // TODO fix this type
