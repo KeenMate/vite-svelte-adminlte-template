@@ -7,7 +7,7 @@
 
 <div id="error-page">
 	<div class="header">
-		<!-- <img src="/logo/Logo_GLICP_ Two_Line_Negative.png" alt="GCP Logo" /> -->
+		<!-- <img src="/logo.png" alt="Logo" /> -->
 	</div>
 	<div class="error">
 		<h1 class="error-status-code">{code}</h1>
