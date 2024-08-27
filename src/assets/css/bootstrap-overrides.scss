@@ -1,5 +1,18 @@
 .table {
+	th,
+	td {
+		padding: 0.35rem 0.75rem !important;
+	}
+
 	td {
 		vertical-align: middle !important;
 	}
+}
+
+.modal {
+	backdrop-filter: blur(.1rem);
+}
+
+.input-group {
+	flex-wrap: nowrap;
 }
