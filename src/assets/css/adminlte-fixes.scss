@@ -1,8 +1,126 @@
+:root {
+	--sidebar-width-transition-duration: 100ms;
+}
+
 .dropdown-toggle::after {
 	vertical-align: middle;
 }
 
+
 .content-wrapper {
-	max-height: calc(100vh - 6.5rem - 2px);
-	overflow-y: scroll;
+	.content {
+		max-height: calc(100vh - 6rem);
+		overflow-y: scroll;
+	}
+}
+
+.content-wrapper {
+	//height: 100vh;
+	max-height: calc(100vh - 3rem - 1px);
+	//overflow-y: scroll;
+
+	.content {
+		height: calc(100vh - 6rem);
+	}
+}
+
+body.sidebar-mini {
+	&.sidebar-collapse {
+		aside.main-sidebar {
+
+			&:not(:hover) {
+				.nav-link {
+					max-width: 3.5rem !important;
+					transition: max-width var(--sidebar-width-transition-duration) ease-in-out, width var(--sidebar-width-transition-duration) ease-in-out;
+				}
+			}
+		}
+	}
+
+	aside.main-sidebar {
+		transition: max-width var(--sidebar-width-transition-duration) ease-in-out, width var(--sidebar-width-transition-duration) ease-in-out !important;
+
+		.nav-link {
+			p {
+				transition: none !important;
+			}
+		}
+	}
+}
+
+.dropdown {
+	.dropdown-menu {
+		//min-width: 0;
+		//width: calc(100% - 1rem + 1px);
+	}
+
+	.dropdown-toggle {
+		display: flex;
+		align-items: center;
+		gap: .2rem;
+	}
+
+	.dropdown-item {
+		display: inline-flex;
+		align-items: center;
+		gap: .5rem;
+
+		cursor: pointer;
+		white-space: nowrap;
+	}
+}
+
+@each $color in ("info", "primary", "link", "warning", "danger") {
+	[class*="icheck-#{$color}"] {
+		& > input:indeterminate + label {
+			&::before {
+				background-color: var(--#{$color});
+				border-color: var(--#{$color});
+			}
+		}
+	}
+}
+
+[class*="icheck-"] {
+	&:has(> label) {
+		display: inline-flex;
+		align-items: baseline;
+		gap: .25rem;
+	}
+
+	& > input[type=checkbox]:indeterminate + label {
+		&::after {
+			content: "";
+			display: inline-block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border: 2px none #fff;
+			border-bottom-style: solid;
+			width: 10px;
+			height: 0;
+			transform: translate(6px, 10px);
+		}
+	}
+
+	& > label {
+		margin-bottom: 0 !important;
+		user-select: none;
+	}
+}
+
+.card {
+	.card-body {
+		&::after {
+			content: none;
+		}
+	}
+}
+
+.alert {
+	h4 {
+		&:empty {
+			display: none;
+		}
+	}
 }
