@@ -1,10 +1,30 @@
 import sveltePreprocess from "svelte-preprocess"
+import projectAliases from "./project-aliases.json" with { type: "json" }
+import path from "path"
 
 export default {
 	// svelte options
 	extensions: [".svelte"],
 	compilerOptions: {},
-	preprocess: [sveltePreprocess()],
+	preprocess: [sveltePreprocess({
+		scss: {
+			importer: [
+				url => {
+					for (const [alias, aliasPath] of Object.entries(projectAliases)) {
+						if (url.indexOf(alias) === 0) {
+							return {
+								file: url.replace(alias, path.join(process.cwd(), ...aliasPath)),
+							};
+						}
+					}
+					return null;
+				}
+			],
+			prependData: `
+				@use 'sass:color';
+				@import "./src/assets/css/variables.scss";`
+		}
+	})],
 	onwarn: (warning, handler) => {},
 	// plugin options
 	vitePlugin: {
