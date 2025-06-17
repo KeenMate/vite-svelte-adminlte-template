@@ -9,7 +9,7 @@ export async function configuredFetch(
 
   const response = await fetch(resource, {
     headers,
-    ...(requestInfo || {})
+    ...requestInfo
   })
 
   if (response.status >= 400) throw response

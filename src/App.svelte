@@ -1,200 +1,149 @@
-<script>
-	import ConnectionClosedModal from "$lib/components/modals/ConnectionClosedModal.svelte"
-	import {getUserContextAsync} from "$lib/providers/context-provider.js"
-	import {SocketReconnectRetriesFailed} from "$lib/providers/socket"
-	import {
-		Badge,
-		Dropdown,
-		DropdownButton,
-		DropdownItem,
-		DropdownMenu,
-		LteButton,
-		Toastr,
-		TopNavigation,
-		TopNavItem
-	} from "@keenmate/svelte-adminlte"
-	import keymage from "keymage"
-	import {onDestroy, onMount, setContext} from "svelte"
-	import {_} from "svelte-i18n"
-	import Router from "svelte-spa-router"
-	import {writable} from "svelte/store"
-	import SidebarNavigation from "./lib/components/common/navigation/SidebarNavigation.svelte"
-	import Footer from "./lib/components/common/ui/Footer.svelte"
-	import LocaleDropdown from "./lib/components/locale/LocaleDropdown.svelte"
-	import {ErrorToastrTimeout} from "./lib/constants/toastr.js"
-	import {LogoutUrl} from "./lib/constants/urls"
+<script lang="ts">
 	import {onRouteLoaded} from "$lib/helpers/page-helpers.js"
-
-	import "./lib/locale/i18n.js"
-	import MessageLog from "$lib/modals/MessageLog.svelte"
-	import RoutePages from "./lib/pages"
-	import {initSocket} from "./lib/providers/socket/index.js"
-	import {
-		CurrentUser,
-		isAuthenticated,
-		userContext
-	} from "./lib/stores/authentication.js"
-	import {listenPageTitleChanged} from "./lib/stores/page-title.js"
-	import {ReauthUrl} from "$lib/constants/urls.js"
 	import BaseProvider from "$lib/providers/base-provider.js"
+	import {initSocket} from "$lib/providers/socket/index.js"
+	import {IsAuthenticated, loadUserContextAsync, UserContext} from "$lib/stores/authentication.js"
+	import {onDestroy, onMount, setContext} from "svelte"
+	import {_, isLoading, locale} from "svelte-i18n"
+	import Router, {location, replace} from "@keenmate/svelte-spa-router"
+	import ApplicationSidebarNavigation from "$lib/components/layout/sidebar/ApplicationSidebarNavigation.svelte"
+	import Footer from "$lib/components/common/ui/Footer.svelte"
+	import MessageLog from "$lib/modals/MessageLog.svelte"
+	import RoutePages, {PageUrls} from "$lib/pages/index.js"
+	import {listenPageTitleChanged} from "$lib/stores/page-title.js"
+	import SystemProvider from "$lib/providers/system-provider.js"
+	import {SystemEnvironment} from "$lib/stores/system.js"
+	import {getAccessTokenFromHtml} from "$lib/constants/index.js"
+	import LoadingPage from "$lib/pages/LoadingPage.svelte"
+	import {type Unsubscriber, writable, type Writable} from "svelte/store"
+	import ApplicationTopNavigation from "$lib/components/layout/top-navigation/ApplicationTopNavigation.svelte"
+	import {ensurePreferencesOrDefault} from "$lib/stores/preferences.js"
+	import {triggerPageResize} from "$lib/helpers/window-helpers.js"
+	import {pageUrl} from "@keenmate/js-common-helpers/helpers/url.js"
+	import {ConfirmModal} from "@keenmate/svelte-adminlte"
+	import {AppContextKey} from "$lib/constants/svelte-context-keys.js"
+	import type {AppSvelteContext} from "$lib/types/index.js"
+	import AppDisconnect from "$lib/components/common/AppDisconnect.svelte"
 
-	const reauthorizationNeeded = writable(false)
+	const showConfirmModalAsync: Writable<(message_?: string | null, header_?: string | null, data_?: any) => Promise<boolean>> = writable()
+	const hideConfirmModalAsync: Writable<VoidFunction> = writable()
 
-	let loading = false
-	let showLog
-	let pageTitleSubscription
-
-	setContext("loader", {
-		setLoading: val => (loading = val)
+	setContext<AppSvelteContext>(AppContextKey, {
+		showConfirmModalAsync,
+		hideConfirmModalAsync
 	})
 
-	// page-specific data
-	let showConnectionClosedModal
+	let showLog: VoidFunction
+	let pageTitleSubscription: Unsubscriber
+	// let userNotificationsChannel
+	let initialLoad = true
 
-	$: $userContext.socketToken && initSocket($userContext.socketToken)
-	$: $SocketReconnectRetriesFailed &&
-		showConnectionClosedModal &&
-		showConnectionClosedModal()
+	// page-specific data
+	$: $UserContext?.socketToken && initSocket($UserContext.socketToken)
+	$: updateLocale($UserContext.currentLocale)
+	// $: createUserRelatedChannels($CurrentUser)
+	$: $IsAuthenticated && onIsAuthenticated()
+	$: onLocationChanged($location)
 
 	onMount(() => {
-		// initSocket(getAdminSocketToken())
-		loadUserContextAsync()
-
-		keymage("ctrl-0", () => {
-			showLog()
-		})
+		ensurePreferencesOrDefault()
+		//keymage("ctrl-0", () => {
+		//	showLog()
+		//})
 
 		pageTitleSubscription = listenPageTitleChanged()
+		fixAdminLte()
 	})
 
 	onDestroy(() => {
-		if (pageTitleSubscription) pageTitleSubscription()
+		if (pageTitleSubscription) {
+			pageTitleSubscription()
+		}
 	})
 
-	function logout() {
-		window.location.replace(LogoutUrl)
+	async function onIsAuthenticated() {
+		let accessToken: string
+		if (initialLoad) {
+			initialLoad = false
+
+			accessToken = getAccessTokenFromHtml()
+			//console.log("Access token from html", accessToken)
+			if (accessToken) {
+				BaseProvider.accessToken = accessToken
+			}
+		}
+
+		if (!accessToken) {
+			await BaseProvider.fetchAccessToken()
+		}
+
+		await loadSystemEnvironment()
 	}
 
-	async function loadUserContextAsync() {
-		try {
-			// In dev mode we have separate vite devserver for admin and phoenix server, so we need to fetch user context from server
-			// In prod index.html is server by phoenix application and is injected with user context
-			if (import.meta.env.DEV) {
-				const response = await getUserContextAsync()
-
-				userContext.set(response)
-			}
-		} catch (error) {
-			if (error.status === 401) {
-				console.debug("User context not loaded because user is unauthenticated")
-				return
-			}
-
-			console.error("Could not load user context", error)
-			Toastr.error("User context could not be loaded", null, {
-				timeOut: ErrorToastrTimeout
-			})
+	async function loadSystemEnvironment() {
+		if (!import.meta.env.DEV) {
+			return
 		}
+
+		const {data} = await SystemProvider.getSystemEnvironmentAsync()
+		$SystemEnvironment = data
+	}
+
+	function updateLocale(locale_: string) {
+		if (!import.meta.env.DEV) {
+			return
+		}
+
+		$locale = locale_ || "en"
+	}
+
+	function onLocationChanged(location_: string) {
+		// console.log("on location changed", location_, pageUrl(PageUrls.dashboard))
+		// if (location_ === "/") {
+		// 	replace(pageUrl(PageUrls.dashboard))
+		// }
+	}
+
+	function fixAdminLte() {
+		triggerPageResize()
+		fixSidebarCollapse()
+	}
+
+	function fixSidebarCollapse() {
+		const toggleSidebarButton = document.querySelector(`[data-widget="pushmenu"][role="button"]`)
+		window.jQuery(toggleSidebarButton).PushMenu()
 	}
 
 	function routeLoaded({detail: route}) {
 		return onRouteLoaded(route, $_)
 	}
-
-	// function handleEndSession() {
-	// 	console.log("Session ended")
-	// 	reauthorizationNeeded.set(true)
-	// }
-
-	function reauthorize() {
-		// @ts-ignores
-		window.addEventListener("reauthenticated", handleReauthorizationSuccess, {
-			once: true
-		})
-
-		window.open(ReauthUrl, "_blank", "width=400,height=475")
-	}
-
-	function handleReauthorizationSuccess({detail: token}) {
-		console.log("Reauthenticated event received")
-		initSocket(token)
-		reauthorizationNeeded.set(false)
-	}
-
-	function onLoginUser() {
-		const handle = BaseProvider.loginPopup("/popup-logged-in")
-
-		let checker = setInterval(() => {
-			if (!handle.closed) return
-			console.info("Loading user details")
-			clearInterval(checker)
-
-			loadUserContextAsync()
-		}, 1000)
-	}
 </script>
 
-<div class="wrapper condensed">
-	<TopNavigation>
-		<svelte:fragment slot="right">
-			{#if $SocketReconnectRetriesFailed}
-				<TopNavItem>
-					<Badge color="danger">
-						{$_("common.labels.reconnect")}
-					</Badge>
-				</TopNavItem>
-			{/if}
-			{#if $reauthorizationNeeded}
-				<LteButton small on:click={reauthorize}>Reauthorize</LteButton>
-			{/if}
-			<LocaleDropdown />
-			{#if $isAuthenticated}
-				<Dropdown slot="right">
-					<DropdownButton>{$CurrentUser?.displayName || ""}</DropdownButton>
-					<DropdownMenu right>
-						<DropdownItem href="/home" target="_blank">
-							{$_("common.links.home")}
-						</DropdownItem>
-						<DropdownItem on:click={() => logout()}>
-							{$_("common.links.logOut")}
-						</DropdownItem>
-					</DropdownMenu>
-				</Dropdown>
-			{:else}
-				<TopNavItem href="javascript:void(0)" on:click={onLoginUser}>
-					{$_("common.links.logIn")}
-				</TopNavItem>
-			{/if}
-		</svelte:fragment>
-	</TopNavigation>
+{#if $isLoading}
+	<LoadingPage />
+{:else}
+	<div class="wrapper">
+		<ApplicationTopNavigation />
+		<ApplicationSidebarNavigation />
 
-	<SidebarNavigation />
+		<div class="content-wrapper">
+			<div class="content">
+				<Router
+					routes={RoutePages}
+					on:routeLoaded={routeLoaded}
+				/>
+			</div>
 
-	<div class="content-wrapper">
-		<div class="content min-full-height">
-			<Router routes={RoutePages} on:routeLoaded={routeLoaded} />
+			<Footer />
 		</div>
+
+		<MessageLog bind:show={showLog} />
 	</div>
+{/if}
 
-	<Footer />
+<ConfirmModal
+	bind:hideModal={$hideConfirmModalAsync}
+	bind:showModal={$showConfirmModalAsync}
+/>
 
-	<MessageLog bind:show={showLog} />
-</div>
-
-<ConnectionClosedModal bind:showModal={showConnectionClosedModal} />
-
-<style lang="scss">
-	:global {
-		#language-dropdown {
-			.dropdown-menu {
-				min-width: 0;
-			}
-		}
-	}
-
-	.lang-item {
-		cursor: pointer;
-		white-space: nowrap;
-		padding: 0 1rem;
-	}
-</style>
+<AppDisconnect />

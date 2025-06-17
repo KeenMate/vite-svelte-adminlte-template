@@ -1,31 +1,39 @@
-//card 
+//card
 
 .condensed {
   font-size: 0.9rem;
-  line-height: 1.2;
+  //line-height: 1.2;
 
-  .svelte-select {
-    --height: calc(2rem + 2px) !important;
-  }
+	.wrapper {
+		position: static !important;
+	}
 
   .card {
-    margin-bottom: 0.7rem;
+	  --horizontal-padding: .5rem;
+	  --vertical-padding: .5rem;
+
+    margin-bottom: 0.5rem;
+
+	  .card-header,
+		.card-footer {
+		  &:not(:empty) {
+				min-height: calc((#{var(--vertical-padding)} * 2) + 1rem) !important;
+				padding: var(--vertical-padding) var(--horizontal-padding);
+			}
+	  }
+
+	  .card-body {
+		  padding: var(--vertical-padding) var(--horizontal-padding);
+
+		  &:has(> .template-timestamps-text-only) {
+			  padding-bottom: calc(#{var(--vertical-padding)} / 2);
+		  }
+
+		  & > .template-timestamps-text-only {
+			  margin-top: calc(#{var(--vertical-padding)} / 2);
+		  }
+	  }
   }
-
-  .card-header {
-    min-height: 2.5rem !important;
-    padding: 0.25em 0.85em !important;
-  }
-
-  .card-body {
-    padding: 0.50em 0.85em;
-  }
-
-  .card-header .card-tools {
-    margin: -0.25rem 0rem -0.25rem 0;
-  }
-
-
 
   .col-xl,
   .col-xl-auto,
@@ -106,19 +114,18 @@
     margin-left: -5px;
   }
 
-	.btn {
-		line-height: 1.4;
-		padding: 0.25rem 0.55rem;
-	}
+  .btn {
+    line-height: 1.4;
+    padding: 0.25rem 0.55rem;
+  }
 
   .btn-sm {
-    padding: 4px 4px 2px 4px;
+    padding: 5px;
   }
 
   .btn-xs {
-    padding: 3px 2px 1px 2px;
+    padding: 4px;
   }
-
 
   .elevation-4 {
     box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%) !important;
@@ -128,7 +135,6 @@
   .table-sm td {
     padding: 0.25rem;
   }
-
 
   .table {
     margin-bottom: 0.2em;
@@ -146,10 +152,9 @@
     height: 100%;
   }
 
-
-  h1>.badge,
-  h2>.badge,
-  h3>.badge {
+  h1 > .badge,
+  h2 > .badge,
+  h3 > .badge {
     vertical-align: middle;
   }
 
@@ -168,14 +173,13 @@
   .fr-toolbar .fr-command.fr-btn,
   .fr-popup .fr-command.fr-btn,
   .fr-modal .fr-command.fr-btn {
-
     height: 30px !important;
   }
 
   .fr-box.fr-basic .fr-element {
     padding: 10px !important;
   }
-	
+
   .callout {
     margin-bottom: 0.5rem;
     padding: 0.5rem;
@@ -190,10 +194,10 @@
     padding: 0.275rem 0.65rem;
     height: calc(1.8125rem + 2px);
   }
-	
-	textarea.form-control {
-		height: auto;
-	}
+
+  textarea.form-control {
+    height: auto;
+  }
 
   .custom-file,
   .custom-file-input {
@@ -205,8 +209,9 @@
   }
 
   .input-group,
-  label:has(> input[type=checkbox]) {
-	  height: calc(1.8125rem + 2px) !important;
+  label:has(> input[type="checkbox"]):not(.switch) {
+    // no switch is to fix svelte adminlte switches
+    height: calc(1.8125rem + 2px) !important;
   }
 
   // .selectContainer {
@@ -223,6 +228,10 @@
 
   .alert-dismissible {
     padding-right: 3rem;
+
+	  & .close {
+		  padding: .5rem 1rem;
+	  }
   }
 
   .alert {

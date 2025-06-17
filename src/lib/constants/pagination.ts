@@ -1,4 +1,4 @@
-﻿export const PageSizes = [
+export const PageSizes = [
 	{label: "5", value: 5},
 	{label: "10", value: 10},
 	{label: "20", value: 20},
@@ -8,3 +8,6 @@
 ]
 
 export const DefaultPageSize = 30
+export const DefaultSmallerPageSize = 10
+
+export const MaxPageSize = 9999

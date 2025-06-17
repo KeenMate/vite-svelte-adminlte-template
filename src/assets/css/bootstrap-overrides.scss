@@ -16,3 +16,8 @@
 .input-group {
 	flex-wrap: nowrap;
 }
+
+.text-underline,
+.text-underline:hover {
+	text-decoration: underline !important;
+}

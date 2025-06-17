@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {onDestroy, tick} from "svelte"
 	import SuperSlide from "$lib/svelte/transitions/super-slide.js"
 	import {createEventDispatcher} from "svelte"

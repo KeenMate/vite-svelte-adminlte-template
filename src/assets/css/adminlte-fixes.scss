@@ -6,21 +6,14 @@
 	vertical-align: middle;
 }
 
-
-.content-wrapper {
-	.content {
-		max-height: calc(100vh - 6rem);
-		overflow-y: scroll;
-	}
-}
-
 .content-wrapper {
 	//height: 100vh;
 	max-height: calc(100vh - 3rem - 1px);
 	//overflow-y: scroll;
 
 	.content {
-		height: calc(100vh - 6rem);
+		height: calc(100vh - 5.5rem);
+		overflow-y: scroll;
 	}
 }
 
@@ -82,34 +75,69 @@ body.sidebar-mini {
 }
 
 [class*="icheck-"] {
+	margin: 0 !important;
+	// this removes inheritance from parent's text-align prop
+	text-align: left !important;
+
+	&:has(> input[disabled]),
+	& > input[disabled] {
+		&:hover {
+			cursor: no-drop !important;
+		}
+	}
+
 	&:has(> label) {
 		display: inline-flex;
 		align-items: baseline;
 		gap: .25rem;
 	}
 
-	& > input[type=checkbox]:indeterminate + label {
-		&::after {
-			content: "";
-			display: inline-block;
-			position: absolute;
-			top: 0;
-			left: 0;
-			border: 2px none #fff;
-			border-bottom-style: solid;
-			width: 10px;
-			height: 0;
-			transform: translate(6px, 10px);
+	& > input[type=checkbox] {
+		&:indeterminate + label {
+			&::after {
+				content: "";
+				display: inline-block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				border: 2px none #fff;
+				border-bottom-style: solid;
+				width: 10px;
+				height: 0;
+				transform: translate(6px, 10px);
+			}
+		}
+
+		&:checked + label {
+			&::after {
+				transform: rotate(45deg) !important;
+				top: 4px;
+				left: 7.5px;
+			}
 		}
 	}
 
 	& > label {
 		margin-bottom: 0 !important;
 		user-select: none;
+		min-width: 22px;
+		line-height: 23px !important;
+
+		&:empty {
+			padding-left: 0 !important;
+
+			&::before {
+				margin-left: 0 !important;
+			}
+		}
 	}
 }
 
 .card {
+	&:last-of-type {
+		margin-bottom: 0 !important;
+	}
+
 	.card-body {
 		&::after {
 			content: none;

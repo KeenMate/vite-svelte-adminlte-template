@@ -3,32 +3,40 @@
 
 @import "#/@validide/resizable-table-columns/dist/css/resizable-table-columns.min.css";
 
-// boostrap related
-@import "#/bootstrap/scss/functions";
-@import "#/admin-lte/build/scss/bootstrap-variables";
-@import "#/bootstrap/scss/bootstrap";
+// AdminLTE and Bootstrap
+// Variables and Mixins
+// ---------------------------------------------------
+@import "bootstrap/scss/functions";
+@import "admin-lte/build/scss/bootstrap-variables";
+@import "admin-lte/build/scss/variables";
+//@import "admin-lte/build/scss/variables-alt";
+@import "admin-lte/build/scss/mixins";
 
-// adminlte related
-@import "#/admin-lte/build/scss/variables";
-@import "#/admin-lte/build/scss/mixins";
-@import "#/admin-lte/build/scss/parts/core";
-@import "#/admin-lte/build/scss/parts/components";
-@import "#/admin-lte/build/scss/parts/extra-components";
-@import "#/admin-lte/build/scss/parts/pages";
-@import "#/admin-lte/build/scss/parts/plugins";
-@import "#/admin-lte/build/scss/parts/miscellaneous";
+@import "bootstrap/scss/bootstrap";
+@import "icheck-bootstrap/icheck-bootstrap.css";
 
-@import "#/@fortawesome/fontawesome-free/css/all.min.css";
-@import "#/toastr/build/toastr.min.css";
+@import "admin-lte/build/scss/parts/core";
+@import "admin-lte/build/scss/parts/components";
+@import "admin-lte/build/scss/parts/extra-components";
+@import "admin-lte/build/scss/parts/pages";
+@import "admin-lte/build/scss/parts/plugins";
+@import "admin-lte/build/scss/parts/miscellaneous";
 
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "toastr/build/toastr.min.css";
 
-@import "#/tippy.js/dist/tippy.css";
+@import "tippy.js/dist/tippy.css";
 
 // custom styles
+@import "./variables";
 @import "./colors";
+@import "./typography";
+@import "./fonts";
 @import "./adminlte-fixes";
+@import "./adminlte-overrides";
 @import "./bootstrap-overrides";
 @import "./svelte-select-overrides";
+@import "./svelte-multiselect-overrides";
 @import "./data-table";
 @import "./overrides";
 @import "./theme/main";
@@ -38,6 +46,59 @@
 @import "./flexing";
 @import "./div-table";
 @import "./sortable-table";
+
+:root {
+	overflow: hidden;
+}
+
+.main-sidebar {
+	overflow-y: auto;
+	height: 100vh !important;
+	display: flex;
+	flex-direction: column;
+
+	.sidebar {
+		flex: 1;
+		height: unset;
+
+		&::-webkit-scrollbar {
+			width: 5px;
+			/* background-color: yellow; */
+		}
+
+		/* Track */
+		&::-webkit-scrollbar-track {
+			background: #f1f1f1;
+		}
+
+		/* Handle */
+		&::-webkit-scrollbar-thumb {
+			background: #888;
+		}
+
+		/* Handle on hover */
+		&::-webkit-scrollbar-thumb:hover {
+			background: #555;
+		}
+
+		.nav-item {
+			max-width: 100%;
+		}
+	}
+}
+
+body.sidebar-collapse {
+	aside.main-sidebar:not(:hover) {
+		.nav-item {
+			max-width: 100%;
+
+			ul.nav {
+				transition: 200ms;
+				margin-left: 0 !important;
+			}
+		}
+	}
+}
 
 .card-header,
 .top-panel {
@@ -70,24 +131,18 @@
 	white-space: nowrap;
 }
 
-.show-pointer {
-	cursor: pointer;
-}
-
 .highlight-on-hover:hover {
 	color: var(--primary);
 }
 
-.row {
-	.vr {
-		width: 1px;
-		align-self: stretch;
-		border: .5px solid lightgray;
-		margin: -0.1rem;
+.vr {
+	width: 1px;
+	align-self: stretch;
+	border: .5px solid lightgray;
+	margin: -0.1rem;
 
-		&::before {
-			content: "";
-		}
+	&::before {
+		content: "";
 	}
 }
 
@@ -102,3 +157,46 @@
 .min-full-height {
 	min-height: 100%;
 }
+
+.nav-item.brand-nav-item {
+	.nav-link {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+.content-wrapper {
+	background-image: url("../images/background-image.svg");
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	&.loading {
+		width: 100% !important;
+		margin-left: 0 !important;
+
+		& > .full-height {
+			height: 100vh !important;
+		}
+	}
+}
+
+// for long/short version of brand image
+//.sidebar-mini {
+//	&.sidebar-collapse {
+//		.brand-image {
+//			display: none !important;
+//		}
+//
+//		.brand-image-responsive {
+//			display: block !important;
+//		}
+//	}
+//
+//	.brand-image {
+//		display: block !important;
+//	}
+//
+//	.brand-image-responsive {
+//		display: none !important;
+//	}
+//}

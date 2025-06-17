@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {CurrentUser} from "$lib/stores/authentication.js"
 	import {LteButton, Card, PageHeader, Config} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"

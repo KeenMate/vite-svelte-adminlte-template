@@ -1,6 +1,6 @@
 root = true
 
-[*.{cs,js,css,cshtml,json,svelte,vue}]
+[*.{cs,js,scss,css,cshtml,json,svelte,vue}]
 indent_style = tab
 indent_size = 2
 trim_trailing_whitespace = true

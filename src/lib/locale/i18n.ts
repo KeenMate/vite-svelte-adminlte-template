@@ -1,50 +1,78 @@
-import {userContext} from "$lib/stores/authentication.js"
+import TranslationsProvider from "$lib/providers/translations-provider.js"
+import {UserContext} from "$lib/stores/authentication.js"
 import {get} from "svelte/store"
-import {init, locale, addMessages} from "svelte-i18n"
-import defaultLanguages from "./langs.json"
+import {init, locale, register} from "svelte-i18n"
+import defaultLanguages from "./default-languages.json"
+import type {LanguageItem} from "$lib/features/translations/types.js"
 
-export {locale, defaultLanguages}
+export {defaultLanguages}
 
-const locales = import.meta.glob("./locales/*.json", {import: "default"})
+const LocalLocales = import.meta.glob("./locales/*.json", {import: "default"})
 
-initialize()
+export async function initializeTranslationsAsync(currentLocale: string) {
+	const initialLocale = currentLocale || getSupportedUserLanguage()
 
-function initialize() {
-  const currentLocale = get(userContext).currentLocale
+	//console.log("Initializing i18n with init locale: ", initialLocale, get(locales))
+	await init({
+		fallbackLocale: "en",
+		initialLocale
+	})
+}
 
-  init({
-    fallbackLocale: "en",
-    initialLocale:
-      currentLocale?.value ||
-      localStorage.getItem("language") ||
-      getSupportedUserLanguage()
-  })
+export function registerLocales(languageCodes: string[] | null) {
+	//console.log("Registering locales", languageCodes);
 
-  loadLocale(get(locale))
+	if (!languageCodes?.length) {
+		registerLocale("en")
+		return
+	}
+
+	languageCodes.forEach(registerLocale)
+}
+
+function registerLocale(languageCode: string) {
+	register(languageCode, async () => {
+		if (import.meta.env.DEV) {
+			//console.log("loading locales from file because of dev mode")
+			const translations = await LocalLocales[`./locales/${languageCode}.json`]()
+			//console.log("DEV translations: ", languageCode, translations)
+
+			return translations
+		} else {
+			try {
+				// console.log("Getting translations", languageCode)
+				const {data} = await TranslationsProvider.getGroupTranslationsAsync(languageCode, "backend_translations")
+				//console.log("Got translations", languageCode, data)
+
+				return data
+			} catch (error) {
+				console.error("Error occurred while loading current locale's translations", error, languageCode)
+			}
+		}
+	})
+}
+
+
+export async function getFlagImagePathAsync(countryCode: string) {
+	const countryCodeIso2 = countryCode.substring(0, 2)
+	return (await import(`../../assets/images/flags/${countryCodeIso2}.png`)).default
+}
+
+export function changeLang(languageCode: string) {
+	if (getUserContextLanguages().find((x: LanguageItem) => x.code === languageCode.substring(0, 2))) {
+		locale.set(languageCode)
+	} else {
+		console.error("ERROR: language ", languageCode, " does not exist")
+	}
 }
 
 function getSupportedUserLanguage() {
-  const langCodes = getUserContextLanguages().map(l => l.code)
-  return window.navigator.languages.find(l => langCodes.includes(l))
-}
-
-export function getFlagPath(countryCode) {
-  return "images/flags/" + countryCode.substring(0, 2) + ".png"
-}
-
-export function changeLang(locale_: string) {
-  if (getUserContextLanguages().find(x => x.code === locale_.substring(0, 2))) {
-    localStorage.setItem("language", locale_)
-  } else {
-    console.log("ERROR: language " + locale_, " does not exist")
-  }
-}
-
-async function loadLocale(locale_: string) {
-  const messages = (await locales[`./locales/${locale_}.json`]()) as any
-  addMessages(locale_, messages)
+	const availableLanguageCodes = getUserContextLanguages().map((x: LanguageItem) => x.code)
+	return window.navigator
+		.languages
+		.find(l => availableLanguageCodes.includes(l))
 }
 
 function getUserContextLanguages() {
-  return get(userContext).languages || defaultLanguages
+	return get(UserContext).languages || defaultLanguages
 }

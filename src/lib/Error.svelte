@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
 	export let code = 500
 	export let message = ""
@@ -7,11 +7,11 @@
 
 <div id="error-page">
 	<div class="header">
-		<!-- <img src="/logo.png" alt="Logo" /> -->
+		<!-- <img src="/logo.png" /> -->
 	</div>
 	<div class="error">
 		<h1 class="error-status-code">{code}</h1>
-		<p title="TraceId dotazu: @Model.RequestId">{message}</p>
+		<p>{message}</p>
 		<div class="links">
 			<a href="/" class="home-btn">Back home</a>
 			<a href="mailto:{email}" class="contact-btn">Contact us</a>
@@ -30,15 +30,14 @@
 
 	:global {
 
-	* {
-		-webkit-box-sizing: border-box;
-		box-sizing: border-box;
-	}
+		* {
+			box-sizing: border-box;
+		}
 
-	body {
-		padding: 0;
-		margin: 0;
-	}
+		body {
+			padding: 0;
+			margin: 0;
+		}
 
 	}
 
@@ -75,7 +74,7 @@
 	#error-page .error .error-status-code {
 		font-size: 220px;
 		font-weight: 900;
-		margin: 0px;
+		margin: 0;
 		color: #fff;
 		line-height: 0.9;
 		text-transform: uppercase;

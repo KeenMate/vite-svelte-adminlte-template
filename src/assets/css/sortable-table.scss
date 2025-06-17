@@ -5,16 +5,16 @@
 				color: var(--red);
 			}
 
-			&:hover {
+			&:not([data-no-sort]):hover {
 				background-color: var(--highlight-background-color, #eff0f1);
+				cursor: pointer;
 				//color: var(--highlight-color, #000);
 			}
 
 			& > i {
+				min-height: 1px;
 				float: right;
 			}
-
-			cursor: pointer;
 		}
 	}
 }

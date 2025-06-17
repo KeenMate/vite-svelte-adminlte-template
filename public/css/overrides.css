@@ -1,10 +1,17 @@
+nav.navbar > .navbar-brand > a.navbar-item {
+	--bulma-navbar-item-background-l-delta: transparent;
+}
+
 .footer {
+	--bulma-strong-color: black;
+
 	background-color: rgb(229, 229, 229);
+	color: black !important;
 }
 
 .footer a {
 	/*border: 0.1rem solid transparent;*/
-	color: #666;
+	color: black;
 	font-weight: 400;
 	line-height: 1.5rem;
 }

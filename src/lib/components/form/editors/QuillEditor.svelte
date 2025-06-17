@@ -1,4 +1,4 @@
-﻿<!--<script>-->
+﻿<!--<script lang="ts">-->
 <!--	import {onMount, createEventDispatcher, onDestroy} from "svelte"-->
 <!--	import Quill from "quill"-->
 <!--	// import ImageResize from "quill-image-resize-module"-->

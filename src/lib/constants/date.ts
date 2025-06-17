@@ -8,24 +8,16 @@ export const DisplayExtendedDateTimeFormat = DisplayDateFormat + " " + DisplayEx
 export const DisplayDurationFormat = "mm:ss:SSS"
 
 export const DateRangePickerLocale = {
-	"format": DisplayDateFormat,
-	"separator": " - ",
-	"applyLabel": "Potvrdit",
-	"cancelLabel": "Zrušit",
-	"fromLabel": "Od",
-	"toLabel": "Do",
-	"customRangeLabel": "Vlastní",
-	"weekLabel": "Týden",
-	"daysOfWeek": [
-		"Ne",
-		"Po",
-		"Út",
-		"St",
-		"Čt",
-		"Pá",
-		"So"
-	],
-	"monthNames": [
+	format: DisplayDateFormat,
+	separator: " - ",
+	applyLabel: "Potvrdit",
+	cancelLabel: "Zrušit",
+	fromLabel: "Od",
+	toLabel: "Do",
+	customRangeLabel: "Vlastní",
+	weekLabel: "Týden",
+	daysOfWeek: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+	monthNames: [
 		"Leden",
 		"Únor",
 		"Březen",
@@ -39,5 +31,5 @@ export const DateRangePickerLocale = {
 		"Listopad",
 		"Prosinec"
 	],
-	"firstDay": 1
+	firstDay: 1
 }

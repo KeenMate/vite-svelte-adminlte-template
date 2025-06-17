@@ -1,4 +1,4 @@
-﻿<script>
+﻿<script lang="ts">
 	import {createEventDispatcher, onDestroy, onMount} from "svelte"
 	import JsonEditor from "jsoneditor"
 	import "jsoneditor/dist/jsoneditor.min.css"

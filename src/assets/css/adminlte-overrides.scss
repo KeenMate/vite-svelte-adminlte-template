@@ -1,0 +1,55 @@
+// BEGIN transformed sidebar
+
+.sidebar-mini,
+.sidebar-mini.sidebar-collapse {
+	nav.main-header {
+		padding-left: 0 !important;
+		margin-left: 0 !important;
+
+		ul.navbar-nav {
+			padding-left: .75rem;
+
+			//li.nav-item {
+			//	a.nav-link.sidebar-toggle {
+			//		display: inline-flex;
+			//		align-items: center;
+			//
+			//		padding: 0 1.5rem;
+			//	}
+			//}
+		}
+	}
+}
+
+aside.main-sidebar {
+	top: unset !important;
+	min-height: unset !important;
+
+	// 2.5rem nav-item height + 2*0.5rem top nav's vertical padding + 1px border
+	//height: calc(100% - 3rem - 1px) !important;
+}
+
+// END transformed sidebar
+
+
+nav {
+	li.nav-item {
+		& > a.nav-link:has(> .btn) {
+			display: flex;
+			align-items: center;
+		}
+	}
+}
+
+.btn:has(> i:first-child) {
+	display: inline-flex;
+	align-items: center;
+	gap: .25rem;
+}
+
+.btn {
+	i:only-child {
+		padding: 2px;
+	}
+}
+

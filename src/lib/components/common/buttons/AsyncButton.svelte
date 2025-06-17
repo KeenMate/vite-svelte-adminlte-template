@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {LteButton} from "@keenmate/svelte-adminlte"
 
 	export let action

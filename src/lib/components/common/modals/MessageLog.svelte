@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {Config, Modal, TableCondensed, TableRowFullWidth} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 	import NotificationProvider, {Success, Warning} from "$lib/providers/notification-provider"

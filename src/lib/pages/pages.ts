@@ -1,32 +1,30 @@
 import {SvelteComponent} from "svelte"
-import type {WrappedComponent} from "svelte-spa-router"
-import {translate} from "$lib/pages/index"
+import type {WrappedComponent} from "@keenmate/svelte-spa-router"
+import {translate} from "$lib/pages/index.js"
 
 export type TranslationText = (i18n: (code: string) => string) => string
-export type PageUrlsDict = any // TODO fix this type
+export type PageUrlsDict = {[key: string]: string | PageUrlsDict}
 
-export type RouterPages = {
-  [key: string]: WrappedComponent | typeof SvelteComponent
-}
+export type RouterPages = {[key: string]: WrappedComponent | typeof SvelteComponent}
 
 // spa router doesnt have best types
 export type AsyncComponentImport = Promise<{default: typeof SvelteComponent}>
 
 export type Page = {
-  name: string
-  title: TranslationText
-  url: string
-  breadcrumb: TranslationText[]
-  icon?: string
-  hide?: boolean
-  nesting?: boolean
-  subroutes?: Page[]
-  type?: string
-  requirements?: {
-    any?: string[]
-  }
-  anyNestedRequirements?: boolean
-  component?: () => AsyncComponentImport
+	name: string
+	title: TranslationText
+	url: string
+	breadcrumb: TranslationText[]
+	icon?: string
+	hide?: boolean
+	nesting?: boolean
+	subroutes?: Page[]
+	type?: string
+	requirements?: {
+		any?: string[]
+	}
+	anyNestedRequirements?: boolean
+	component?: () => AsyncComponentImport
 }
 
 export const Pages: Page[] = [

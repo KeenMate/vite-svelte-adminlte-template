@@ -1,30 +1,48 @@
 .content-wrapper {
-  .content:first-child {
-    padding-top: .5rem;
-  }
+	//.content:first-child {
+	//	padding-top: 0.5rem;
+	//}
 
-  // because header will probably be placed inside .content
-  .content {
-    padding: 0 1.5rem;
+	// because header will probably be placed inside .content
+	.content {
+		padding: 1rem;
 
-    & > .content-header {
-      padding-top: calc(15px - .5rem);
-    }
-  }
+		& > .content-header {
+			padding-top: calc(15px - 0.5rem);
+		}
+	}
 }
 
 .main-footer {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+	padding: .5rem 1.5rem;
 }
 
 .btn-warning {
-  background-color: #fc0 !important;
-  color: black;
+	background-color: #fc0 !important;
+	color: black;
 }
 
 .bg-transparent {
-  background-color: transparent;
+	background-color: transparent;
+}
+
+.info-box {
+	margin-bottom: unset;
+
+	.info-box-icon {
+		line-height: inherit !important;
+		background-color: rgba(0, 0, 0, 0);
+	}
+
+	.progress-description,
+	.info-box-text {
+		white-space: initial  !important;
+		margin-bottom: 0 !important;
+
+		p {
+			margin-bottom: 0 !important;
+		}
+	}
 }
 
 .info-box-icon {
@@ -34,11 +52,11 @@
 
 nav.main-header,
 .content-wrapper {
-	transition: margin-left 0.3s ease-in-out;
+	transition: margin-left var(--sidebar-width-transition-duration) ease-in-out;
 }
 
 @media (max-width: map-get($grid-breakpoints, "lg")) {
-	body:not(.sidebar-collapse) {
+	body:not(.sidebar-collapse):not(.sidebar-open) {
 		nav.main-header,
 		.content-wrapper {
 			margin-left: 250px;
@@ -47,80 +65,80 @@ nav.main-header,
 }
 
 nav.main-header {
-  padding: .25rem;
-  padding-left: .65rem;
+	padding: .25rem;
+	padding-left: .65rem;
 }
 
 aside.main-sidebar {
-  a.brand-link {
-    padding: .55rem;
-  }
+	a.brand-link {
+		padding: .55rem;
+	}
 }
 
 .page-header {
-  margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .navbar-toggle {
-  color: inherit !important;
+	color: inherit !important;
 }
 
 .navbar a {
-  color: black;
+	color: black;
 }
 .form-group {
-  align-items: center;
+	align-items: center;
 }
 
 .card {
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    gap: .25rem;
-    min-height: 2.75rem !important;
-    padding: 0.4em 0.85em !important;
+	.card-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: nowrap;
+		gap: .25rem;
+		min-height: 2.75rem !important;
+		padding: 0.4em 0.85em;
 
-    &::after {
-      content: none;
-    }
+		&::after {
+			content: none;
+		}
 
-    .form-group {
-      margin-bottom: 0 !important;
-    }
+		.form-group {
+			margin-bottom: 0 !important;
+		}
 
-    .card-title {
-      display: flex;
-      align-items: center;
-      flex-wrap: nowrap;
-      gap: .25rem;
-    }
+		.card-title {
+			display: flex;
+			align-items: center;
+			flex-wrap: nowrap;
+			gap: .25rem;
+		}
 
-    .card-tools {
-      display: flex;
-      align-items: center;
-      flex-wrap: nowrap;
-      gap: .25rem;
+		.card-tools {
+			display: flex;
+			align-items: center;
+			flex-wrap: nowrap;
+			gap: .25rem;
 
-      //margin: -0.25rem 0rem -0.25rem 0 !important;
-      margin-right: 0;
+			//margin: -0.25rem 0rem -0.25rem 0 !important;
+			margin-right: 0;
 
-      * {
-        //vertical-align: middle;
-        white-space: nowrap;
-      }
-    }
+			* {
+				//vertical-align: middle;
+				white-space: nowrap;
+			}
+		}
 
-    .actions {
-      align-self: start;
+		.actions {
+			align-self: start;
 
-      display: flex;
-      gap: .25rem;
-      justify-content: flex-end;
-      align-items: center;
-    }
-  }
+			display: flex;
+			gap: .25rem;
+			justify-content: flex-end;
+			align-items: baseline;
+		}
+	}
 }
 
 // .form-group {
@@ -130,15 +148,15 @@ aside.main-sidebar {
 // }
 
 .dropdown-menu {
-  z-index: 1050;
+	z-index: 1050;
 }
 
 .btn-sm {
-  padding: 5px 5px 3px 5px;
+	padding: 5px 5px 3px 5px;
 }
 
 .btn-xs {
-  padding: 3px 2px 1px 2px;
+	padding: 3px 2px 1px 2px;
 }
 
 //.content-wrapper .content:first-child {
@@ -150,15 +168,15 @@ aside.main-sidebar {
 //}
 
 .content-header {
-  padding: 0 !important;
+	padding: 0 !important;
 
-  .container-fluid {
-    padding: 0 !important;
-  }
+	.container-fluid {
+		padding: 0 !important;
+	}
 }
 
 .badge {
-  border-radius: 0;
+	border-radius: 0;
 }
 
 //.nav-item {
@@ -172,11 +190,8 @@ aside.main-sidebar {
 //}
 
 .auto-width {
-  width: 1px;
-}
-
-th.auto-width {
-  white-space: nowrap;
+	width: 1px;
+	white-space: nowrap;
 }
 
 //.input-group-text {
@@ -189,118 +204,162 @@ th.auto-width {
 //}
 
 .list-group-item {
-  padding: 0 .5rem;
+	padding: 0 .5rem;
 }
 
-.context-menu-label {
-  display: block;
-}
+.context-menu {
+	z-index: 500;
 
-.context-menu-entry,
-.context-menu-label {
-  padding: .3rem .75rem !important;
-  min-width: 15rem;
+	.context-menu-label {
+		display: block;
+	}
 
-  &:not(:last-child) {
-    border-bottom: 1px solid #ebebeb;
+	.context-menu-entry,
+	.context-menu-label {
+		display: block;
+		padding: 0.3rem 0.75rem !important;
+		min-width: 15rem;
 
-  }
+		&:not(:last-child) {
+			border-bottom: 1px solid #ebebeb;
+		}
 
-  &:hover {
-    background-color: #ebebeb;
-    cursor: pointer;
-  }
+		&:hover {
+			background-color: #ebebeb;
+			cursor: pointer;
+		}
 
-  &.danger {
-    background-color: #d73925;
-    color: white;
-  }
+		&.danger {
+			background-color: #d73925;
+			color: white;
+		}
 
-  &.success {
-    background-color: #00a65a;
-    color: white;
-  }
+		&.success {
+			background-color: #00a65a;
+			color: white;
+		}
 
-  &.info {
-    background-color: #00c0ef;
-    color: white;
-  }
+		&.info {
+			background-color: #00c0ef;
+			color: white;
+		}
+	}
 }
 
 .modal {
-  --modal-padding: .75rem;
+	--modal-padding: .75rem;
 
-  .modal-dialog {
-    .modal-header {
-      padding: var(--modal-padding);
+	.modal-dialog {
+		.modal-header {
+			padding: var(--modal-padding);
 
-      .close {
-        padding: 0 .5rem;
-        margin: 0 !important;
-      }
+			.close {
+				padding: 0 .5rem;
+				margin: 0 !important;
+			}
 
-      .modal-title {
-        line-height: 1;
-      }
-    }
+			.modal-title {
+				line-height: 1;
+			}
+		}
 
-    .modal-body {
-      padding: var(--modal-padding);
-    }
+		.modal-body {
+			padding: var(--modal-padding);
+		}
 
-    .modal-footer {
-      gap: .25rem;
-      padding: var(--modal-padding);
+		.modal-footer {
+			gap: .25rem;
+			padding: var(--modal-padding);
 
-      .btn {
-        margin: 0 !important;
-      }
-    }
+			.btn {
+				margin: 0 !important;
+			}
+		}
 
-    .overlay {
-      background-color: rgba(255, 255, 255, .7) !important;
-    }
-  }
+		.overlay {
+			background-color: rgba(255, 255, 255, .7) !important;
+		}
+	}
 }
 
 .pagination {
-  .page-link {
-    line-height: 1.5 !important;
-  }
+	.page-link {
+		line-height: 1.5 !important;
+	}
 }
 
 .nav-tabs {
-  .nav-item {
-    .nav-link {
-      color: #495057;
-      padding: .25rem .5rem;
+	.nav-item {
+		.nav-link {
+			color: #495057;
+			padding: .25rem .5rem;
 
-      &.active {
-        color: #007bff !important;
-      }
-    }
-  }
+			&.active {
+				color: #007bff !important;
+			}
+		}
+	}
 }
 
 .form-group.row {
-  label[class*="col-"] {
-    margin-bottom: 0 !important;
-  }
+	label[class*="col-"] {
+		margin-bottom: 0 !important;
+	}
 }
 
 .row {
-  row-gap: .5rem
+	row-gap: .5rem;
 }
 
 .cursor-pointer {
-  cursor: pointer
+	cursor: pointer !important;
 }
 
 .cursor-help {
-  cursor: help
+	cursor: help;
 }
 
 .nav-sidebar .nav-link > .right:nth-child(2),
 .nav-sidebar .nav-link > p > .right:nth-child(2) {
-  right: 0.75rem
+	right: .75rem;
+}
+
+[class*="icheck-"] {
+	gap: .3rem;
+
+	label {
+		margin-bottom: 0 !important;
+	}
+}
+
+.form-group,
+.input-group {
+	label.switch + label,
+	label:has(+ label.switch) {
+		margin-bottom: 0 !important;
+	}
+}
+
+.form-group,
+.input-group {
+	//background-color: red;
+	&:has(> label.switch) {
+		display: inline-flex;
+		gap: .25rem;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+hr {
+	margin: .5rem 0 !important;
+}
+
+fieldset {
+	all: revert;
+	border-color: #e5e5e5;
+
+	& > legend {
+		all: revert;
+	}
 }

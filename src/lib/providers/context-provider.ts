@@ -1,15 +1,14 @@
 import {UserContextUrl} from "../constants/urls.js"
-import {configuredFetch} from "./index.js"
+import BaseProvider from "./base-provider.js"
+import {GET} from "$lib/constants/methods.js"
 
-export async function getUserContextAsync() {
-  const options: RequestInit = {
-    credentials: "include"
-  }
-
-  const response = await configuredFetch(UserContextUrl, options)
-
-  const parsedResponse = await response.json()
-
-  console.log("user context", parsedResponse.data)
-  return await parsedResponse.data
+/**
+ * For development purposes only
+ */
+class ContextProvider extends BaseProvider {
+	getUserContextAsync() {
+		return this.fetchResourceAsync(GET, UserContextUrl)
+	}
 }
+
+export default new ContextProvider()

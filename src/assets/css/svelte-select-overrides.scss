@@ -1,5 +1,5 @@
-.selectContainer {
-	--listZIndex: 5;
+.svelte-select {
+	--list-z-index: 500;
 	--border: 1px solid #ced4da;
 
 	/* normal input */
@@ -7,29 +7,54 @@
 
 	/* small input */
 	--height: calc(1.8125rem + 2px);
-	--borderRadius: .25rem;
-	--clearSelectTop: .25rem;
-	--clearSelectRight: .5rem;
-	--clearSelectBottom: .25rem;
-	--spinnerLeft: .25rem;
+	--border-radius: .25rem;
+	--clear-select-width: auto;
+	--clear-select-top: .25rem;
+	--clear-select-right: .5rem;
+	--clear-select-bottom: .25rem;
+	--spinner-left: .25rem;
+	--group-item-padding-left: 1rem;
 	--padding: .25rem .5rem;
-	--inputPadding: .25rem .5rem;
+	--input-padding: .5rem 2px;
+	--internal-padding: 0 0 0 .5rem !important;
+	--multi-select-padding: .1rem .25rem !important;
+	--font-size: 0.9rem;
+	--item-padding: .25rem .5rem;
+	--item-height: none;
 
-	width: 100%;
+	&.form-control {
+		min-width: 10rem;
+	}
 
-	.clearSelect {
+	//&.multi { // :focus-within {
+	//	--height: auto;
+	//}
+
+	width: auto !important;
+
+	.value-container {
+		--value-container-padding: 0
+	}
+
+	.clear-select {
 		svg {
 			vertical-align: baseline;
 		}
 	}
+
+	.svelte-select-list {
+		min-width: 100%;
+		max-width: 60vw !important;
+	}
 }
 
 .input-group {
-	.input-group-prepend + .selectContainer {
+	.input-group-prepend + .svelte-select {
 		border-bottom-left-radius: 0 !important;
 		border-top-left-radius: 0 !important;
 	}
-	.input-group-append + .selectContainer {
+
+	.input-group-append + .svelte-select {
 		border-bottom-right-radius: 0 !important;
 		border-top-right-radius: 0 !important;
 	}

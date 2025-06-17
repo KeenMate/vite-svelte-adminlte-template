@@ -1,0 +1,13 @@
+/*body {*/
+/*	background-image: url();*/
+/*}*/
+
+main.main-content > section.section,
+main.main-content > section.section > .container,
+main.main-content > section.section > .container > .columns {
+	height: 100%
+}
+
+main.main-content > section.section > .container > .columns {
+	align-items: center;
+}

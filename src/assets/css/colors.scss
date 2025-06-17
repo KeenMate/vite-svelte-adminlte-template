@@ -1,3 +1,9 @@
+@import "./variables";
+
 :root {
-  --address-data-diff-color: #ffbdbd;
+	--link-color: #{$link-color};
+}
+
+.text-link {
+	color: $link-color;
 }

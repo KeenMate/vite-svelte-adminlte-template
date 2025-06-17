@@ -3,19 +3,29 @@
 
 	th {
 		white-space: nowrap;
-		
+
 		&.actions {
 			width: 1px;
 			padding-right: 1rem;
 		}
+
+		&.selecthor-column {
+			width: 2rem;
+		}
 	}
-	
-	td {		
-		.has-ellipsis {
-			display: inline-block;
-			text-overflow: ellipsis;
-			overflow: hidden;
+
+	td, th {
+		&.actions {
 			white-space: nowrap;
+		}
+	}
+
+	td {
+		line-height: 1 !important;
+
+		&.actions {
+			padding-top: 0.1rem !important;
+			padding-bottom: 0.1rem !important;
 		}
 	}
 }
@@ -32,7 +42,10 @@
 	}
 
 	td.no-data {
+		text-align: center;
 		padding-top: 1rem;
+		font-size: 1.2rem;
+		font-style: italic;
 	}
 }
 

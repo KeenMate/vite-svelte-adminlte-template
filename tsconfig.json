@@ -9,10 +9,10 @@
 				"./src/lib/*"
 			]
 		},
+		"target": "ESNext",
 		"useDefineForClassFields": true,
-//		"target": "ESNext",
-//		"module": "ESNext",
-//		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"resolveJsonModule": true,
 		/**
 		 * Typecheck JS in `.svelte` and `.js` files by default.
@@ -21,8 +21,9 @@
 		 * of JS in `.svelte` files.
 		 */
 		"allowJs": true,
-		"checkJs": true,
-		"isolatedModules": true
+//		"checkJs": true,
+		"isolatedModules": true,
+		"strictNullChecks": false
 	},
 	"include": [
 		"src/**/*.ts",

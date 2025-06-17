@@ -1,21 +1,9 @@
-import {
-  Channel,
-  pushSocketMessageAsync as pushAsync
-} from "@keenmate/js-common-helpers/socket/channel.js"
-import socket, {savePushAsync} from "./index"
-export const ExampleChannel = new Channel(socket, "example:lobby")
-ExampleChannel.join()
+import {Channel} from "@keenmate/js-common-helpers/socket/channel.js"
+import Socket from "./index.js"
+import type {PushResponse} from "../../types/channel-types.js"
 
-export type ItemType = {
-  name: string
-  id: number
-}
-export async function getItemsAsync(id) {
-  const response = await savePushAsync<ItemType[]>(
-    ExampleChannel,
-    "get_items",
-    {id}
-  )
+const SomeChannel = new Channel(Socket, "some_channel:lobby")
 
-  return response
+export function doSomethingAsync(param: string): Promise<PushResponse> {
+	return SomeChannel.pushAsync("do_something", {param})
 }

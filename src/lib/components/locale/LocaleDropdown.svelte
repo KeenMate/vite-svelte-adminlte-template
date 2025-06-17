@@ -1,48 +1,53 @@
-<script>
+﻿<script lang="ts">
+	import {UserContext} from "$lib/stores/authentication.js"
 	import {defaultLanguages} from "$lib/locale/i18n.js"
-	import LanguageProvider from "$lib/providers/langauge-provider.js"
-	import {changeLang, getFlagPath, locale} from "$lib/locale/i18n.js"
-	import {userContext} from "$lib/stores/authentication.js"
-	import {
-		Dropdown,
-		DropdownMenu,
-		DropdownButton
-	} from "@keenmate/svelte-adminlte"
+	import MeProvider from "$lib/providers/me-provider.js"
+	import {changeLang, getFlagImagePathAsync} from "$lib/locale/i18n.js"
+	import {Dropdown, DropdownButton, DropdownMenu} from "@keenmate/svelte-adminlte"
+	import {locale} from "svelte-i18n"
+	import CountryFlagImage from "$lib/components/locale/CountryFlagImage.svelte"
 
 	async function changeLanguage(lang) {
-		if (!lang) return
+		if (!lang)
+			return
 
-		// this is pointless if we realod the page
+		await MeProvider.setCurrentLocaleAsync(lang)
+
 		changeLang(lang)
-
-		await LanguageProvider.setLanguage(lang)
-		location.reload()
 	}
 </script>
 
-<div class="language-dropdown">
-	<Dropdown>
-		<DropdownButton>
+<Dropdown class="language-dropdown">
+	<DropdownButton>
+		{#await getFlagImagePathAsync($locale) then src}
 			<img
-				src={getFlagPath($locale)}
-				class="selected-locale-img"
-				alt={$locale} />
-		</DropdownButton>
+				{src}
+				class="selected-locale-img flag"
+				alt={$locale}
+			/>
+		{/await}
+	</DropdownButton>
 
-		<DropdownMenu right>
-			{#each $userContext.languages || defaultLanguages as l (l.code)}
-				<div class="lang-item" on:click={() => changeLanguage(l.code)}>
-					<img src={getFlagPath(l.code)} alt={l.img} />
-					{l.value || l.code}
-				</div>
-			{/each}
-		</DropdownMenu>
-	</Dropdown>
-</div>
+	<DropdownMenu right>
+		{#each $UserContext.languages || defaultLanguages as l (l.code)}
+			<div
+				class="lang-item"
+				on:click={() => changeLanguage(l.code)}
+			>
+				<CountryFlagImage countryCode={l.code} alt={l.img} />
+				{l.value || l.code}
+			</div>
+		{/each}
+	</DropdownMenu>
+</Dropdown>
 
 <style lang="scss">
 	:global {
 		.language-dropdown {
+			.flag {
+				width: 21px;
+			}
+
 			.dropdown-menu {
 				min-width: 0;
 			}
@@ -50,7 +55,7 @@
 			.dropdown-toggle {
 				display: flex;
 				align-items: center;
-				gap: 0.2rem;
+				gap: .2rem;
 			}
 		}
 	}
@@ -58,10 +63,10 @@
 	.lang-item {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: .5rem;
 
 		cursor: pointer;
 		white-space: nowrap;
-		padding: 0 0.5rem;
+		padding: 0 .5rem;
 	}
 </style>

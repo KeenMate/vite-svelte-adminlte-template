@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {LteButton} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 

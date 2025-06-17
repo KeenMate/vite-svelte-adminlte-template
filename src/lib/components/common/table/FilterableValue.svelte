@@ -1,20 +1,21 @@
-<script>
+<script lang="ts">
 	import {getContext} from "svelte"
+	import {link} from "@keenmate/svelte-spa-router"
 
-	export let value
-	export let title = null
-	export let queryKey
-	export let contextKey
+	export let value: string | null
+	export let title: string | null = null
+	export let queryKey: string
+	export let contextKey: Symbol
 
-	const {updateFiltersUrl} = getContext(contextKey)
+	const {updateFiltersUrl} = getContext(contextKey) as any
 </script>
 
 {#if value}
-	<a href={updateFiltersUrl({[queryKey]: value})} tabindex="-1">
-		{title != undefined ? title : value}
+	<a use:link={{href: updateFiltersUrl({[queryKey]: value})}}>
+		{[undefined, null].includes(title) ? title : value}
 	</a>
 {/if}
 
-<!--<a href="javascript:void(0)" on:click={() => updateQuerystringPartial({[queryKey]: value})}>-->
+<!--<a href="javascript:void(0)" on:click={() => updateQuerystringPartialAsync({[queryKey]: value})}>-->
 <!--	{value}-->
 <!--</a>-->

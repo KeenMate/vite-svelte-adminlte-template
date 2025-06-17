@@ -1,5 +1,4 @@
-﻿// @ts-ignore
-export const FroalaActivationKey = import.meta.FROALA_ACTIVATION_KEY
+﻿export const FroalaActivationKey = import.meta.env.VITE_FROALA_ACTIVATION_KEY
 
 export const FroalaToolbarButtons = [
   "alignCenter",

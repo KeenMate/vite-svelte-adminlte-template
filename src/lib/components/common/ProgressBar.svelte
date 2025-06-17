@@ -1,4 +1,4 @@
-﻿<script>
+<script lang="ts">
 	export let lower
 	export let higher
 
@@ -19,18 +19,19 @@
 	</span>
 </div>
 
-<style lang="sass">
-	.custom-progress
-		display: inline-flex
-		height: 1.5rem
-		justify-content: center
-		align-items: center
-		width: 100%
-		padding: .5rem 1rem
-		border-radius: .2em
+<style lang="scss">
+	.custom-progress {
+		display: inline-flex;
+		height: 1.5rem;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		padding: .5rem 1rem;
+		border-radius: .2em;
 
-		.text
-			white-space: nowrap
-
+		.text {
+			white-space: nowrap;
+		}
+	}
 
 </style>

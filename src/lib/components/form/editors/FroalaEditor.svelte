@@ -1,4 +1,4 @@
-﻿<script>
+﻿<script lang="ts">
 	import {createEventDispatcher, onDestroy} from "svelte"
 	import FroalaEditor from "froala-editor"
 	import "froala-editor/js/plugins/align.min"

@@ -1,0 +1,1 @@
+npm update @keenmate/svelte-adminlte

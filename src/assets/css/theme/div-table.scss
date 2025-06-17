@@ -1,0 +1,12 @@
+div.table {
+	.tr {
+		.th,
+		.td {
+			padding: .5rem 1rem;
+
+			//&:first-child {
+			//	padding-left: 0;
+			//}
+		}
+	}
+}
