@@ -25,10 +25,6 @@
 	}
 </script>
 
-<PageHeader>
-	{$_("home.title")}
-</PageHeader>
-
 <div class="row">
 	<div class="col-3">
 		<Card outline color="danger">

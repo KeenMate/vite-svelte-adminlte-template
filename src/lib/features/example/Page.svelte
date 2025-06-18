@@ -45,10 +45,6 @@
 	$: loadItemsASync(id)
 </script>
 
-<PageHeader>
-	{$_("page1.title")}
-</PageHeader>
-
 <p>Page1 content</p>
 <NumberInput bind:value={id} max="100" />
 <ul>
