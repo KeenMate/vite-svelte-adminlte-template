@@ -30,9 +30,9 @@ export function safeScrollIntoView(element: HTMLElement) {
 
 export function scrollElementToTop(el: HTMLElement) {
 	// safeScrollIntoView(el)
-	const scroller = document.querySelector(".content-wrapper > .content")!
+	const scroller     = document.querySelector(".content-wrapper > .content")!
 	const scrollerRect = scroller.getBoundingClientRect()
-	const targetRect = el.getBoundingClientRect()
+	const targetRect   = el.getBoundingClientRect()
 
 	// get el's top position relative to scroller
 	const topDiff = Math.abs(scrollerRect.top - targetRect.top)
@@ -46,8 +46,8 @@ export function scrollElementToTop(el: HTMLElement) {
 
 	scroller.scroll({
 		behavior: "smooth",
-		left: 0,
-		top: targetScrollerScroll
+		left:     0,
+		top:      targetScrollerScroll
 	})
 }
 

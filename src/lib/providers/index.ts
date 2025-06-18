@@ -2,29 +2,35 @@ import {Json} from "@keenmate/js-common-helpers/constants/content-types.js"
 import {ContentType} from "@keenmate/js-common-helpers/constants/headers.js"
 
 export async function configuredFetch(
-  resource: string,
-  requestInfo: RequestInit = null
+	resource: string,
+	requestInfo: RequestInit = null
 ) {
-  const headers = getHeaders(requestInfo)
+	const headers = getHeaders(requestInfo)
 
-  const response = await fetch(resource, {
-    headers,
-    ...requestInfo
-  })
+	const response = await fetch(resource, {
+		headers,
+		...requestInfo
+	})
 
-  if (response.status >= 400) throw response
+	if (response.status >= 400) {
+		throw response
+	}
 
-  return response
+	return response
 }
 
 function getHeaders(request) {
-  const headers = {}
+	const headers = {}
 
-  if (!request) return headers
+	if (!request) {
+		return headers
+	}
 
-  if (typeof request.body === "string") headers[ContentType] = Json
-  // if (request.body instanceof FormData)
-  // 	headers["Content-Type"] = "..."
+	if (typeof request.body === "string") {
+		headers[ContentType] = Json
+	}
+	// if (request.body instanceof FormData)
+	// 	headers["Content-Type"] = "..."
 
-  return headers
+	return headers
 }

@@ -1,15 +1,18 @@
 <script lang="ts">
-	export let lower
-	export let higher
+	let {lower, higher} = $props()
 
-	let progressElement
+	let progressElement = $state()
 
-	$: percentage = Math.round((lower / higher) * 100)
-	$: percentageColor = `hsl(${((percentage / 100) * 120) + 25}deg, 100%, 53%)`
-	$: progressElement && setProgressBackgroundColor(percentageColor, percentage)
+	let percentage      = $derived(Math.round((lower / higher) * 100))
+	let percentageColor = $derived(`hsl(${((percentage / 100) * 120) + 25}deg, 100%, 53%)`)
+
+	$effect(() => {
+		progressElement && setProgressBackgroundColor(percentageColor, percentage)
+	})
 
 	function setProgressBackgroundColor(valueColor, valuePercentage) {
-		progressElement.style.background = `linear-gradient(90deg, ${valueColor} ${valuePercentage}%, hsl(0, 0%, 90%) ${valuePercentage}%)`
+		progressElement.style.background =
+			`linear-gradient(90deg, ${valueColor} ${valuePercentage}%, hsl(0, 0%, 90%) ${valuePercentage}%)`
 	}
 </script>
 

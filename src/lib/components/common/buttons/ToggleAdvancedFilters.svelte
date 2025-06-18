@@ -3,7 +3,7 @@
 	import {_} from "svelte-i18n"
 	import {LteButton} from "@keenmate/svelte-adminlte"
 
-	export let filtersVisible
+	let {filtersVisible} = $props()
 </script>
 
 <LteButton

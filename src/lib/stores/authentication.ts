@@ -39,7 +39,7 @@ export const IsAuthenticated = derived(CurrentUser, (currentUser) => !!currentUs
 
 export const LastSeenNotificationId = writable(null)
 
-export async function loadUserContextAsync(): Promise<UserContextType> {
+export async function loadUserContextAsync(): Promise<UserContextType | null> {
 	try {
 		const {data} = await ContextProvider.getUserContextAsync()
 
@@ -49,7 +49,7 @@ export async function loadUserContextAsync(): Promise<UserContextType> {
 	} catch (error: any) {
 		if (error.status === 401) {
 			console.debug("User context not loaded because user is unauthenticated", error)
-			return
+			return null
 		}
 
 		console.error("Could not load user context", error)
@@ -86,7 +86,7 @@ export function startLogSessionTimeoutInterval(delayMs: number) {
 			sessionTimeout = sessionTimeout - Number(timeoutShortener)
 		}
 
-		const nowUnixSeconds = Math.round(new Date().getTime() / 1000)
+		const nowUnixSeconds            = Math.round(new Date().getTime() / 1000)
 		const sessionTimeoutSecondsDiff = sessionTimeout && (sessionTimeout - nowUnixSeconds)
 		console.info("[SESSION] Remaining seconds for session expiration: ", sessionTimeoutSecondsDiff)
 	}, delayMs)

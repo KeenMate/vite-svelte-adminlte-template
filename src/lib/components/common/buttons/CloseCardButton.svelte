@@ -9,5 +9,5 @@
 	small
 	on:click
 >
-	<i class="fas fa-times fa-fw" />
+	<i class="fas fa-times fa-fw"></i>
 </LteButton>

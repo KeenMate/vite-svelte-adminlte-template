@@ -7,7 +7,7 @@ export const PageSizes = [
 	{label: "100", value: 100}
 ]
 
-export const DefaultPageSize = 30
+export const DefaultPageSize        = 30
 export const DefaultSmallerPageSize = 10
 
 export const MaxPageSize = 9999

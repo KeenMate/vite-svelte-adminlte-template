@@ -6,12 +6,12 @@ import {cubicOut} from "svelte/easing"
  */
 export default function (node, params) {
 	// Params sanitization
-	const delay = params.delay || 0
-	const duration = params.duration || 400
-	const easing = params.easing || cubicOut
+	const delay       = params.delay || 0
+	const duration    = params.duration || 400
+	const easing      = params.easing || cubicOut
 	const orientation = params.orientation || getOrientationBasedOnPage()
 
-	const targetSize = params.targetSize
+	const targetSize    = params.targetSize
 	const translateAxis = getTranslateAxis(orientation)
 	const translateSign = getTranslateSign(orientation)
 

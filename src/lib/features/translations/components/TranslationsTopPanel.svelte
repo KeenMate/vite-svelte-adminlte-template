@@ -26,17 +26,19 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let contextKey
-	export let filters
-	export let languages
-	export let specificLanguageCode
-	export let creatingNewItem
+	let {
+		    contextKey,
+		    filters,
+		    languages,
+		    specificLanguageCode,
+		    creatingNewItem
+	    } = $props()
 
 	const updateFiltersDebounce = debounce(updateFilters, TypingDebounceDelay)
 
 	const {updateFiltersUrl} = getContext(contextKey)
 
-	$: languageItem = languages?.find(x => x.code === filters.languageCode)
+	let languageItem = $derived(languages?.find(x => x.code === filters.languageCode))
 
 	function updateFilters(partialFilters: object | StringDict) {
 		const newFilters = {
@@ -55,7 +57,7 @@
 			<div class="col-md-auto">
 				<InputGroup size="sm">
 					<InputGroupPrepend text>
-						<i class="fas fa-search fa-fw" />
+						<i class="fas fa-search fa-fw"></i>
 					</InputGroupPrepend>
 					<TextInput
 						value={filters.searchText}
@@ -74,7 +76,7 @@
 			<div class="col-lg-3 col-md-4">
 				<InputGroup size="sm">
 					<InputGroupPrepend text>
-						<i class="fas fa-globe-europe fa-fw" />
+						<i class="fas fa-globe-europe fa-fw"></i>
 					</InputGroupPrepend>
 					{#if specificLanguageCode}
 						<TextInput
@@ -157,7 +159,7 @@
 				small
 				on:click={() => dispatch("copyTranslations")}
 			>
-				<i class="far fa-clone fa-fw" />
+				<i class="far fa-clone fa-fw"></i>
 			</LteButton>
 		</WithPermissions>
 		<WithPermissions permission={TranslationsPermissions.readTranslation}>
@@ -171,7 +173,7 @@
 					small
 					on:click={() => dispatch("saveNewItem")}
 				>
-					<i class="fas fa-save fa-fw" />
+					<i class="fas fa-save fa-fw"></i>
 				</LteButton>
 			{:else}
 				<LteButton
@@ -180,7 +182,7 @@
 					small
 					on:click={() => dispatch("addNewItem")}
 				>
-					<i class="fas fa-plus fa-fw" />
+					<i class="fas fa-plus fa-fw"></i>
 				</LteButton>
 			{/if}
 		</WithPermissions>

@@ -1,9 +1,20 @@
-<table class="table-fixed {$$restProps.class || ''}">
+<script lang="ts">
+	type Props = {
+		children?: import("svelte").Snippet;
+		[key: string]: any
+	}
+
+	let {children = undefined, ...rest}: Props = $props()
+</script>
+
+<table class="table-fixed {rest.class || ''}">
+	<tbody>
 	<tr>
 		<td>
-			<slot></slot>
+			{@render children?.()}
 		</td>
 	</tr>
+	</tbody>
 </table>
 
 <style lang="scss">

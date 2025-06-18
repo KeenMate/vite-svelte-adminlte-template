@@ -4,8 +4,10 @@ const InactivityEventsThrottle = 1000
 
 window.inactivityTimer = null
 
-export default function(inactivityTimeout) {
-	if (import.meta.env.DEV) return
+export default function (inactivityTimeout) {
+	if (import.meta.env.DEV) {
+		return
+	}
 
 	const resetTimerThrottled = throttle(
 		() => resetTimer(inactivityTimeout),
@@ -20,7 +22,9 @@ export default function(inactivityTimeout) {
 }
 
 function resetTimer(timeout) {
-	if (window.inactivityTimer) clearTimeout(window.inactivityTimer)
+	if (window.inactivityTimer) {
+		clearTimeout(window.inactivityTimer)
+	}
 
 	window.inactivityTimer = setTimeout(() => {
 		window.dispatchEvent(new UserInactiveEvent())

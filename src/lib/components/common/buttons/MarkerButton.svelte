@@ -2,12 +2,21 @@
 	import {LteButton} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
 
-	export let xsmall: boolean | undefined = undefined
-	export let small: boolean | undefined = undefined
-	export let large: boolean | undefined = undefined
-	export let disabled = false
+	type Props = {
+		xsmall?: boolean | undefined;
+		small?: boolean | undefined;
+		large?: boolean | undefined;
+		disabled?: boolean; // $: noSizeSet = !xsmall && !small && !large
+	}
 
-	// $: noSizeSet = !xsmall && !small && !large
+	let {
+		    xsmall   = undefined,
+		    small    = undefined,
+		    large    = undefined,
+		    disabled = false
+	    }: Props = $props()
+
+
 </script>
 
 <LteButton
@@ -19,5 +28,5 @@
 	{disabled}
 	on:click
 >
-	<i class="fas fa-map-marker-alt fa-fw" />
+	<i class="fas fa-map-marker-alt fa-fw"></i>
 </LteButton>

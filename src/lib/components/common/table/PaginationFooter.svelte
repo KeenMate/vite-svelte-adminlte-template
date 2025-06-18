@@ -10,22 +10,39 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let pagination: PaginationType
-	export let pages: number | null
-	export let rowsCount: number | null = null
-	export let disablePageSize = false
-	export let updatePagination = updateFiltersPartial
-	export let inMemory = false
-	export let queryPrefix = ""
 
-	export let pageSizes = PageSizes
-
-	$: pageSize = {
-		value: pagination.pageSize || DefaultPageSize,
-		label: pagination.pageSize || DefaultPageSize
+	type Props = {
+		pagination: PaginationType;
+		pages: number | null;
+		rowsCount?: number | null;
+		disablePageSize?: boolean;
+		updatePagination?: any;
+		inMemory?: boolean;
+		queryPrefix?: string;
+		pageSizes?: any;
+		children?: import("svelte").Snippet;
+		rowsCountSlot?: import("svelte").Snippet;
 	}
 
-	function onUpdatePage({detail: page}: {detail: number}) {
+	let {
+		    pagination,
+		    pages,
+		    rowsCount        = undefined,
+		    disablePageSize  = false,
+		    updatePagination = updateFiltersPartial,
+		    inMemory         = false,
+		    queryPrefix      = "",
+		    pageSizes        = PageSizes,
+		    children         = undefined,
+		    rowsCountSlot
+	    }: Props = $props()
+
+	let pageSize = $derived({
+		value: pagination.pageSize || DefaultPageSize,
+		label: pagination.pageSize || DefaultPageSize
+	})
+
+	function onUpdatePage({detail: page}: { detail: number }) {
 		if (inMemory) {
 			dispatch("pageChanged", page)
 		} else {
@@ -34,7 +51,7 @@
 		}
 	}
 
-	function updatePageSize({detail: pageSize}: {detail: anyObject | null}) {
+	function updatePageSize({detail: pageSize}: { detail: anyObject | null }) {
 		if (inMemory) {
 			dispatch("pageSizeChanged", pageSize?.value)
 		} else {
@@ -61,16 +78,16 @@
 </script>
 
 <div class="pagination-footer d-flex justify-content-end align-items-center gap-4 flex-wrap mb-2">
-	<slot></slot>
+	{@render children?.()}
 
-	{#if rowsCount || $$slots.rowsCount}
+	{#if rowsCount || rowsCountSlot}
 		<div class="rows-count">
-			<slot name="rowsCount">
+			{#if rowsCountSlot}{@render rowsCountSlot()}{:else}
 				<Label class="mb-0">
 					{$_("common.labels.rowsCount")}
 				</Label>
 				{rowsCount}
-			</slot>
+			{/if}
 		</div>
 	{/if}
 

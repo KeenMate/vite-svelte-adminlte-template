@@ -92,7 +92,7 @@ export default {
 
 		// @uppy/status-bar strings:
 		uploading: "Nahrává se",
-		complete: "Dokončeno"
+		complete:  "Dokončeno"
 		// ...etc
 	}
 }

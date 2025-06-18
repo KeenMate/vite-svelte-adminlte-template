@@ -1,9 +1,9 @@
 class SortableTable {
-	defaultIconClasses = "fas fa-fw"
-	defaultAscendingClass = "fa-sort-up"
+	defaultIconClasses     = "fas fa-fw"
+	defaultAscendingClass  = "fa-sort-up"
 	defaultDescendingClass = "fa-sort-down"
-	defaultIconPosition = "after"
-	defaultSortedClass = "sorted"
+	defaultIconPosition    = "after"
+	defaultSortedClass     = "sorted"
 
 	headerIconsMap = {}
 
@@ -22,10 +22,11 @@ class SortableTable {
 	get iconPosition() {
 		const position = this.options.descendingClass || this.defaultIconPosition
 
-		if (position === "before")
+		if (position === "before") {
 			return "afterbegin"
-		else
+		} else {
 			return "beforeend"
+		}
 	}
 
 	get sortedClass() {
@@ -35,11 +36,11 @@ class SortableTable {
 
 	constructor(element, options) {
 		this.tableElement = element
-		this.options = options
+		this.options      = options
 
 		this.isDivTable = this.tableElement.tagName === "DIV"
 
-		this.sortedHeader = this.options?.header || null
+		this.sortedHeader  = this.options?.header || null
 		this.sortDirection = this.options?.direction || null
 	}
 
@@ -50,12 +51,12 @@ class SortableTable {
 
 		this.clearHTML()
 		this.updateHTML()
-		
+
 		const instance = this
-		
+
 		return {
 			update(options) {
-				instance.sortedHeader = options.header
+				instance.sortedHeader  = options.header
 				instance.sortDirection = options.direction
 
 				instance.updateHTML()
@@ -103,7 +104,7 @@ class SortableTable {
 	}
 
 	setupHeaders() {
-		const headerElements = this.getTableHeaderElements()
+		const headerElements    = this.getTableHeaderElements()
 		const eventUnsubscribes = []
 
 		headerElements
@@ -122,7 +123,7 @@ class SortableTable {
 
 	insertIconPlaceholder(el) {
 		const headerSortKey = this.getHeaderSortKey(el)
-		
+
 		// Should not be possible (but just in case)
 		if (this.headerIconsMap[headerSortKey]) {
 			this.headerIconsMap[headerSortKey].remove()
@@ -142,8 +143,12 @@ class SortableTable {
 			.filter(el => {
 				const sortKey = this.getHeaderSortKey(el)
 				if (sortKey === undefined) {
-					if (el.dataset.noSort === undefined)
-						console.warn("Sortable table header element has no \"data-sort-key\" attribute.\nIf sorting is not desired for this column, add \"data-no-sort\" instead", el)
+					if (el.dataset.noSort === undefined) {
+						console.warn(
+							"Sortable table header element has no \"data-sort-key\" attribute.\nIf sorting is not desired for this column, add \"data-no-sort\" instead",
+							el
+						)
+					}
 
 					return false
 				}
@@ -155,7 +160,7 @@ class SortableTable {
 	onHeaderClick(ev) {
 		const key = this.getHeaderSortKey(ev.target)
 
-		let newHeader = key
+		let newHeader    = key
 		let newDirection = this.sortedHeader === key
 			? (this.sortDirection === "asc" ? "desc" : "asc")
 			: "asc"

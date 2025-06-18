@@ -10,13 +10,13 @@ export type ReactiveSet<T> = Readable<Set<T>> & {
 }
 
 export default function createReactiveSet<T>(initialValues: T[] = []): ReactiveSet<T> {
-	const set = new Set<T>(initialValues)
+	const set   = new Set<T>(initialValues)
 	const store = writable(set)
 
 	return {
 		subscribe: store.subscribe,
-		update: store.update,
-		set: store.set,
+		update:    store.update,
+		set:       store.set,
 		add(...values: T[]) {
 			store.update(x => {
 				for (const value of values) {

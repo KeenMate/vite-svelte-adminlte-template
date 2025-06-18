@@ -1,4 +1,6 @@
 ﻿<script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import {createEventDispatcher, onDestroy} from "svelte"
 	import FroalaEditor from "froala-editor"
 	import "froala-editor/js/plugins/align.min"
@@ -46,8 +48,13 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let value = ""
-	export let options = {}
+	type Props = {
+		value?: string;
+		options?: any;
+		[key: string]: any
+	}
+
+	let {value = "", options = {}, ...rest}: Props = $props()
 
 	export function setValue(value) {
 		if (!instance?.html) {
@@ -67,32 +74,32 @@
 		return instance.html.get()
 	}
 
-	let editorElement
+	let editorElement = $state()
 	let instance
 
-	$: initEditor(editorElement)
 
 	onDestroy(() => {
 		instance?.destroy()
 	})
 
 	function initEditor(el) {
-		if (!el)
+		if (!el) {
 			return
+		}
 
 		instance = new FroalaEditor(el, {
-			key: FroalaActivationKey,
-			heightMin: "33vh",
-			toolbarButtons: FroalaToolbarButtons,
-			scrollableContainer: ".content-wrapper",
+			key:                    FroalaActivationKey,
+			heightMin:              "33vh",
+			toolbarButtons:         FroalaToolbarButtons,
+			scrollableContainer:    ".content-wrapper",
 			pasteAllowedStyleProps: CssAttributes,
-			pasteDeniedAttrs: [],
+			pasteDeniedAttrs:       [],
 			// fontSizeSelection: true,
-			fontSizeUnit: "rem",
-			fontSize: ["0.5", "0.75", "1", "1.25", "1.5", "1.75", "2", "2.25", "2.5"],
+			fontSizeUnit:             "rem",
+			fontSize:                 ["0.5", "0.75", "1", "1.25", "1.5", "1.75", "2", "2.25", "2.5"],
 			fontSizeDefaultSelection: "1",
-			spellcheck: false,
- 			events: {
+			spellcheck:               false,
+			events:                   {
 				contentChanged() {
 					dispatch("input", this.html.get())
 				}
@@ -102,9 +109,13 @@
 			this.html.set(value)
 		})
 	}
+
+	$effect(() => {
+		initEditor(editorElement)
+	})
 </script>
 
-<div class="froala-editor {$$restProps.class}">
+<div class="froala-editor {rest.class}">
 	<div bind:this={editorElement}></div>
 </div>
 

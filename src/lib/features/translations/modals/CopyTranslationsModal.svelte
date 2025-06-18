@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {preventDefault, stopPropagation} from "svelte/legacy"
+
 	import SaveButton from "$lib/components/common/buttons/SaveButton.svelte"
 	import {getLanguagesAsync} from "$lib/providers/socket/const-channel.js"
 	import {createEventDispatcher} from "svelte"
@@ -12,9 +14,9 @@
 
 	export function showModal(sourceLanguageCode_: string) {
 		sourceLanguageCode = sourceLanguageCode_
-		sourceLanguage = null
-		targetLanguage = null
-		dataGroupCode = null
+		sourceLanguage     = null
+		targetLanguage     = null
+		dataGroupCode      = null
 
 		loadLanguagesAsync()
 
@@ -25,15 +27,15 @@
 		hide()
 	}
 
-	let show: VoidFunction
-	let hide: VoidFunction
+	let show: VoidFunction = $state()
+	let hide: VoidFunction = $state()
 
 	let sourceLanguageCode: string
-	let sourceLanguage: CodeValueType | null
-	let targetLanguage: CodeValueType | null
-	let languages: CodeValueType[]
-	let dataGroupCode: string | null
-	let overwrite: boolean
+	let sourceLanguage: CodeValueType | null = $state()
+	let targetLanguage: CodeValueType | null = $state()
+	let languages: CodeValueType[]           = $state()
+	let dataGroupCode: string | null         = $state()
+	let overwrite: boolean                   = $state()
 
 	function onSubmit() {
 		if (!sourceLanguage || !targetLanguage) {
@@ -47,10 +49,10 @@
 		}
 
 		dispatch("submit", {
-			data: {
+			data:     {
 				sourceLanguage: sourceLanguage.code,
 				targetLanguage: targetLanguage.code,
-				dataGroup: dataGroupCode,
+				dataGroup:      dataGroupCode,
 				overwrite
 			},
 			callback: hide
@@ -80,11 +82,13 @@
 	}
 </script>
 
-<form on:submit|preventDefault|stopPropagation={onSubmit}>
+<form onsubmit={stopPropagation(preventDefault(onSubmit))}>
 	<Modal bind:show bind:hide>
-		<svelte:fragment slot="header">
+		{#snippet header()}
+
 			{$_("translations.headers.cloneTranslations")}
-		</svelte:fragment>
+
+		{/snippet}
 
 		<div class="row align-items-center">
 			<div class="col-md">
@@ -112,9 +116,9 @@
 			<div
 				class="col-md-auto cursor-pointer"
 				title={$_("translations.tooltips.swapSourceTargetLanguages")}
-				on:click={swapLanguages}
+				onclick={swapLanguages}
 			>
-				<i class="fas fa-arrows-alt-h fa-fw" />
+				<i class="fas fa-arrows-alt-h fa-fw"></i>
 			</div>
 			<div class="col-md">
 				<FormGroup>
@@ -145,7 +149,8 @@
 			{$_("translations.labels.overwrite")}
 		</Checkbox>
 
-		<svelte:fragment slot="actions">
+		{#snippet actions()}
+
 			<ModalCloseButton>
 				{$_("common.buttons.close")}
 			</ModalCloseButton>
@@ -153,6 +158,7 @@
 			<SaveButton>
 				{$_("translations.buttons.copy")}
 			</SaveButton>
-		</svelte:fragment>
+
+		{/snippet}
 	</Modal>
 </form>

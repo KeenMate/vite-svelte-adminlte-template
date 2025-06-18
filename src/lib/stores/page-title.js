@@ -1,7 +1,7 @@
 ﻿import {writable} from "svelte/store"
 import {setHtmlTitle} from "../helpers/router-html-title"
 
-export const pageTitle = writable()
+export const pageTitle         = writable()
 export let customPageTitleUsed = writable(false)
 
 export function setCustomPageTitle(title) {

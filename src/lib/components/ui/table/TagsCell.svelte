@@ -10,22 +10,34 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let tags: string[] | null
-	export let maxVisibleTags = 10
-	export let queryKey: string = "searchTags"
-	export let updateQuery: (query: StringDict | object) => any = updateQuerystringPartialAsync
-	export let keepPagination = false
-	export let noFiltering = false
-	export let customFiltering = false
+	type Props = {
+		tags: string[] | null;
+		maxVisibleTags?: number;
+		queryKey?: string;
+		updateQuery?: (query: StringDict | object) => any;
+		keepPagination?: boolean;
+		noFiltering?: boolean;
+		customFiltering?: boolean;
+	}
+
+	let {
+		    tags,
+		    maxVisibleTags  = 10,
+		    queryKey        = "searchTags",
+		    updateQuery     = updateQuerystringPartialAsync,
+		    keepPagination  = false,
+		    noFiltering     = false,
+		    customFiltering = false
+	    }: Props = $props()
 
 	const {query, pageFiltersKey} = getContext<PageSvelteContext>(PageSvelteContextKey)
-	const queryContext = getContext<QueryContext>(QueryContextKey)
+	const queryContext            = getContext<QueryContext>(QueryContextKey)
 
-	$: visibleTags = tags?.slice(0, maxVisibleTags)
-	$: areTagsTrimmed = tags?.length !== visibleTags?.length
-	$: queryKeyWithPrefix = queryContext?.queryPrefix && queryKey
+	let visibleTags        = $derived(tags?.slice(0, maxVisibleTags))
+	let areTagsTrimmed     = $derived(tags?.length !== visibleTags?.length)
+	let queryKeyWithPrefix = $derived(queryContext?.queryPrefix && queryKey
 		? queryContext?.queryPrefix + queryKey
-		: queryKey
+		: queryKey)
 
 	function onItemClicked(item: string) {
 		if (noFiltering || customFiltering) {
@@ -35,8 +47,8 @@
 				throw new Error("Missing `queryKey` param when attempted to update query")
 			}
 
-			const originalQuery = get(query)
-			const newQuery: any = {}
+			const originalQuery  = get(query)
+			const newQuery: any  = {}
 			const newQueryFilter = originalQuery[queryKeyWithPrefix]?.split(",") || []
 			if (newQueryFilter.includes(item)) {
 				return

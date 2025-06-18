@@ -3,7 +3,12 @@
 	import {copyToClipboard} from "$lib/helpers/clipboard-helper.js"
 	import {_} from "svelte-i18n"
 
-	export let copyText: string
+	type Props = {
+		copyText: string;
+		[key: string]: any
+	}
+
+	let {copyText, ...rest}: Props = $props()
 
 	async function onCopyValueClicked() {
 		if (!copyText) {
@@ -25,9 +30,9 @@
 
 <LteButton
 	color="info"
-	{...$$restProps}
+	{...rest}
 	on:click={onCopyValueClicked}
 >
-	<i class="fas fa-copy fa-fw" />
+	<i class="fas fa-copy fa-fw"></i>
 </LteButton>
 

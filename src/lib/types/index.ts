@@ -44,7 +44,7 @@ export type CodeTitleIconType<TCode = string> = {
 	icon: string
 } & CodeTitleType<TCode>
 
-export type StringDict = {[key: string]: string | null}
+export type StringDict = { [key: string]: string | null }
 
 export type SimpleValue = boolean | string | number | null
 

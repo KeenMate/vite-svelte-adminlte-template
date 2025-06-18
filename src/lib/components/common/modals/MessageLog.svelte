@@ -3,11 +3,15 @@
 	import {_} from "svelte-i18n"
 	import NotificationProvider, {Success, Warning} from "$lib/providers/notification-provider"
 
-	export let show = null
-	export let hide = null
+	type Props = {
+		show?: any;
+		hide?: any;
+	}
 
-	let messages = NotificationProvider.messages
-	$: DateTimeFormat = $Config.DateTimeFormat
+	let {show = $bindable(null), hide = $bindable(null)}: Props = $props()
+
+	let messages       = NotificationProvider.messages
+	let DateTimeFormat = $derived($Config.DateTimeFormat)
 
 	function color(level) {
 		if (level === Success) {
@@ -21,10 +25,10 @@
 </script>
 
 <Modal xlarge bind:show bind:hide>
-	<svelte:fragment
-		slot="header"
-	>{$_("messageLog.labels.title")}
-	</svelte:fragment>
+	{#snippet header()}
+		{$_("messageLog.labels.title")}
+
+	{/snippet}
 
 	<TableCondensed class="center-align-cells">
 		<tr>

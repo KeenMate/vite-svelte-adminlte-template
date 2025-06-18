@@ -6,12 +6,8 @@
 
 	const dispatch = createEventDispatcher()
 
-	let show, hide
+	let {showModal: show = $bindable(), hideModal: hide = $bindable()} = $props()
 
-	export {
-		show as showModal,
-		hide as hideModal
-	}
 
 	async function onRefreshServerConnection() {
 		await loginUserAsync()
@@ -26,20 +22,24 @@
 	center
 	color="warning"
 >
-	<svelte:fragment slot="header">
+	{#snippet header()}
+
 		{$_("common.headers.presenceCheck")}
-	</svelte:fragment>
+
+	{/snippet}
 
 	<p>
 		{@html $_("common.messages.presenceCheck")}
 	</p>
 
-	<svelte:fragment slot="actions">
+	{#snippet actions()}
+
 		<ModalCloseButton>
 			{$_("common.buttons.close")}
 		</ModalCloseButton>
 		<LteButton color="primary" on:click={onRefreshServerConnection}>
 			{$_("common.labels.reconnect")}
 		</LteButton>
-	</svelte:fragment>
+
+	{/snippet}
 </Modal>

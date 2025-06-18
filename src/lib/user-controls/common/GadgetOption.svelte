@@ -1,6 +1,11 @@
 <script lang="ts">
 
-	export let checked = false
+	type Props = {
+		checked?: boolean;
+		children?: import("svelte").Snippet;
+	}
+
+	let {checked = false, children}: Props = $props()
 </script>
 
 <span class="gadget-option">
@@ -10,5 +15,5 @@
 		class:fa-square={!checked}
 	></i>
 
-	<slot />
+	{@render children?.()}
 </span>

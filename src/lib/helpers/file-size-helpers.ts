@@ -3,7 +3,7 @@ import {roundToPrecision} from "./number-helpers.js"
 export const Units = ["kB", "MB", "GB"]
 
 export function fileSizeToString(fileSize) {
-	let divider = 1_000
+	let divider   = 1_000
 	let unitCount = 0
 
 	while (fileSize / divider >= 1000) {
@@ -12,13 +12,15 @@ export function fileSizeToString(fileSize) {
 	}
 
 	return {
-		unit: Units[unitCount],
+		unit:  Units[unitCount],
 		value: roundToPrecision(fileSize / divider)
 	}
 }
 
 export function toMegabytes(fileSize) {
-	if (!fileSize || isNaN(fileSize)) return ""
+	if (!fileSize || isNaN(fileSize)) {
+		return ""
+	}
 
 	return roundToPrecision(fileSize / 1_000_000)
 }

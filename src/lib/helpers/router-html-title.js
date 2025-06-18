@@ -1,4 +1,4 @@
-﻿import {BaseHtmlTitle} from "../constants/ui"
+import {BaseHtmlTitle} from "../constants/ui"
 
 export function setHtmlTitle(newTitle, absolute = false) {
 	document.title = absolute

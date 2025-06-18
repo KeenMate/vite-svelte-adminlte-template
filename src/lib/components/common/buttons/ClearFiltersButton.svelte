@@ -7,8 +7,12 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let pageFiltersKey: string
-	export let filtersToKeep: object = undefined
+	type Props = {
+		pageFiltersKey: string;
+		filtersToKeep?: object;
+	}
+
+	let {pageFiltersKey, filtersToKeep = undefined}: Props = $props()
 
 	function onClick() {
 		updatePageFiltersPreference(pageFiltersKey, null)
@@ -25,5 +29,5 @@
 	small
 	on:click={onClick}
 >
-	<i class="fas fa-times fa-fw" />
+	<i class="fas fa-times fa-fw"></i>
 </LteButton>

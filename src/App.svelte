@@ -33,17 +33,30 @@
 		hideConfirmModalAsync
 	})
 
-	let showLog: VoidFunction
+	let confirmModalElement: Element & any = $state()
+	let showLog: VoidFunction = $state()
 	let pageTitleSubscription: Unsubscriber
 	// let userNotificationsChannel
 	let initialLoad = true
 
+	$effect(() => {
+		$showConfirmModalAsync = confirmModalElement?.showModal
+		$hideConfirmModalAsync = confirmModalElement?.hideModal
+	})
+
 	// page-specific data
-	$: $UserContext?.socketToken && initSocket($UserContext.socketToken)
-	$: updateLocale($UserContext.currentLocale)
-	// $: createUserRelatedChannels($CurrentUser)
-	$: $IsAuthenticated && onIsAuthenticated()
-	$: onLocationChanged($location)
+	$effect.pre(() => {
+		$IsAuthenticated && onLocationChanged($location)
+	});
+	$effect.pre(() => {
+		$UserContext?.socketToken && initSocket($UserContext.socketToken)
+	});
+	$effect.pre(() => {
+		updateLocale($UserContext.currentLocale)
+	});
+	$effect(() => {
+		$IsAuthenticated && onIsAuthenticated()
+	});
 
 	onMount(() => {
 		ensurePreferencesOrDefault()

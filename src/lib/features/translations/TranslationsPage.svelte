@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import parsePagination from "@keenmate/js-common-helpers/helpers/pagination.js"
 	import {pageUrl} from "@keenmate/js-common-helpers/helpers/url.js"
 	import {onDestroy, onMount, setContext, tick} from "svelte"
@@ -24,17 +26,17 @@
 	import {RouteLoadedSubject} from "$lib/streams/route-loaded.js"
 	import {calculateQueryFiltersWithPreferencesAsync} from "$lib/helpers/querystring-filters.js"
 
-	const query = new DifferentialStore<object>({})
+	const query      = new DifferentialStore<object>({})
 	const pagination = new DifferentialStore<PaginationType>({})
-	const filters = new DifferentialStore<TranslationsQuery>({})
+	const filters    = new DifferentialStore<TranslationsQuery>({})
 
 	setContext<PageSvelteContext>(PageSvelteContextKey, {
 		query,
 		pageFiltersKey: TranslationsPageFiltersKey
 	})
 
-	const contextKey = Symbol()
-	const focusedRow = writable(null)
+	const contextKey   = Symbol()
+	const focusedRow   = writable(null)
 	const focusedField = writable(null)
 	setContext(contextKey, {
 		updateFiltersUrl(query: object) {
@@ -49,13 +51,11 @@
 		focusedField
 	})
 
-	let itemsTask: Promise<any>
-	let items: any[] = []
-	let pages = 0
-	let filtersUpdated: Symbol | undefined = undefined
+	let itemsTask: Promise<any>            = $state()
+	let items: any[]                       = []
+	let pages                              = $state(0)
+	let filtersUpdated: Symbol | undefined = $state(undefined)
 
-	$: query.trySet(parse($querystring ?? ""))
-	$: itemsTask = filtersUpdated && ($locale, loadItemsAsync())
 
 	onMount(() => {
 		TranslationsChannel.join()
@@ -73,18 +73,23 @@
 
 	async function onRouteLoadedAsync() {
 		console.log("Route loaded")
-		const queryIsReady = await calculateQueryFiltersWithPreferencesAsync("translations", TranslationsPageFiltersKey, $query, $location)
+		const queryIsReady = await calculateQueryFiltersWithPreferencesAsync(
+			"translations",
+			TranslationsPageFiltersKey,
+			$query,
+			$location
+		)
 
 		if (!queryIsReady) {
 			return
 		}
 
 		filters.trySet({
-			searchText: $query.searchText,
-			languageCode: $query.languageCode,
-			dataGroup: $query.dataGroup,
+			searchText:     $query.searchText,
+			languageCode:   $query.languageCode,
+			dataGroup:      $query.dataGroup,
 			dataObjectCode: $query.dataObjectCode,
-			dataObjectId: $query.dataObjectId && Number($query.dataObjectId)
+			dataObjectId:   $query.dataObjectId && Number($query.dataObjectId)
 		} as TranslationsQuery)
 		pagination.trySet(parsePagination($query))
 
@@ -95,8 +100,8 @@
 	async function loadItemsAsync() {
 		try {
 			const {data, metadata} = await searchTranslationsAsync($filters, $pagination)
-			items = data
-			pages = metadata.pages
+			items                  = data
+			pages                  = metadata.pages
 			pagination.update(x => {
 				x.pageSize = metadata.pageSize
 
@@ -134,7 +139,7 @@
 				)
 
 				$focusedRow = index
-				items = items.map(
+				items       = items.map(
 					x => (x.translationId === item.translationId && item) || x
 				)
 			} else {
@@ -156,7 +161,7 @@
 	}
 
 	async function onCopyTranslationsAsync({detail: {data, callback}}: {
-		detail: {data: CopyTranslations; callback: VoidFunction}
+		detail: { data: CopyTranslations; callback: VoidFunction }
 	}) {
 		try {
 			console.log("real copy translations")
@@ -173,6 +178,13 @@
 			)
 		}
 	}
+
+	$effect(() => {
+		query.trySet(parse($querystring ?? ""))
+	})
+	$effect(() => {
+		itemsTask = filtersUpdated && ($locale, loadItemsAsync())
+	})
 </script>
 
 <ItemsTableCard

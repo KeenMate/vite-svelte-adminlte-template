@@ -26,7 +26,7 @@ export async function updateQuerystringPartialAsync(object: any, shouldReplace =
  */
 export async function updateQuerystringAsync(object: any, shouldReplace = false, indexedArray = false) {
 	const newQuery = stringifyFilters(object, {}, (x) => x, {arrayFormat: indexedArray ? "indices" : "brackets"})
-	const magic = (shouldReplace && replace) || push
+	const magic    = (shouldReplace && replace) || push
 	return await magic(`${get(location)}?${newQuery}`)
 }
 

@@ -28,8 +28,8 @@
 		</DropdownButton>
 
 		<DropdownMenu>
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<!--<div-->
 			<!--	class="d-flex align-items-center gap-2 user-select-none"-->
 			<!--	on:click={onToggleShowcaseFeaturesEnabled}-->
@@ -44,8 +44,8 @@
 			<!--		{$_("common.labels.showcaseFeaturesEnabled")}-->
 			<!--	</Label>-->
 			<!--</div>-->
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<!-- svelte-ignore a11y_click_events_have_key_events -->
+			<!-- svelte-ignore a11y_no_static_element_interactions -->
 			<!--<div-->
 			<!--	class="d-flex align-items-center gap-2 user-select-none"-->
 			<!--	on:click={onTogglePowerSaveMode}-->

@@ -20,9 +20,9 @@ export default defineConfig({
 		viteStaticCopy({
 			targets: [
 				{src: "node_modules/jsoneditor/dist/img/jsoneditor-icons.svg", dest: "../images"},
-				// {src: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", dest: outRootDir + "/js"},
-				// {src: "node_modules/admin-lte/dist/js/adminlte.min.js", dest: outRootDir + "/js"},
-				{src: "node_modules/jquery/dist/jquery.min", dest: "../js"},
+				{src: "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", dest: outRootDir + "/js"},
+				{src: "node_modules/admin-lte/dist/js/adminlte.min.js", dest: outRootDir + "/js"},
+				{src: "node_modules/jquery/dist/jquery.min.js", dest: "../js"},
 				{src: "node_modules/jquery-ui-dist/jquery-ui.min.js", dest: "../js"},
 				{src: "node_modules/jquery-ui-dist/jquery-ui.min.css", dest: "../css"},
 				{src: "node_modules/@fortawesome/fontawesome-free/webfonts", dest: "../"},
@@ -79,7 +79,7 @@ export default defineConfig({
 	},
 	experimental: {
 		// to fix links in index.html that are served from shared place in the root of serve dir
-		renderBuiltUrl(filename, {hostId, hostType, type}) {
+		renderBuiltUrl(filename, {type}) {
 			if (type === "public") {
 				return "/" + filename
 			} else {

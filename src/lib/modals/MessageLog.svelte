@@ -4,12 +4,22 @@
 	import notification, {Error, Success, Warning} from "../providers/notification-provider.js"
 	import NoDataRow from "$lib/components/common/table/NoDataRow.svelte"
 
-	export let show = null
-	export let hide = null
+	type Props = {}
 
+	let {}: Props = $props()
+
+	export function show() {
+		return modelElement?.show()
+	}
+
+	export function hide() {
+		return modelElement?.hide()
+	}
+
+	let modelElement = $state()
 	let messages = notification.messages
 
-	$: dateTimeFormat = $Config.DateTimeFormat
+	let dateTimeFormat = $derived($Config.DateTimeFormat)
 
 	function color(level) {
 		if (level === Success) {
@@ -22,10 +32,11 @@
 	}
 </script>
 
-<Modal bind:show bind:hide xlarge>
-	<svelte:fragment slot="header"
-	>{$_("messageLog.labels.title")}
-	</svelte:fragment>
+<Modal bind:this={modelElement} xlarge>
+	{#snippet header()}
+		{$_("messageLog.labels.title")}
+
+	{/snippet}
 
 	<TableCondensed class="table-hover center-align-cells">
 		<tr>

@@ -6,12 +6,12 @@
 
 	const dispatch = createEventDispatcher()
 
-	let show: VoidFunction, hide: VoidFunction
-
-	export {
-		show as showModal,
-		hide as hideModal
+	type Props = {
+		showModal: VoidFunction;
+		hideModal: VoidFunction;
 	}
+
+	let {showModal: show = $bindable(), hideModal: hide = $bindable()}: Props = $props()
 
 	async function onRefreshServerConnection() {
 		await loginUserAsync()
@@ -28,22 +28,22 @@
 		class="connection-closed"
 		center
 	>
-		<svelte:fragment slot="header">
+		{#snippet header()}
 			{$_("common.headers.connectionClosed")}
-		</svelte:fragment>
+		{/snippet}
 
 		<p>
 			{@html $_("common.messages.connectionClosed")}
 		</p>
 
-		<svelte:fragment slot="actions">
+		{#snippet actions()}
 			<ModalCloseButton>
 				{$_("common.buttons.close")}
 			</ModalCloseButton>
 			<LteButton color="primary" on:click={onRefreshServerConnection}>
 				{$_("common.labels.reconnect")}
 			</LteButton>
-		</svelte:fragment>
+		{/snippet}
 	</Modal>
 </div>
 

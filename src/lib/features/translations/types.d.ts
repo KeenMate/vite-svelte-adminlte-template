@@ -43,4 +43,4 @@ export type CopyTranslations = {
 	overwrite: boolean;
 };
 
-export type AnyStringObj = {[key: string]: string};
+export type AnyStringObj = { [key: string]: string };

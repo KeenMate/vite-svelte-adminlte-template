@@ -1,4 +1,4 @@
-﻿import {Channel} from "$lib/providers/socket/channel.js"
+import {Channel} from "$lib/providers/socket/channel.js"
 import Socket, {savePushAsync} from "$lib/providers/socket/index.js"
 import type {CopyTranslations, Translation, TranslationsQuery} from "./types.js"
 import {type Channel as ChannelType, pushSocketMessageAsync} from "@keenmate/js-common-helpers/socket/channel.js"

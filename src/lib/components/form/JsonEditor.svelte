@@ -1,17 +1,20 @@
 ﻿<script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import {createEventDispatcher, onDestroy, onMount} from "svelte"
 	import JsonEditor from "jsoneditor"
 	import "jsoneditor/dist/jsoneditor.min.css"
 
 	const dispatch = createEventDispatcher()
 
-	export let value
-	export let options
+	let {value, options} = $props()
 
-	let element
-	let instance
+	let element  = $state()
+	let instance = $state()
 
-	$: instance && value && instance.set(value)
+	$effect(() => {
+		instance && value && instance.set(value)
+	})
 
 	onMount(() => {
 		instance = new JsonEditor(element, {
@@ -23,8 +26,9 @@
 	})
 
 	onDestroy(() => {
-		if (instance)
+		if (instance) {
 			instance.destroy()
+		}
 	})
 </script>
 

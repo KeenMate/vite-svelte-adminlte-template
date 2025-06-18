@@ -1,3 +1,3 @@
 export type UserPreferences = {
-	pageFilters: {[page: string]: any}
+	pageFilters: { [page: string]: any }
 }

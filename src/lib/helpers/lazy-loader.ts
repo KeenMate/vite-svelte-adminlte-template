@@ -2,9 +2,11 @@ import {leaveLoaderFor, waitForLoader} from "../constants/ui.js"
 import {emptyPromise} from "./promise-helpers.js"
 
 export default function lazyLoader(resourceTask, showLoader, hideLoader) {
-	if (!(resourceTask instanceof Promise)) return emptyPromise
+	if (!(resourceTask instanceof Promise)) {
+		return emptyPromise
+	}
 
-	let loaderShowed = false
+	let loaderShowed      = false
 	const beforeShowTimer = setTimeout(() => {
 		loaderShowed = new Date()
 		showLoader()

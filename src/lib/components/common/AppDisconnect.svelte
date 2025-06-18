@@ -11,18 +11,20 @@
 	import PresenceCheckModal from "$lib/components/modals/PresenceCheckModal.svelte"
 	import {LogSessionTimeoutSessionKey, SessionTimeoutReducterSecondsSessionKey} from "$lib/constants/authentication.js"
 
-	let showPresenceCheckModal: VoidFunction
-	let hidePresenceCheckModal: VoidFunction
-	let showConnectionClosedModal: VoidFunction
-	let hideConnectionClosedModal: VoidFunction
+	let showPresenceCheckModal: VoidFunction    = $state()!
+	let hidePresenceCheckModal: VoidFunction    = $state()!
+	let showConnectionClosedModal: VoidFunction = $state()!
+	let hideConnectionClosedModal: VoidFunction = $state()!
 
-	const sessionTimeoutId: Writable<NodeJS.Timeout | null> = writable(null)
+	const sessionTimeoutId: Writable<NodeJS.Timeout | null>       = writable(null)
 	const presenceCheckTimeoutId: Writable<NodeJS.Timeout | null> = writable(null)
 
-	$: $UserContext
+	$effect(() => {
+		$UserContext
 		&& showPresenceCheckModal
 		&& showConnectionClosedModal
 		&& onSessionTimeoutChanged($UserContext.sessionTimeout)
+	})
 
 	function onSessionTimeoutChanged(sessionTimeoutSeconds: number | null | undefined): void {
 		if (!sessionTimeoutSeconds) {
@@ -35,10 +37,13 @@
 			sessionTimeoutSeconds = sessionTimeoutSeconds - Number(timeoutShortener)
 		}
 
-		const nowUnixSeconds = Math.round(new Date().getTime() / 1000)
+		const nowUnixSeconds                                       = Math.round(new Date().getTime() / 1000)
 		const sessionTimeoutSecondsDiff: number | null | undefined = sessionTimeoutSeconds && (sessionTimeoutSeconds - nowUnixSeconds)
 
-		console.log("On Session timeout changed", {nowUnixSeconds, sessionTimeout: sessionTimeoutSeconds, diff: sessionTimeoutSeconds - nowUnixSeconds})
+		console.log(
+			"On Session timeout changed",
+			{nowUnixSeconds, sessionTimeout: sessionTimeoutSeconds, diff: sessionTimeoutSeconds - nowUnixSeconds}
+		)
 		if (sessionTimeoutSecondsDiff > 0) {
 			maybeClearTimeoutInterval(sessionTimeoutId)
 
@@ -93,8 +98,8 @@
 			// console.log("Socket disconnected", sessionTimeoutSeconds)
 			SocketShouldDisconnect.set(true)
 		})
-		hidePresenceCheckModal?.()
-		showConnectionClosedModal?.()
+		hidePresenceCheckModal()
+		showConnectionClosedModal()
 	}
 
 	function onSignedIn() {

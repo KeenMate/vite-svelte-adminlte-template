@@ -1,9 +1,15 @@
 <script lang="ts">
 	import {setContext} from "svelte"
 
-	export let key: string | symbol
+	type Props = {
+		key: string | symbol;
+		children?: import("svelte").Snippet;
+		[key: string]: any
+	}
 
-	setContext(key, $$restProps)
+	let {key, children = undefined, ...rest}: Props = $props()
+
+	setContext(key, rest)
 </script>
 
-<slot />
+{@render children?.()}

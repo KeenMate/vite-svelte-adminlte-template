@@ -15,7 +15,9 @@ export function formatExtendedDateTime(datetime) {
 }
 
 export function formatDate(datetime, format = DisplayDateFormat) {
-	if (!datetime) return ""
+	if (!datetime) {
+		return ""
+	}
 	datetime = typeof datetime === "string" ? DateTime.fromISO(datetime) : datetime
 
 	return datetime.toFormat(format)
@@ -26,7 +28,9 @@ export function getDurationISO(leftISO, rightISO) {
 }
 
 export function formatDuration(duration) {
-	if (!duration) return ""
+	if (!duration) {
+		return ""
+	}
 
 	return Duration.fromISOTime(duration).toFormat(DisplayDurationFormat)
 }

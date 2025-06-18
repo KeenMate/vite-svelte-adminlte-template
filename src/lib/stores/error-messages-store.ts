@@ -13,6 +13,7 @@ export type ErrorMessagesStore<T> = Readable<ErrorMessageItem<T>[]> & {
 	removeErrorMessages(...messages: T[]): void,
 	clearAll(): void
 }
+
 export function createErrorMessagesStore<T>(): ErrorMessagesStore<T> {
 	const {subscribe, set, update} = writable<ErrorMessageItem<T>[]>([])
 

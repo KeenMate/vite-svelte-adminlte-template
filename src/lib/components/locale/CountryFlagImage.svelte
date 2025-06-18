@@ -1,8 +1,12 @@
 <script lang="ts">
 	import {getFlagImagePathAsync} from "$lib/locale/i18n.js"
 
-	export let countryCode: string
-	export let alt: string | null = null
+	type Props = {
+		countryCode: string;
+		alt?: string | null;
+	}
+
+	let {countryCode, alt = null}: Props = $props()
 </script>
 
 {#await getFlagImagePathAsync(countryCode) then src}

@@ -1,6 +1,6 @@
 import {get, writable} from "svelte/store"
 
-type StepConditionCheckRedirectResult = {code: string}
+type StepConditionCheckRedirectResult = { code: string }
 /**
  * Returning `true` value means success. `false` is failure and `{code: "..."}` is, well... redirect
  */
@@ -43,13 +43,13 @@ export default function createStepsStateMachine(steps: Step[]) {
 				x.code,
 				x.initialStepData
 			])
-		) as {[stepCode: string]: any}
+		) as { [stepCode: string]: any }
 	}
 
-	const store = writable({
+	const store                    = writable({
 		currentStepIndex: 0,
 		steps,
-		stepData: getInitialStepData(),
+		stepData:         getInitialStepData(),
 
 		get currentStep(): Step {
 			return this.steps[this.currentStepIndex]
@@ -86,7 +86,7 @@ export default function createStepsStateMachine(steps: Step[]) {
 					continue
 				}
 
-				const conditionResults = conditions.map(x => x(state.stepData[state.currentStep.code]) as StepConditionCheckResultWrapped)
+				const conditionResults        = conditions.map(x => x(state.stepData[state.currentStep.code]) as StepConditionCheckResultWrapped)
 				const conditionResultsAwaited = await Promise.all(conditionResults)
 
 				const stepRedirection = conditionResultsAwaited
@@ -154,8 +154,8 @@ export default function createStepsStateMachine(steps: Step[]) {
 		},
 		async trySetStepAsync(stepCode: Step["code"], stepData?: any) {
 			const currentStepIdx = get(store).currentStepIndex
-			const newStepIdx = steps.findIndex(x => x.code === stepCode)
-			const newStep = steps[newStepIdx]
+			const newStepIdx     = steps.findIndex(x => x.code === stepCode)
+			const newStep        = steps[newStepIdx]
 
 			if (newStepIdx === -1 || currentStepIdx === newStepIdx) {
 				// console.log("try set step: new step not found or is current")
@@ -170,12 +170,12 @@ export default function createStepsStateMachine(steps: Step[]) {
 			return false
 		},
 		async checkStepAsync(step: Step) {
-			const {stepData} = get(store)
-			const stepIdx = steps.indexOf(step)
+			const {stepData}  = get(store)
+			const stepIdx     = steps.indexOf(step)
 			const theStepData = stepData[step.code]
 
-			const previousStepIdx = stepIdx - 1
-			const previousStep = steps[previousStepIdx]
+			const previousStepIdx  = stepIdx - 1
+			const previousStep     = steps[previousStepIdx]
 			const previousStepData = previousStep && stepData[previousStep.code]
 
 			const allConditions = [
@@ -190,7 +190,7 @@ export default function createStepsStateMachine(steps: Step[]) {
 				}
 
 				const conditionResults = conditions.map(x => x(conditionsStepData) as StepConditionCheckResultWrapped)
-				const res = await resolveConditionChecksAsync(conditionResults)
+				const res              = await resolveConditionChecksAsync(conditionResults)
 				// console.log("check step: resolution", res)
 
 				if (!res) {
@@ -207,7 +207,7 @@ export default function createStepsStateMachine(steps: Step[]) {
 			update(state => {
 				Object.assign(state, {
 					currentStepIndex: 0,
-					stepData: getInitialStepData()
+					stepData:         getInitialStepData()
 				})
 
 				return state

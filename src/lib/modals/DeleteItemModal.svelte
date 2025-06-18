@@ -1,8 +1,16 @@
 <script lang="ts" generics="T">
+	import {run} from "svelte/legacy"
+
 	import ModalRejectedError from "$lib/types/modal-rejected-error.js"
 	import {createEventDispatcher} from "svelte"
 	import {DeleteButton, Modal, ModalCloseButton} from "@keenmate/svelte-adminlte"
 	import {_} from "svelte-i18n"
+
+	type Props = {
+		children?: import("svelte").Snippet<[any]>;
+	}
+
+	let {children}: Props = $props()
 
 	const dispatch = createEventDispatcher()
 
@@ -12,7 +20,7 @@
 
 		return new Promise((resolve, reject) => {
 			resolveModal = resolve
-			rejectModal = reject
+			rejectModal  = reject
 		})
 	}
 
@@ -20,16 +28,14 @@
 		hide()
 	}
 
-	let jModalElement: any
-	let show: VoidFunction
-	let hide: VoidFunction
-	let deleteData: T
+	let jModalElement: any = $state()
+	let show: VoidFunction = $state()
+	let hide: VoidFunction = $state()
+	let deleteData: T      = $state()
 
 	let resolveModal: Function
 	let rejectModal: Function
 
-	$: jModalElement && jModalElement.off("hidden.bs.modal", doReject)
-	$: jModalElement && jModalElement.on("hidden.bs.modal", doReject)
 
 	function doReject() {
 		rejectModal && rejectModal(new ModalRejectedError())
@@ -39,16 +45,26 @@
 		resolveModal(deleteData)
 		dispatch("delete", deleteData)
 	}
+
+	$effect(() => {
+		jModalElement && jModalElement.off("hidden.bs.modal", doReject)
+	})
+	$effect(() => {
+		jModalElement && jModalElement.on("hidden.bs.modal", doReject)
+	})
 </script>
 
 <Modal bind:jModalElement bind:show bind:hide>
-	<svelte:fragment slot="header">
+	{#snippet header()}
+
 		{$_("common.labels.deleteConfirmation")}
-	</svelte:fragment>
 
-	<slot data={deleteData}></slot>
+	{/snippet}
 
-	<svelte:fragment slot="actions">
+	{@render children?.({data: deleteData,})}
+
+	{#snippet actions()}
+
 		<ModalCloseButton>
 			{$_("common.buttons.close")}
 		</ModalCloseButton>
@@ -56,5 +72,6 @@
 		<DeleteButton small on:click={doConfirm}>
 			{$_("common.buttons.delete")}
 		</DeleteButton>
-	</svelte:fragment>
+
+	{/snippet}
 </Modal>

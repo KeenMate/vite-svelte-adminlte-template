@@ -1,14 +1,18 @@
 <script lang="ts">
-	export let color = "lightgray"
-	export let title = ""
+	type Props = {
+		color?: string;
+		title?: string;
+	}
 
-	$: style = `
+	let {color = "lightgray", title = ""}: Props = $props()
+
+	let style = $derived(`
 		--background-color: ${color}
-	`
+	`)
 </script>
 
 <span class="ball" {style} {title}>
-	<span />
+	<span></span>
 </span>
 
 <style lang="scss">

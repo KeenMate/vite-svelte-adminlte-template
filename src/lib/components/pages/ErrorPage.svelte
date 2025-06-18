@@ -2,7 +2,13 @@
 	import {_} from "svelte-i18n"
 	import {LteButton} from "@keenmate/svelte-adminlte"
 
-	export let errorNumber: string | number = 500
+	type Props = {
+		errorNumber?: string | number;
+		children?: import("svelte").Snippet;
+		message?: import("svelte").Snippet;
+	}
+
+	let {errorNumber = 500, children = undefined, message}: Props = $props()
 </script>
 
 <div class="error-page">
@@ -13,23 +19,25 @@
 	<div class="error-content">
 		<h3>
 			<i class="fas fa-exclamation-triangle text-warning"></i>
-			<slot>
+			{#if children}
+				{@render children()}
+			{:else}
 				{#if errorNumber === 404}
 					{$_("common.messages.notFoundError")}
 				{:else}
 					{$_("common.messages.internalServerError")}
 				{/if}
-			</slot>
+			{/if}
 		</h3>
 
 		<p>
-			<slot name="message">
+			{#if message}{@render message()}{:else}
 				{#if window.history.length > 1}
 					<LteButton color="info" small on:click={() => window.history.back()}>
 						{$_("common.buttons.back")}
 					</LteButton>
 				{/if}
-			</slot>
+			{/if}
 		</p>
 	</div>
 </div>

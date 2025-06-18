@@ -1,6 +1,6 @@
 import {derived, readable} from "svelte/store"
 
-export const KeyPressed = readable<{ev: KeyboardEvent, type: "up" | "down"} | null>(null, (set) => {
+export const KeyPressed = readable<{ ev: KeyboardEvent, type: "up" | "down" } | null>(null, (set) => {
 	// console.log("Calling observable init function")
 
 	const keydownListener = (ev: KeyboardEvent) => {

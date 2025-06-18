@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import FilterableValue from "$lib/components/common/table/FilterableValue.svelte"
 	import PaginationFooter from "$lib/components/common/table/PaginationFooter.svelte"
 	import CopyTranslationsModal from "$lib/features/translations/modals/CopyTranslationsModal.svelte"
@@ -26,31 +28,44 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let contextKey: Symbol
-	export let filters: StringDict
-	export let itemsTask: Promise<Translation[]>
-	export let pagination: PaginationType
-	export let pages: number | null
-	export let specificLanguageCode = false
+	type Props = {
+		contextKey: Symbol;
+		filters: StringDict;
+		itemsTask: Promise<Translation[]>;
+		pagination: PaginationType;
+		pages: number | null;
+		specificLanguageCode?: boolean;
+	}
+
+	let {
+		    contextKey,
+		    filters,
+		    itemsTask,
+		    pagination,
+		    pages,
+		    specificLanguageCode = false
+	    }: Props = $props()
 
 	const {
-		focusedRowIndex,
-		focusedField
-	} = getContext(contextKey) as any
+		      focusedRowIndex,
+		      focusedField
+	      } = getContext(contextKey) as any
 
 	// let showDeleteItemModal
 	// let hideDeleteItemModal
-	let showCopyTranslationsModal: (languageCode: string) => void
-	let hideCloneTranslationsModal: VoidFunction
+	let showCopyTranslationsModal: (languageCode: string) => void = $state()
+	let hideCloneTranslationsModal: VoidFunction                  = $state()
 
-	let itemInputs = {
+	let itemInputs = $state({
 		value: []
-	}
+	})
 
-	let newItem: Translation | null = null
-	let languages: LanguageItem[] = []
+	let newItem: Translation | null = $state(null)
+	let languages: LanguageItem[]   = $state([])
 
-	$: $focusedField && $focusedRowIndex && (itemInputs[$focusedField][$focusedRowIndex]?.focus()/*, itemInputs[$focusedField][$focusedRow]?.select()*/)
+	$effect(() => {
+		$focusedField && $focusedRowIndex && (itemInputs[$focusedField][$focusedRowIndex]?.focus()/*, itemInputs[$focusedField][$focusedRow]?.select()*/)
+	})
 
 	onMount(() => {
 		ConstChannel.join()
@@ -60,11 +75,11 @@
 
 	function onAddNewItem() {
 		newItem = {
-			languageCode: "",
-			dataGroup: "",
+			languageCode:   "",
+			dataGroup:      "",
 			dataObjectCode: "",
-			dataObjectId: null,
-			value: ""
+			dataObjectId:   null,
+			value:          ""
 		}
 
 		loadLanguagesAsync()
@@ -85,8 +100,8 @@
 	function submitItem(item: Translation, index: number | null, callback?: VoidFunction) {
 		dispatch("submit", {
 			item,
-			index: index || 0,
-			callback: callback || function() {
+			index:    index || 0,
+			callback: callback || function () {
 				newItem = null
 			}
 		})
@@ -116,13 +131,14 @@
 		ev.preventDefault()
 		ev.stopImmediatePropagation()
 
-		$focusedField = field
+		$focusedField    = field
 		$focusedRowIndex = index + (ev.shiftKey && -1 || 1)
 	}
 </script>
 
 <Card noPadding>
-	<svelte:fragment slot="fullHeader">
+	{#snippet fullHeader()}
+
 		<ItemsFiltersTopPanel
 			{contextKey}
 			{filters}
@@ -134,7 +150,8 @@
 			on:copyTranslations={() => showCopyTranslationsModal(specificLanguageCode)}
 			on:reload
 		/>
-	</svelte:fragment>
+
+	{/snippet}
 
 	<div class="my-2 px-2">
 		<PaginationFooter {pagination} {pages} />
@@ -142,15 +159,17 @@
 
 	<AutoScroll>
 		<TableCondensed class="table-hover center-align-cells">
-			<tr slot="headers">
-				{#if !specificLanguageCode}
-					<th class="pr-3">{$_("translations.tableColumns.languageCode")}</th>
-				{/if}
-				<th class="pr-3">{$_("translations.tableColumns.dataGroup")}</th>
-				<th class="pr-3">{$_("translations.tableColumns.dataObjectCode")}</th>
-				<th class="pr-3">{$_("translations.tableColumns.dataObjectId")}</th>
-				<th>{$_("common.tableColumns.title")}</th>
-			</tr>
+			{#snippet headers()}
+				<tr>
+					{#if !specificLanguageCode}
+						<th class="pr-3">{$_("translations.tableColumns.languageCode")}</th>
+					{/if}
+					<th class="pr-3">{$_("translations.tableColumns.dataGroup")}</th>
+					<th class="pr-3">{$_("translations.tableColumns.dataObjectCode")}</th>
+					<th class="pr-3">{$_("translations.tableColumns.dataObjectId")}</th>
+					<th>{$_("common.tableColumns.title")}</th>
+				</tr>
+			{/snippet}
 
 			{#if newItem}
 				<tr>
@@ -214,72 +233,76 @@
 				</tr>
 			{/if}
 
-			<WithLazyLoader task={itemsTask} let:data>
-				<svelte:fragment slot="loader">
-					<LoadingRow />
-				</svelte:fragment>
+			<WithLazyLoader task={itemsTask}>
+				{#snippet loader()}
 
-				{#each data || [] as item, index (item.translationId)}
-					<tr>
-						{#if !specificLanguageCode}
+					<LoadingRow />
+
+				{/snippet}
+
+				{#snippet children({data})}
+					{#each data || [] as item, index (item.translationId)}
+						<tr>
+							{#if !specificLanguageCode}
+								<td class="auto-width pr-3">
+									<FilterableValue
+										{contextKey}
+										queryKey="languageCode"
+										value={item.languageCode}
+										title={item.languageValue}
+									/>
+								</td>
+							{/if}
 							<td class="auto-width pr-3">
 								<FilterableValue
 									{contextKey}
-									queryKey="languageCode"
-									value={item.languageCode}
-									title={item.languageValue}
+									queryKey="dataGroup"
+									value={item.dataGroup}
+									title={item.dataGroup || ""}
 								/>
 							</td>
-						{/if}
-						<td class="auto-width pr-3">
-							<FilterableValue
-								{contextKey}
-								queryKey="dataGroup"
-								value={item.dataGroup}
-								title={item.dataGroup || ""}
-							/>
-						</td>
-						<td class="auto-width pr-3">
-							<FilterableValue
-								{contextKey}
-								queryKey="dataObjectCode"
-								value={item.dataObjectCode}
-								title={item.dataObjectCode || ""}
-							/>
-						</td>
-						<td class="auto-width pr-3">
-							<FilterableValue
-								{contextKey}
-								queryKey="dataObjectId"
-								value={item.dataObjectId}
-								title={item.dataObjectId || ""}
-							/>
-						</td>
-						<td class="translation-value">
-							<InputGroup size="sm">
-								<TextInput
-									bind:inputElement={itemInputs.value[index]}
-									value={item.value}
-									placeholder={$_("translations.placeholders.enterValue")}
-									size="sm"
-									on:keypress={ev => moveOnEnter(ev, index, "value")}
-									on:change={ev => updateItem(ev, item, index, "value")}
+							<td class="auto-width pr-3">
+								<FilterableValue
+									{contextKey}
+									queryKey="dataObjectCode"
+									value={item.dataObjectCode}
+									title={item.dataObjectCode || ""}
 								/>
-							</InputGroup>
-						</td>
-					</tr>
-				{:else}
-					{#if filters && Object.values(filters).some(x => x)}
-						<NoExactMatchesRow />
+							</td>
+							<td class="auto-width pr-3">
+								<FilterableValue
+									{contextKey}
+									queryKey="dataObjectId"
+									value={item.dataObjectId}
+									title={item.dataObjectId || ""}
+								/>
+							</td>
+							<td class="translation-value">
+								<InputGroup size="sm">
+									<TextInput
+										bind:inputElement={itemInputs.value[index]}
+										value={item.value}
+										placeholder={$_("translations.placeholders.enterValue")}
+										size="sm"
+										on:keypress={ev => moveOnEnter(ev, index, "value")}
+										on:change={ev => updateItem(ev, item, index, "value")}
+									/>
+								</InputGroup>
+							</td>
+						</tr>
 					{:else}
-						<NoDataRow />
-					{/if}
-				{/each}
-				<svelte:fragment slot="catch">
+						{#if filters && Object.values(filters).some(x => x)}
+							<NoExactMatchesRow />
+						{:else}
+							<NoDataRow />
+						{/if}
+					{/each}
+				{/snippet}
+				{#snippet onError()}
 					<Callout>
 						{$_("common.warnings.errorOccurred")}
 					</Callout>
-				</svelte:fragment>
+				{/snippet}
 			</WithLazyLoader>
 		</TableCondensed>
 	</AutoScroll>

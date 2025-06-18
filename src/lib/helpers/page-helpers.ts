@@ -16,7 +16,9 @@ export function getPagesForUrl(pageUrl: any) {
 function getMatchingPages(pages: Page[], tester: (url: string) => boolean): Page[] {
 	const matchingPages: Page[] = []
 	pages.forEach((page) => {
-		if (page.url !== "/" && tester(page.url)) matchingPages.push(page)
+		if (page.url !== "/" && tester(page.url)) {
+			matchingPages.push(page)
+		}
 
 		if (page.subroutes) {
 			const subMatchingPages = getMatchingPages(page.subroutes, tester)
@@ -66,7 +68,7 @@ export function findPageByName(pages: Page[], pageName: Page["name"]): Page | nu
 
 export function isPageActive(location: string, pageName: string, exactMatch: boolean = false) {
 	if (exactMatch) {
-		const requestedPage = findPageByName(Pages, pageName)
+		const requestedPage      = findPageByName(Pages, pageName)
 		const requestedPageRegex = pageUrlToRegex(requestedPage.url, true)
 
 		// console.log("Page is exact active results", {requestedPage, requestedPageRegex, location})
@@ -87,9 +89,11 @@ export async function onRouteLoaded(route: RouteDetail, i18n: (code: string) => 
 	// console.log("on route loaded", route, Pages)
 	RouteLoadedSubject.next(route)
 	const matchingPages = getMatchingPages(Pages, pageUrl => pageUrl === route.route)
-	const page = matchingPages.find((x) => x.url === route.route)
+	const page          = matchingPages.find((x) => x.url === route.route)
 
-	if (!page || get(customPageTitleUsed)) return
+	if (!page || get(customPageTitleUsed)) {
+		return
+	}
 
 	pageTitle.set(typeof page.title === "function" ? await page.title(i18n) : page.title)
 }

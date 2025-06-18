@@ -1,30 +1,39 @@
 <script lang="ts">
 	import {StackedBarColors} from "../../constants/stacked-bar.js"
 
-	export let data
-	export let withRest = false
-	export let restTitle = "Other"
-	export let restValue = "Other"
+	type Props = {
+		data: any;
+		withRest?: boolean;
+		restTitle?: string;
+		restValue?: string;
+	}
+
+	let {
+		    data,
+		    withRest  = false,
+		    restTitle = "Other",
+		    restValue = "Other"
+	    }: Props = $props()
 
 	let colorMap = {}
 
-	$: dataWithRest = withRest && getDataWithRest(data) || data
 
 	function getDataWithRest(d) {
 		const percentSum = d.reduce((acc, x) => acc + x.percent, 0)
 		console.log("Sum", percentSum)
 
-		if (percentSum < 100)
+		if (percentSum < 100) {
 			return [
 				...d,
 				{
-					id: -1,
-					title: restTitle,
+					id:      -1,
+					title:   restTitle,
 					percent: 100 - percentSum,
-					value: restValue,
-					color: "#d9d0c9"
+					value:   restValue,
+					color:   "#d9d0c9"
 				}
 			]
+		}
 
 		return d
 	}
@@ -38,6 +47,8 @@
 
 		return `background-color: ${color};`
 	}
+
+	let dataWithRest = $derived(withRest && getDataWithRest(data) || data)
 </script>
 
 {#if dataWithRest?.length}
@@ -50,8 +61,8 @@
 					>
 						<i style="{bgColor(legendItem)} color: #fff" class="marker-legend"></i>
 						<span class="text-legend">
-		          {legendItem.title}
-		        </span>
+							{legendItem.title}
+						</span>
 					</li>
 				{/if}
 			{/each}
@@ -64,14 +75,14 @@
 						style={bgColor(part) + 'flex-basis:' + part.percent + '%;'}
 					>
 						<div class="percent-stack">
-			          <span class="text-stack">
-			            <strong>{Math.round(part.percent)}%</strong>
-			          </span>
+							<span class="text-stack">
+								<strong>{Math.round(part.percent)}%</strong>
+							</span>
 						</div>
 						<div class="label-stack">
-			          <span class="text-stack">
-			            <strong>{@html part.value}</strong>
-			          </span>
+							<span class="text-stack">
+								<strong>{@html part.value}</strong>
+							</span>
 						</div>
 					</div>
 				{/if}
@@ -99,6 +110,7 @@
 	.item-stack {
 		position: relative;
 	}
+
 	.item-stack:hover,
 	.item-stack:focus,
 	.item-stack.item-active,

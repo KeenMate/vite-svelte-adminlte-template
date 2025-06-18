@@ -9,7 +9,7 @@ import {updateQuerystringPartialAsync} from "@keenmate/js-common-helpers/helpers
 export function stringifyFilters(
 	filters: object | null | undefined,
 	partial: object | null | undefined,
-	mapper = (x: object): object => x,
+	mapper                        = (x: object): object => x,
 	shouldDropNullValues: boolean = true
 ) {
 	let effectiveFilters = {
@@ -32,7 +32,9 @@ export function stringifyFilters(
 }
 
 export function parseQuerystringFilters(querystring: string, parser = (x: any) => x) {
-	if (!querystring) return parser({})
+	if (!querystring) {
+		return parser({})
+	}
 
 	const qsParsed = parse(querystring)
 

@@ -8,8 +8,9 @@
 	import CountryFlagImage from "$lib/components/locale/CountryFlagImage.svelte"
 
 	async function changeLanguage(lang) {
-		if (!lang)
+		if (!lang) {
 			return
+		}
 
 		await MeProvider.setCurrentLocaleAsync(lang)
 
@@ -32,7 +33,7 @@
 		{#each $UserContext.languages || defaultLanguages as l (l.code)}
 			<div
 				class="lang-item"
-				on:click={() => changeLanguage(l.code)}
+				onclick={() => changeLanguage(l.code)}
 			>
 				<CountryFlagImage countryCode={l.code} alt={l.img} />
 				{l.value || l.code}

@@ -13,12 +13,14 @@ import type {SessionUser} from "$lib/types/authentication.js"
 import type {RouteUserData} from "$lib/types/pages.js"
 
 export const PageUrls: PageUrlsDict = Pages.reduce((acc, x) => {
-	if (x.nesting && x.subroutes)
+	if (x.nesting && x.subroutes) {
 		acc[x.name] = x.subroutes.reduce((subAcc, subX) => {
 			subAcc[subX.name] = subX.url
 			return subAcc
 		}, {} as PageUrlsDict)
-	else acc[x.name] = x.url
+	} else {
+		acc[x.name] = x.url
+	}
 
 	return acc
 }, {} as PageUrlsDict)
@@ -28,8 +30,9 @@ export function getFilteredPages(currentUser: SessionUser): Page[] {
 }
 
 export function url(page: PageUrlsDict | string): string {
-	if (typeof page === "string")
+	if (typeof page === "string") {
 		return page
+	}
 
 	throw new Error(`Given page is not a final url: ${JSON.stringify(page)}`)
 }
@@ -68,10 +71,10 @@ function addPagesToRoutes(pages: Page[], routes: RouterPages) {
 		const effectiveRequirements = getPageEffectiveRequirements(page)
 
 		routes[page.url] = wrap({
-			asyncComponent: page.component,
+			asyncComponent:   page.component,
 			loadingComponent: LoadingPage as typeof SvelteComponent,
-			conditions: [permissionCondition],
-			userData: {requirements: effectiveRequirements} as RouteUserData
+			conditions:       [permissionCondition],
+			userData:         {requirements: effectiveRequirements} as RouteUserData
 		})
 	})
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import {createEventDispatcher, onMount} from "svelte"
 	// @ts-ignore
 	import {DashboardModal} from "@uppy/svelte"
@@ -11,15 +13,29 @@
 
 	const dispatch = createEventDispatcher()
 
-	export let maxFileSize = "1000000000" // 1GB
-	export let allowedFileTypes: string[] | null = null
-	export let maxNumberOfFiles: number | null = null
-	export let simultaneousUploads = 2
-	export let fieldName = "file"
-	export let endpoint: string
-	export let uploadData: any = {}
-	export let uppyOptions: any = null
-	export let xhrOptions: any = null
+	type Props = {
+		maxFileSize?: string; // 1GB
+		allowedFileTypes?: string[] | null;
+		maxNumberOfFiles?: number | null;
+		simultaneousUploads?: number;
+		fieldName?: string;
+		endpoint: string;
+		uploadData?: any;
+		uppyOptions?: any;
+		xhrOptions?: any;
+	}
+
+	let {
+		    maxFileSize         = "1000000000",
+		    allowedFileTypes    = undefined,
+		    maxNumberOfFiles    = undefined,
+		    simultaneousUploads = 2,
+		    fieldName           = "file",
+		    endpoint,
+		    uploadData          = {},
+		    uppyOptions         = undefined,
+		    xhrOptions          = null
+	    }: Props = $props()
 
 	export const uppy = new Uppy({
 		restrictions: {
@@ -47,22 +63,28 @@
 		open = false
 	}
 
-	let open = false
+	let open = $state(false)
 
-	$: uppy.setMeta(uploadData)
-	$: uppy.setOptions({
-		restrictions: {
-			maxNumberOfFiles,
-			maxFileSize,
-			allowedFileTypes
-		},
-		...(uppyOptions || {})
+	$effect(() => {
+		uppy.setMeta(uploadData)
 	})
-	$: uppy.getPlugin("XHRUpload").setOptions({
-		endpoint,
-		fieldName,
-		limit: simultaneousUploads,
-		...(xhrOptions || {})
+	$effect(() => {
+		uppy.setOptions({
+			restrictions: {
+				maxNumberOfFiles,
+				maxFileSize,
+				allowedFileTypes
+			},
+			...(uppyOptions || {})
+		})
+	})
+	$effect(() => {
+		uppy.getPlugin("XHRUpload").setOptions({
+			endpoint,
+			fieldName,
+			limit: simultaneousUploads,
+			...(xhrOptions || {})
+		})
 	})
 
 	onMount(() => {

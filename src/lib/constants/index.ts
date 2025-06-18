@@ -1,16 +1,15 @@
-
 export const maxFileUploadSize = 10000000 // 10M
 
 export const DevelopmentFeaturesEnabled =
-	import.meta.env.VITE_DEVELOPMENT_FEATURES_ENABLED === "true"
+	             import.meta.env.VITE_DEVELOPMENT_FEATURES_ENABLED === "true"
 
 
 export function getUserContextFromHtml() {
-  const value = document.getElementById("user-context")?.value
+	const value = document.getElementById("user-context")?.value
 
-  return value
-    && JSON.parse(value)
-    || getEmptyUserContext()
+	return value
+		&& JSON.parse(value)
+		|| getEmptyUserContext()
 }
 
 export function getAccessTokenFromHtml() {
@@ -18,10 +17,15 @@ export function getAccessTokenFromHtml() {
 }
 
 function getEmptyUserContext() {
-  return {
-    socketToken: null,
-    languages: [],
-    sessionTimeout: null,
-    currentLocale: "en"
-  }
+	return {
+		socketToken:    null,
+		languages:      [
+			{
+				code: "en",
+				value: "English"
+			}
+		],
+		sessionTimeout: null,
+		currentLocale:  "en"
+	}
 }

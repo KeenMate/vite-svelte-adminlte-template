@@ -2,10 +2,19 @@
 	import {getContext} from "svelte"
 	import {link} from "@keenmate/svelte-spa-router"
 
-	export let value: string | null
-	export let title: string | null = null
-	export let queryKey: string
-	export let contextKey: Symbol
+	type Props = {
+		value: string | null;
+		title?: string | null;
+		queryKey: string;
+		contextKey: Symbol;
+	}
+
+	let {
+		    value,
+		    title = undefined,
+		    queryKey,
+		    contextKey
+	    }: Props = $props()
 
 	const {updateFiltersUrl} = getContext(contextKey) as any
 </script>

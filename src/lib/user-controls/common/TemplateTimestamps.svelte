@@ -3,7 +3,11 @@
 	import {_} from "svelte-i18n"
 	import type {TemplateTimestampsType} from "$lib/types/index.js"
 
-	export let model: ({[key: string | number | symbol]: any} & TemplateTimestampsType) | null | undefined = undefined
+	type Props = {
+		model?: ({ [key: string | number | symbol]: any } & TemplateTimestampsType) | null | undefined;
+	}
+
+	let {model = undefined}: Props = $props()
 </script>
 
 <div class="template-timestamps-text-only">
@@ -15,15 +19,15 @@
 					{model?.modifiedBy || ""}
 				</strong>
 			</span>
-			{/if}
-			{#if model?.modified}
+		{/if}
+		{#if model?.modified}
 			<span>
 				{$_("common.labels.modifiedAt")}
 				<strong>
 					{model && formatDateTime(model.modified) || ""}
 				</strong>
 			</span>
-			{/if}
+		{/if}
 	</div>
 	{#if (model?.modifiedBy || model?.modified) && (model?.createdBy || model?.created)}
 		|
@@ -35,15 +39,15 @@
 					{model?.createdBy || ""}
 				</strong>
 			</span>
-			{/if}
-			{#if model?.created}
+		{/if}
+		{#if model?.created}
 			<span>
 				{$_("common.labels.createdAt")}
 				<strong>
 					{model && formatDateTime(model.created) || ""}
 				</strong>
 			</span>
-			{/if}
+		{/if}
 	</div>
 </div>
 

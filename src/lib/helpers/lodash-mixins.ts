@@ -3,7 +3,7 @@ import values from "lodash/values.js"
 
 export function historyDebounce(fn: Function, wait: number, ...restArguments: any[]) {
 	let args: any[][] = []
-	let deb = debounce(
+	let deb           = debounce(
 		() => {
 			fn.call(undefined, args)
 			args = []
@@ -12,7 +12,7 @@ export function historyDebounce(fn: Function, wait: number, ...restArguments: an
 		...restArguments
 	)
 
-	return function(..._args: any[]) {
+	return function (..._args: any[]) {
 		args = [...args, values(arguments)]
 		deb()
 	}

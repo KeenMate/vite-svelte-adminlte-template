@@ -1,8 +1,12 @@
 <script lang="ts">
 
-	export let code = 500
-	export let message = ""
-	export let email = ""
+	type Props = {
+		code?: number;
+		message?: string;
+		email?: string;
+	}
+
+	let {code = 500, message = "", email = ""}: Props = $props()
 </script>
 
 <div id="error-page">

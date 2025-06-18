@@ -16,7 +16,7 @@
 
 	let sidebarToggleElement: HTMLAnchorElement
 
-	$: currentPage = getActivePage($location)
+	let currentPage = $derived(getActivePage($location))
 
 	onMount(() => {
 		window.jQuery(sidebarToggleElement).PushMenu?.({})
@@ -32,7 +32,8 @@
 </script>
 
 <TopNavigation class="" hideMobileNavToggle>
-	<svelte:fragment slot="left">
+	{#snippet left()}
+
 		<MobileNavToggle visibility="" />
 		<li class="nav-item navbar-brand d-none d-md-flex align-items-center">
 			<BrandImage />
@@ -49,8 +50,10 @@
 		<TopNavItem>
 			<EnvBadge />
 		</TopNavItem>
-	</svelte:fragment>
-	<svelte:fragment slot="right">
+
+	{/snippet}
+	{#snippet right()}
+
 		{#if $SocketShouldDisconnect && !$IsSocketConnected}
 			<TopNavItem>
 				<Badge color="danger">
@@ -73,7 +76,8 @@
 			</TopNavItem>
 		{/if}
 		<!-- <TopNavigationNotifications /> -->
-	</svelte:fragment>
+
+	{/snippet}
 </TopNavigation>
 
 <style lang="scss">

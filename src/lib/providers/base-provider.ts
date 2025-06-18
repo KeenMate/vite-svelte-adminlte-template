@@ -24,9 +24,9 @@ export default class BaseProvider {
 	async fetchResourceAsync(
 		method: string,
 		url: string,
-		body = undefined,
-		customHeaders = null,
-		shouldDecode = true,
+		body                             = undefined,
+		customHeaders                    = null,
+		shouldDecode                     = true,
 		customFetchSettings: RequestInit = null
 		// requireAccessToken = true
 	) {
@@ -40,10 +40,10 @@ export default class BaseProvider {
 				method,
 				headers,
 				credentials: "include",
-				body: (method !== GET && JSON.stringify(body)) || undefined,
+				body:        (method !== GET && JSON.stringify(body)) || undefined,
 				...customFetchSettings
 			}
-			const response = await fetch(
+			const response        = await fetch(
 				url + ((method === GET && this.createQueryString(body)) || ""),
 				requestSettings
 			)
@@ -79,7 +79,9 @@ export default class BaseProvider {
 	 * @param queryObject {object?}
 	 */
 	createQueryString(queryObject) {
-		if (!queryObject) return ""
+		if (!queryObject) {
+			return ""
+		}
 
 		const queryPairs = Object.keys(queryObject)
 			.filter((key) => queryObject[key])
@@ -104,7 +106,9 @@ export default class BaseProvider {
 	 * @return {Headers} Result (same as `headers` param, just for convenience)
 	 */
 	mergeHeaders(headers, tobeMerged) {
-		if (!tobeMerged || !tobeMerged.length) return headers
+		if (!tobeMerged || !tobeMerged.length) {
+			return headers
+		}
 
 		tobeMerged.forEach(({key, value}) => {
 			headers.append(key, value)
@@ -132,8 +136,9 @@ export default class BaseProvider {
 			[ContentType]: Json
 		}
 
-		if (BaseProvider.accessToken)
+		if (BaseProvider.accessToken) {
 			headersObject[Authorization] = `Bearer ${BaseProvider.accessToken}`
+		}
 
 		return new Headers(headersObject)
 	}
@@ -144,9 +149,13 @@ export default class BaseProvider {
 		} catch (err) {
 			console.error("Got error during fetching access token", err)
 
-			if (err.message == 401)
-				if (withRedirect) BaseProvider.redirectToLogin()
-				else window.dispatchEvent(new RefreshTokenExpired())
+			if (err.message == 401) {
+				if (withRedirect) {
+					BaseProvider.redirectToLogin()
+				} else {
+					window.dispatchEvent(new RefreshTokenExpired())
+				}
+			}
 		}
 	}
 
@@ -172,20 +181,23 @@ export default class BaseProvider {
 	static async fetchAccessToken() {
 		// makes request manually (not using helpers from this class intentionally)
 
-		if (BaseProvider.fetchingAccessToken)
+		if (BaseProvider.fetchingAccessToken) {
 			return new Promise((resolve) => {
 				const interval = setInterval(() => {
-					if (BaseProvider.fetchingAccessToken || !BaseProvider.accessToken) return
+					if (BaseProvider.fetchingAccessToken || !BaseProvider.accessToken) {
+						return
+					}
 					clearInterval(interval)
 					resolve()
 				}, 50)
 			})
+		}
 
 		try {
 			BaseProvider.fetchingAccessToken = true
 
 			const accessTokenResponse = await fetch(AccessTokenUrl, {
-				method: "get",
+				method:      "get",
 				credentials: "include"
 			})
 
@@ -194,8 +206,9 @@ export default class BaseProvider {
 				throw new Error(401)
 			}
 
-			if (accessTokenResponse.headers.get("content-type").indexOf("application/json") === -1)
+			if (accessTokenResponse.headers.get("content-type").indexOf("application/json") === -1) {
 				throw new Error("Access token should have arrived with json content type")
+			}
 
 			const decodedBody = await accessTokenResponse.json()
 			BaseProvider.setAccessToken(decodedBody)
@@ -205,8 +218,8 @@ export default class BaseProvider {
 	}
 
 	static setTokenRefreshTimer(exp) {
-		const tokenExpDate = new Date(exp * 1000)
-		const now = new Date()
+		const tokenExpDate      = new Date(exp * 1000)
+		const now               = new Date()
 		const requestTokenAfter = (tokenExpDate - now) * 0.9
 		setTimeout(() => {
 			BaseProvider.fetchAccessToken()

@@ -8,17 +8,17 @@ import {Channel, pushSocketMessageAsync} from "@keenmate/js-common-helpers/socke
 import {getChannelTimeout, pushChannelTimeout} from "$lib/constants/socket.js"
 import {_} from "svelte-i18n"
 
-const socketToastDisconnectedThrottled = throttle(function(type: any, ...rest: any[]) {
+const socketToastDisconnectedThrottled = throttle(function (type: any, ...rest: any[]) {
 	Toastr[type].apply(Toastr, rest)
 }, 60000)
 
-const socketToastThrottled = throttle(function(type: any, ...rest: any[]) {
+const socketToastThrottled = throttle(function (type: any, ...rest: any[]) {
 	Toastr[type].apply(Toastr, rest)
 }, 10000)
 
 const Socket: Writable<PhoenixSocket | null> = writable(null)
 
-const IsSocketConnected = writable(false)
+const IsSocketConnected      = writable(false)
 const SocketShouldDisconnect = writable(false)
 
 async function getChannelTimeoutAsync(
@@ -123,12 +123,12 @@ export async function savePushAsync<TResponse>(
 	channel: Channel,
 	event: string,
 	payload: any,
-	pushTimeout: number = pushChannelTimeout,
+	pushTimeout: number    = pushChannelTimeout,
 	channelTimeout: number = getChannelTimeout
 ): Promise<TResponse> {
 	try {
 		const startTime = Date.now()
-		const c = await getChannelTimeoutAsync(channel, channelTimeout)
+		const c         = await getChannelTimeoutAsync(channel, channelTimeout)
 
 		const response = await pushTimeoutAsync<TResponse>(
 			c,

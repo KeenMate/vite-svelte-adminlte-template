@@ -7,9 +7,19 @@
 	import type {PageSvelteContext} from "$lib/types/index.js"
 	import {derived} from "svelte/store"
 
-	export let errorMessages: ErrorMessagesStore<string | any> = null
-	export let prefix: string = undefined
-	export let isHtml: boolean = false
+	type Props = {
+		errorMessages?: ErrorMessagesStore<string | any>;
+		prefix?: string;
+		isHtml?: boolean;
+		children?: import("svelte").Snippet<[any]>;
+	}
+
+	let {
+		    errorMessages = undefined,
+		    prefix        = undefined,
+		    isHtml        = false,
+		    children
+	    }: Props = $props()
 
 	const ctx = getContext<PageSvelteContext>(PageSvelteContextKey)
 
@@ -18,12 +28,12 @@
 
 {#each $errorMessages_ as item}
 	<ErrorMessage on:closed={() => errorMessages_.removeErrorMessage(item.message)}>
-		<slot {item}>
+		{#if children}{@render children({item,})}{:else}
 			{#if isHtml}
 				{@html $_((prefix ? prefix + "." : "") + item.message, item.i18nOptions)}
 			{:else}
 				{$_((prefix ? prefix + "." : "") + item.message, item.i18nOptions)}
 			{/if}
-		</slot>
+		{/if}
 	</ErrorMessage>
 {/each}

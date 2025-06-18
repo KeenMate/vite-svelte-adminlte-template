@@ -13,5 +13,5 @@
 	small
 	on:click={onClick}
 >
-	<i class="fas fa-arrow-left fa-fw" />
+	<i class="fas fa-arrow-left fa-fw"></i>
 </LteButton>

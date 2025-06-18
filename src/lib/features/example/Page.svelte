@@ -1,4 +1,6 @@
 <script lang="ts">
+	import {run} from "svelte/legacy"
+
 	import {onDestroy, onMount} from "svelte"
 	import {_} from "svelte-i18n"
 	import {
@@ -16,8 +18,9 @@
 		ItemType,
 		getItemsAsync
 	} from "$lib/providers/socket/example-channel.js"
-	let items: ItemType[] = []
-	let id = 5
+
+	let items: ItemType[] = $state([])
+	let id                = $state(5)
 
 	onMount(async () => {
 		ExampleChannel.join()
@@ -42,7 +45,9 @@
 		customPageTitleUsed.set(false)
 	})
 
-	$: loadItemsASync(id)
+	$effect(() => {
+		loadItemsASync(id)
+	})
 </script>
 
 <p>Page1 content</p>

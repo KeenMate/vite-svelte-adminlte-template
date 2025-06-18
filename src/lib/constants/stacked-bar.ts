@@ -1,4 +1,4 @@
-﻿export const StackedBarColors = [
+export const StackedBarColors = [
 	"#007bff",
 	"#6610f2",
 	"#6f42c1",

@@ -1,11 +1,17 @@
 <script lang="ts">
 	import FullBrandImage from "~assets/images/your-logo.svg"
+
+	type Props = {
+		[key: string]: any
+	}
+
+	let {...rest}: Props = $props()
 </script>
 
 <img
 	src={FullBrandImage}
 	alt="Brand Logo"
-	class="brand-image {$$restProps.class || ''}"
+	class="brand-image {rest.class || ''}"
 	height="31px"
 />
 <!--<img-->

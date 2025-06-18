@@ -4,26 +4,29 @@
 
 	const dispatch = createEventDispatcher()
 
-	/**
-	 * @type {"top" | "right" | "bottom" | "left" | null}
-	 * @default null
-	 * @description If not specified the orientation is determined by browser's LTR/RTL setting.
-	 */
-	export let orientation = null
 
-	export let shown = false
-	export let targetSize = false
-	export let alwaysVisible = false
-	export let slideOptions = null
+	type Props = {
+		orientation?: "top" | "right" | "bottom" | "left" | null;
+		shown?: boolean;
+		targetSize?: boolean;
+		alwaysVisible?: boolean;
+		slideOptions?: any;
+		children?: import("svelte").Snippet<[any]>;
+	}
 
-	let mainContentElement
+	let {
+		    orientation   = undefined,
+		    shown         = $bindable(false),
+		    targetSize    = false,
+		    alwaysVisible = false,
+		    slideOptions  = undefined,
+		    children
+	    }: Props = $props()
 
-	let data
+	let mainContentElement = $state()
 
-	$: expandedOrientation =
-		(orientation ? orientation : document.dir === "rtl" ? "left" : "right") ||
-		"right"
-	$: contentDimensions = getContentDimensions(expandedOrientation)
+	let data = $state()
+
 
 	onDestroy(() => {
 		if (shown) {
@@ -63,9 +66,13 @@
 	}
 
 	function onRootElementClick(ev) {
-		if (mainContentElement.contains(ev.target)) return
+		if (mainContentElement.contains(ev.target)) {
+			return
+		}
 
-		if (checkParentOfToast(ev.target)) return
+		if (checkParentOfToast(ev.target)) {
+			return
+		}
 
 		dispatch("close", {callback: hideModal})
 	}
@@ -75,9 +82,14 @@
 
 		return toastParent?.contains(target)
 	}
+
+	let expandedOrientation =
+		    $derived((orientation ? orientation : document.dir === "rtl" ? "left" : "right") ||
+			    "right")
+	let contentDimensions   = $derived(getContentDimensions(expandedOrientation))
 </script>
 
-<svelte:window on:click|capture={onRootElementClick} />
+<svelte:window onclickcapture={onRootElementClick} />
 
 {#if alwaysVisible || shown}
 	<div class="sidebar-modal">
@@ -91,8 +103,9 @@
 				targetSize,
 				duration: 300,
 				...slideOptions
-			}}>
-			<slot {data} {hideModal} />
+			}}
+		>
+			{@render children?.({data, hideModal,})}
 		</main>
 	</div>
 {/if}

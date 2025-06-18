@@ -7,22 +7,33 @@
 	import {CurrentUser} from "$lib/stores/authentication.js"
 	import type {PageUrlsDict} from "$lib/pages/pages.js"
 
-	// page
-	export let name: string
-	export let icon: string
-	export let title: string | ((i18n: (key: string) => string) => string) = null
-	export let hide: boolean = false
-	export let target: string | null = null
-	export let requirements: Requirements = {}
 
-	// common
-	export let pageUrls: PageUrlsDict
+	type Props = {
+		// page
+		name: string;
+		icon: string;
+		title?: string | ((i18n: (key: string) => string) => string);
+		hide?: boolean;
+		target?: string | null;
+		requirements?: Requirements;
+		// common
+		pageUrls: PageUrlsDict;
+	}
 
-	let hasPermissions: boolean, active: boolean, href: string
+	let {
+		    name,
+		    icon,
+		    title        = undefined,
+		    hide         = false,
+		    target       = undefined,
+		    requirements = {},
+		    pageUrls
+	    }: Props = $props()
 
-	$: hasPermissions = $Config.permissions.checkPermissions($CurrentUser, requirements)
-	$: active = hasPermissions && isPageActive($location, name)
-	$: href = hasPermissions && pageUrls[name]
+	let hasPermissions: boolean = $derived($Config.permissions.checkPermissions($CurrentUser, requirements)),
+	    active: boolean = $derived(hasPermissions && isPageActive($location, name)),
+	    href: string = $derived(hasPermissions && pageUrls[name])
+
 
 	function getPageTitle(i18n: any) {
 		return (typeof title === "function" && title(i18n)) || title || i18n("routes." + name + ".title")

@@ -1,12 +1,29 @@
+<!-- @migration-task Error while migrating Svelte code: Identifier 'children' has already been declared
+https://svelte.dev/e/js_parse_error -->
 <script lang="ts">
+	import {preventDefault} from "svelte/legacy"
+
 	import {onMount} from "svelte"
 
-	export let href = ""
-	export let icon
-	export let active = false
-	export let locationReplace = false
+	type Props = {
+		href?: string;
+		iconClass: any;
+		active?: boolean;
+		locationReplace?: boolean;
+		children?: import("svelte").Snippet;
+		items?: import("svelte").Snippet;
+	}
 
-	let opened = false
+	let {
+		    href            = "",
+		    iconClass,
+		    active          = false,
+		    locationReplace = false,
+		    children        = undefined,
+		    items,
+	    }: Props = $props()
+
+	let opened = $state(false)
 
 	onMount(() => {
 		opened = active && !opened ? true : opened
@@ -14,9 +31,14 @@
 
 	function navigateTo() {
 		opened = !opened
-		if (!href) return
-		if (locationReplace) window.location.replace(href)
-		else window.location.href = href
+		if (!href) {
+			return
+		}
+		if (locationReplace) {
+			window.location.replace(href)
+		} else {
+			window.location.href = href
+		}
 	}
 </script>
 
@@ -25,18 +47,18 @@
 	<a
 		class="nav-link"
 		class:active
-		on:click|preventDefault={navigateTo}
+		onclick={preventDefault(navigateTo)}
 	>
-		{#if icon}
-			<i class="nav-icon {icon}" />
+		{#if iconClass}
+			<i class="nav-icon {iconClass}"></i>
 		{/if}
 		<p>
-			<slot />
-			<i class="right fas fa-angle-left icon fa-fw" />
+			{@render children?.()}
+			<i class="right fas fa-angle-left icon fa-fw"></i>
 		</p>
 	</a>
 	<ul class="nav nav-treeview ml-2">
-		<slot name="children" />
+		{@render items?.()}
 	</ul>
 </li>
 

@@ -1,31 +1,41 @@
 export function joinPaths(...paths: string[]) {
 	const separator = "/"
-	const result = []
+	const result    = []
 
 	for (let i = 0; i < paths.length; i++) {
 		const sanitized = paths[i]?.toString() ?? ""
-		if (!i) result.push(trimEnd(sanitized, separator))
-		else if (i === paths.length - 1) result.push(trimStart(sanitized, separator))
-		else result.push(trim(sanitized, separator))
+		if (!i) {
+			result.push(trimEnd(sanitized, separator))
+		} else if (i === paths.length - 1) {
+			result.push(trimStart(sanitized, separator))
+		} else {
+			result.push(trim(sanitized, separator))
+		}
 	}
 
 	return result.join(separator)
 }
 
 export function trim(str: string, character: string) {
-	if (!character) return str.trim()
+	if (!character) {
+		return str.trim()
+	}
 
 	return trimEnd(trimStart(str, character), character)
 }
 
 export function trimStart(str: string, character: string) {
-	if (!character) return str.trimStart()
+	if (!character) {
+		return str.trimStart()
+	}
 
 	return str.replace(new RegExp(`^${character}+`), "")
 }
 
 export function trimEnd(str: string, character: string) {
-	if (!character) return str.trimEnd()
+	if (!character) {
+		return str.trimEnd()
+	}
 
 	return str.replace(new RegExp(`${character}+$`), "")
 }
@@ -33,7 +43,9 @@ export function trimEnd(str: string, character: string) {
 export function getRandomString(length: number) {
 	let randomNumbers = []
 
-	for (let i = 0; i < length; i++) randomNumbers.push(getRandomCharCode())
+	for (let i = 0; i < length; i++) {
+		randomNumbers.push(getRandomCharCode())
+	}
 
 	return String.fromCharCode(...randomNumbers)
 }
@@ -47,7 +59,7 @@ export function removeDiacritics(str: string) {
 }
 
 export function htmlToText(html: string) {
-	const div = document.createElement("div")
+	const div     = document.createElement("div")
 	div.innerHTML = html
 	div.innerHTML = div.innerHTML.replace("<br>", "\n")
 

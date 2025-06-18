@@ -3,7 +3,9 @@
  * @returns {Object} this
  */
 export function removeTemplateTimestamps(object) {
-	if (!object) return null
+	if (!object) {
+		return null
+	}
 
 	delete object.createdBy
 	delete object.created
@@ -20,7 +22,9 @@ export function removeTemplateTimestamps(object) {
  * @returns {object} Object with specified keys if any
  */
 export function take(object, keys) {
-	if (!object || !keys?.length) return {}
+	if (!object || !keys?.length) {
+		return {}
+	}
 
 	return Object.keys(object)
 		.filter((x) => keys.includes(x))
@@ -31,7 +35,9 @@ export function take(object, keys) {
  * Used to drop specified keys from object
  */
 export function dropKeys(object, keys) {
-	if (!object || !keys?.length) return {}
+	if (!object || !keys?.length) {
+		return {}
+	}
 
 	return Object.keys(object)
 		.filter((x) => !keys.includes(x))
@@ -39,7 +45,9 @@ export function dropKeys(object, keys) {
 }
 
 export function prefixKeys(object, prefix) {
-	if (!object) return null
+	if (!object) {
+		return null
+	}
 
 	return Object.entries(object).reduce((acc, [key, value]) => {
 		acc[prefix + key] = value
@@ -49,29 +57,37 @@ export function prefixKeys(object, prefix) {
 }
 
 export function getPrefixedKeys(object, prefix) {
-	if (!object) return null
+	if (!object) {
+		return null
+	}
 
 	return Object.keys(object).filter((x) => x.startsWith(prefix))
 }
 
 export function extractPrefixedKeys(object, prefix, preservePrefix = false) {
-	if (!object) return null
+	if (!object) {
+		return null
+	}
 
 	return getPrefixedKeys(object, prefix)?.reduce((acc, x) => {
 		const replacedKey = preservePrefix ? x : x.replace(prefix, "")
-		acc[replacedKey] = object[x]
+		acc[replacedKey]  = object[x]
 
 		return acc
 	}, {})
 }
 
 export function exceptPrefixedKeys(object, prefix) {
-	if (!object) return null
+	if (!object) {
+		return null
+	}
 
 	const keysToExclude = getPrefixedKeys(object, prefix)
 
 	return Object.keys(object).reduce((acc, x) => {
-		if (!keysToExclude.includes(x)) acc[x] = object[x]
+		if (!keysToExclude.includes(x)) {
+			acc[x] = object[x]
+		}
 
 		return acc
 	}, {})
@@ -93,7 +109,9 @@ export function dropNullValues<T, TNull = null>(object: T, nullValue: TNull = nu
 }
 
 export function keysToSnakeCase(object) {
-	if (!object) return object
+	if (!object) {
+		return object
+	}
 
 	return Object.entries(object)
 		.map(([key, value]) => {

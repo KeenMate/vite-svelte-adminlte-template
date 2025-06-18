@@ -1,15 +1,27 @@
 <script lang="ts">
 	import {LteButton} from "@keenmate/svelte-adminlte"
 
-	export let action
-	export let enabledWhenLoading = false
 
-	export let iconClass
+	type Props = {
+		action: any;
+		enabledWhenLoading?: boolean;
+		iconClass: any;
+		children?: import("svelte").Snippet;
+		[key: string]: any
+	}
 
-	let loading
+	let {
+		    action,
+		    enabledWhenLoading = false,
+		    iconClass,
+		    children           = undefined,
+		    ...rest
+	    }: Props = $props()
 
-	$: disabled = $$restProps.disabled
-	|| enabledWhenLoading ? false : loading
+	let loading = $state()
+
+	let disabled = $derived(rest.disabled
+	|| enabledWhenLoading ? false : loading)
 
 	async function onClick(ev) {
 		try {
@@ -21,12 +33,12 @@
 	}
 </script>
 
-<LteButton {...$$restProps} {disabled} on:click={onClick}>
+<LteButton {...rest} {disabled} on:click={onClick}>
 	{#if loading}
 		<i class="fas fa-circle-notch fa-spin fa-fw" style="--fa-animation-duration: 1s"></i>
 	{:else if iconClass}
 		<i class="{iconClass} fa-fw"></i>
 	{/if}
 
-	<slot />
+	{@render children?.()}
 </LteButton>

@@ -1,26 +1,28 @@
+<!-- @migration-task Error while migrating Svelte code: Unexpected token
+https://svelte.dev/e/js_parse_error -->
 <script lang="ts">
-	export let value = false
 
-	/**
-	 * Used to alter the rendering style of icons
-	 * @type {"square" | "circle" | null}
-	 */
-	export let style = null
-	export let noColors = false
 
-	let icon,
-		fullIconClass,
-		color
+	type Props = {
+		value?: boolean;
+		Used to alter the rendering style of icons
+		style?: "square" | "circle" | null;
+		noColors?: boolean;
+	}
 
-	$: icon = value
-		&& "fa-check"
-		|| "fa-times"
-	$: fullIconClass = style ? `${icon}-${style}` : icon
-	$: color = noColors
-		? ""
-		: value
-		&& "text-success"
-		|| "text-danger"
+	let {value = false, style = undefined, noColors = false}: Props = $props()
+
+	let icon          = $derived(value
+		    && "fa-check"
+		    || "fa-times"),
+	    fullIconClass = $derived(style ? `${icon}-${style}` : icon),
+	    color         = $derived(noColors
+		    ? ""
+		    : value
+		    && "text-success"
+		    || "text-danger")
+
+
 </script>
 
-<i class="fas {fullIconClass} {color} fa-fw" />
+<i class="fas {fullIconClass} {color} fa-fw"></i>

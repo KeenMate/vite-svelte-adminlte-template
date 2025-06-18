@@ -1,12 +1,16 @@
 ﻿<script lang="ts">
 	import {LteButton} from "@keenmate/svelte-adminlte"
-	import { _ } from "svelte-i18n";
+	import {_} from "svelte-i18n"
 
-	export let xsmall = false
-	export let small = false
-	export let large = false
+	type Props = {
+		xsmall?: boolean;
+		small?: boolean;
+		large?: boolean;
+	}
 
-	$: noSizeSet = !xsmall && !small && !large
+	let {xsmall = false, small = false, large = false}: Props = $props()
+
+	let noSizeSet = $derived(!xsmall && !small && !large)
 </script>
 
 <LteButton
@@ -17,5 +21,5 @@
 	{large}
 	on:click
 >
-	<i class="fas fa-sync fa-fw" />
+	<i class="fas fa-sync fa-fw"></i>
 </LteButton>

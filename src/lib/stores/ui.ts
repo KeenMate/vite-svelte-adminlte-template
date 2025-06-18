@@ -5,7 +5,7 @@ export const IsPageBodyScrolling = elementScrolling(document.body)
 
 export const PageResized = fromEvent(window, "resize", (_ev: UIEvent) => {
 	return {
-		innerWidth: window.innerWidth,
+		innerWidth:  window.innerWidth,
 		innerHeight: window.innerHeight
 	}
 })
@@ -13,7 +13,7 @@ export const PageResized = fromEvent(window, "resize", (_ev: UIEvent) => {
 
 export function elementScrolling(element: HTMLElement) {
 	return readable(false, (set) => {
-		const onScroll = () => {
+		const onScroll    = () => {
 			console.log("onScroll")
 			set(true)
 		}

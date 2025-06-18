@@ -10,18 +10,28 @@
 	import {get} from "svelte/store"
 	import {prefixKeys} from "@keenmate/js-common-helpers/helpers/object.js"
 
-	export let value: any
-	export let queryKey: string | undefined = undefined
-	export let keepPagination = false
-	export let onRemove: (() => any) | undefined = undefined
-	export let updateQuery: (query: StringDict | object) => any = updateQuerystringPartialAsync
+	type Props = {
+		value: any;
+		queryKey?: string | undefined;
+		keepPagination?: boolean;
+		onRemove?: (() => any) | undefined;
+		updateQuery?: (query: StringDict | object) => any;
+	}
+
+	let {
+		    value,
+		    queryKey       = undefined,
+		    keepPagination = false,
+		    onRemove       = undefined,
+		    updateQuery    = updateQuerystringPartialAsync
+	    }: Props = $props()
 
 	const masterDetailPageContext = getContext<PageSvelteContext | null>(PageSvelteContextKey)
-	const queryContext = getContext<QueryContext>(QueryContextKey)
+	const queryContext            = getContext<QueryContext>(QueryContextKey)
 
-	$: queryKeyWithPrefix = queryContext?.queryPrefix && queryKey
+	let queryKeyWithPrefix = $derived(queryContext?.queryPrefix && queryKey
 		? queryContext?.queryPrefix + queryKey
-		: queryKey
+		: queryKey)
 
 	function onClear() {
 		if (!queryKeyWithPrefix) {
