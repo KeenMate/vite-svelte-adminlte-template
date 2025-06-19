@@ -77,6 +77,15 @@ export default defineConfig({
 		// 	}
 		// }
 	},
+	css:          {
+		preprocessorOptions: {
+			scss: {
+				additionalData: `
+					@use 'sass:color';
+					@import "~assets/css/variables.scss";`
+			}
+		}
+	},
 	experimental: {
 		// to fix links in index.html that are served from shared place in the root of serve dir
 		renderBuiltUrl(filename, {type}) {
